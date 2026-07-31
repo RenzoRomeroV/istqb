@@ -1,0 +1,802 @@
+[
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de los siguientes es un objetivo típico de una prueba?",
+    "opcion_b": "Validación del cumplimiento de los requisitos documentados",
+    "opcion_c": "Causar fallos e identificar defectos",
+    "opcion_d": "Iniciación a los errores e identificación de las causas profundas",
+    "respuesta_correcta": "B",
+    "explicacion": "a)No es correcto. Validar que se cumplen los requisitos documentados es incorrecto, ya que la validación se refiere al cumplimiento de los requisitos y expectativas del usuario, mientras que la verificación se refiere al cumplimiento de los requisitos especificados, por lo que sería correcto si sustituyéramos \"validar\" por \"verificar\". b)Es correcto. Provocar fallos e identificar defectos es probablemente el objetivo más común de las pruebas dinámicas c)No es correcto. Iniciar errores e identificar causas raíz es incorrecto porque los probadores no inician errores, intentan causar fallos. Los errores suelen cometerlos los desarrolladores (y en realidad no se pueden iniciar) y dan lugar a defectos, que los probadores intentan identificar directamente mediante pruebas estáticas o indirectamente mediante fallos con pruebas dinámicas. Identificar las causas es útil, pero forma parte de la depuración, que es una actividad independiente de las pruebas. d)No es correcto. Verificar que el objeto de ensayo cumple las expectativas del usuario es incorrecto, ya que la verificación se ocupa de comprobar que se cumplen los requisitos especificados (documentados), mientras que la validación se ocupa de cumplir los requisitos y las expectativas del usuario, por lo que sería correcto si Hemos sustituido \"verificar\" por \"validar\". FL-1.1.1 K1 1 Respuestas Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las siguientes afirmaciones describe MEJOR la diferencia entre pruebas y depuración?",
+    "opcion_b": "Probar provoca fallos y depurar los corrige",
+    "opcion_c": "Probar es una actividad negativa mientras que depurar es una actividad positiva",
+    "opcion_d": "Las pruebas determinan la existencia de defectos, mientras que la depuración los elimina.",
+    "respuesta_correcta": "C",
+    "explicacion": "a)No es correcto. Las pruebas dinámicas provocan fallos (a partir de los cuales pueden localizarse y corregirse los defectos). Sin embargo, la depuración se ocupa de localizar los y solucionarlos. Por lo tanto, la depuración no corrige los fallos. b)No es correcto. Tanto las pruebas como la depuración contribuyen a mejorar la calidad del objeto de prueba, por lo que ambas deben considerarse realmente positivas. Por lo general, la depuración se considera una actividad positiva, ya que se trata de arreglar algo. Las pruebas dinámicas implican hacer fallar intencionadamente el objeto de prueba, por lo que algunas personas las consideran una actividad negativa, pero esa es una visión muy limitada (y no la que suelen tener los probadores). Los casos de prueba positivos y negativos son posibles. Los casos de prueba positivos comprueban que el objeto de prueba realiza correctamente lo que se supone que debe hacer, mientras que las pruebas negativas comprueban que el objeto de prueba no hace lo que se supone que no debe hacer. c)Es correcto. Las pruebas determinan que existen defectos, bien directamente mediante la observación del defecto en las revisiones (o mediante una herramienta en el análisis estático), bien indirectamente provocando un fallo en las pruebas dinámicas. La depuración es una actividad separada de las pruebas (que normalmente realizan los desarrolladores) y ocupa de localizar los defectos (sólo en las pruebas dinámicas) y solucionarlos. d)No es correcto. Las causas de los defectos suelen ser errores humanos. Las pruebas encuentran los defectos directamente mediante pruebas estáticas, o indirectamente causando fallos en las pruebas dinámicas, y la depuración corrige los defectos. Por lo tanto, las pruebas no encuentran la causa de los defectos y la depuración no los corrige. las causas de los defectos FL-1.1.2 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "La \"falacia de ausencia de defectos\" es uno de los principios de las pruebas. Cuál de los siguientes es un ejemplo de aplicación práctica de este principio?",
+    "opcion_b": "Explicar que no es posible que las pruebas demuestren la ausencia de defectos.",
+    "opcion_c": "Apoyo a los usuarios finales para realizar pruebas de aceptación",
+    "opcion_d": "Garantizar que no queden defectos de aplicación en el sistema entregado",
+    "respuesta_correcta": "B",
+    "explicacion": "La \"falacia de la ausencia de defectos\" se refiere a la idea de que garantizar la corrección de acuerdo con los requisitos (es decir, verificar la ausencia de defectos de implementación) no garantiza la satisfacción del usuario con el sistema. Para ello, también es necesario validar que el sistema satisface las necesidades y expectativas de los usuarios, cumple los objetivos empresariales y supera a los sistemas de la competencia. a)No es correcto. El principio de \"las pruebas muestran la presencia, no la ausencia de defectos\" explica que, si bien las pruebas pueden detectar la existencia de defectos en el objeto de prueba, no es posible demostrar que no los hay y, por tanto, garantizar su corrección. Por lo tanto, explicar que no es posible que las pruebas muestren la ausencia de defectos respondería parcialmente a este principio, no a la falacia de la \"ausencia de defectos\". b)Es correcto. Al ayudar al usuario final a realizar las pruebas de aceptación, debería ser posible validar que el sistema satisface las necesidades y expectativas de los usuarios. c)No es correcto. No es posible garantizar que no queden defectos de implementación en el sistema entregado, ya que el principio de \"las pruebas muestran la presencia, no la ausencia de defectos\" explica que, si bien las pruebas pueden detectar la existencia de defectos en el objeto de prueba, no es posible demostrar que no los hay y, por tanto, garantizar su corrección. d)No es correcto. Modificar las pruebas que no provocan fallos para garantizar que queden pocos defectos es una forma de abordar el principio del \"desgaste de las pruebas\". Este principio se refiere a la idea de que la repetición de pruebas idénticas en código inalterado es poco probable que descubra nuevos defectos y, por lo tanto, modificar las pruebas puede ser esencial. Esto no validará que el sistema satisface las necesidades y expectativas de los usuarios. FL-1.3.1 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "¿Cuál de las siguientes actividades de prueba es MÁS probable que implique la aplicación del análisis del valor límite y la partición de equivalencias?",
+    "opcion_a": "Prueba de aplicación",
+    "opcion_b": "Diseño de pruebas",
+    "opcion_c": "Ejecución de pruebas",
+    "opcion_d": "Control de las pruebas",
+    "respuesta_correcta": "B,E",
+    "explicacion": "Dada la siguiente descripción del análisis de la prueba: Para identificar las características que requieren pruebas, se analiza la base de las pruebas y se definen como condiciones de prueba, que luego se priorizan junto con los riesgos relacionados. La identificación sistemática de las condiciones de prueba como elementos de cobertura suele implicar el uso de técnicas de prueba tanto durante el análisis de pruebas como en el marco de la actividad de diseño de pruebas. De la descripción anterior se desprende que las técnicas de prueba suelen utilizarse en las actividades de análisis y diseño de pruebas. El análisis de valores límite y la partición de equivalencias son técnicas de prueba. a)No es correcto. No es probable que la aplicación de pruebas implique el uso de técnicas de prueba, ya que se trata principalmente de ensamblar casos de prueba en procedimientos de prueba, mientras que las técnicas de prueba crean casos de prueba. b)Es correcto. Es probable que el diseño de la prueba implique el uso de técnicas de prueba para crear casos de prueba a partir de condiciones de prueba y elementos de cobertura. c)No es correcto. No es probable que la ejecución de pruebas implique el uso de técnicas de prueba, ya que se trata principalmente de ejecutar procedimientos de prueba (y, por tanto, casos de prueba), mientras que las técnicas de prueba crean casos de prueba. d)No es correcto. El seguimiento de las pruebas no suele implicar el uso de técnicas de prueba. El seguimiento de las pruebas consiste sobre todo en comprobaciones continuas para asegurarse de que se sigue el plan, mientras que las técnicas de prueba crean casos de prueba. e)Es correcto. Es probable que el análisis de la prueba implique el uso de técnicas de prueba para identificar las condiciones de la prueba FL-1.4.1 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "Dado el siguiente testware:\nElementos de cobertura\nSolicitudes de cambio\nCalendario de ejecución de las pruebas\nCondiciones de ensayo prioritarias\nY las siguientes actividades de prueba\nAnálisis de pruebas\nDiseño de pruebas\nPrueba de aplicación\nFinalización de la prueba\n¿Cuál de las siguientes opciones muestra MEJOR el testware producido por las actividades?",
+    "opcion_a": "1B, 2D, 3C, 4A",
+    "opcion_b": "1B, 2D, 3A, 4C",
+    "opcion_c": "1D, 2C, 3A, 4B",
+    "opcion_d": "1D, 2C, 3B, 4A",
+    "respuesta_correcta": "A",
+    "explicacion": "Teniendo en cuenta cada una de las actividades de prueba enumeradas y su material de prueba de salida: A.Análisis de las pruebas - condiciones de prueba priorizadas (4) (por ejemplo, criterios de aceptación), e informes de defectos para los defectos identificados en la base de pruebas. B.Diseño de las pruebas: casos de prueba priorizados, estatutos de las pruebas, elementos de cobertura (1), requisitos de los datos de prueba y requisitos del entorno de prueba. C.Realización de pruebas: procedimientos de prueba, guiones de prueba automatizados, conjuntos de pruebas, datos de prueba, calendario de ejecución de pruebas (3) y elementos del entorno de prueba como stubs, controladores, simuladores y virtualizaciones de servicios. D.Finalización de las pruebas: informe de finalización de las pruebas, lecciones aprendidas documentadas, acciones de mejora y solicitudes de cambio (2) (como elementos del backlog del producto). Así: a)Es correcto. La correspondencia correcta es: 1B, 2D, 3C, 4A b)No es correcto c)No es correcto d)No es correcto FL-1.4.3 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "¿Cuál de las siguientes afirmaciones sobre las diferentes funciones de comprobación tiene MÁS probabilidades de ser CORRECTA?",
+    "opcion_a": "En el desarrollo ágil de software, la función de gestión de pruebas es responsabilidad principal del equipo, mientras que la función de pruebas es responsabilidad principal de una sola persona ajena al equipo.",
+    "opcion_b": "La función de pruebas se encarga principalmente de la supervisión y el control de las pruebas, mientras que la función de gestión de las pruebas se encarga principalmente de la planificación y la realización de las pruebas.",
+    "opcion_c": "En el desarrollo ágil de software, las actividades de gestión de pruebas que abarcan varios equipos son gestionadas por un gestor de pruebas externo al equipo, mientras que algunas tareas de gestión de pruebas son gestionadas por el propio equipo.",
+    "opcion_d": "La función de gestión de pruebas se encarga principalmente del análisis y el diseño de las pruebas, mientras que la función de pruebas se encarga principalmente de su aplicación y ejecución.",
+    "respuesta_correcta": "C",
+    "explicacion": "algunas de las tareas de gestión de pruebas pueden estar a cargo del propio equipo ágil, la función de pruebas no es principalmente responsabilidad de una sola persona ajena al equipo. Es más probable que las pruebas las realicen varios miembros del equipo siguiendo el enfoque de equipo completo. b)No es correcto. La función de gestión de pruebas implica principalmente actividades relacionadas con la planificación, el seguimiento y el control de las pruebas, y la finalización de las mismas. Por lo tanto, aunque esta afirmación es parcialmente correcta, es incorrecto decir que la función de pruebas es la principal responsable de la supervisión y el control de las pruebas. pruebas pueden ser realizadas por el propio equipo ágil. Sin embargo, para las actividades de prueba que abarcan varios equipos dentro de una organización, los gestores de pruebas fuera del equipo de desarrollo pueden realizar estas tareas d)No es correcto. La función de gestión de pruebas implica principalmente actividades relacionadas con la planificación, el seguimiento y el control de las pruebas, y la realización de las mismas, mientras que la función de pruebas es responsable principalmente de los aspectos técnicos y de ingeniería de las pruebas, como el análisis, el diseño, la implementación y la ejecución de las pruebas. Por lo tanto, la función de gestión de pruebas no suele ser responsable del análisis y el diseño de las pruebas, aunque es correcto decir que la función de pruebas es la principal responsable de las pruebas. aplicación y ejecución FL-1.4.5 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las siguientes es una ventaja del enfoque de equipo completo?",
+    "opcion_b": "Equipos sin probadores",
+    "opcion_c": "Mejora de la dinámica de equipo",
+    "opcion_d": "Miembros del equipo de especialistas",
+    "respuesta_correcta": "B",
+    "explicacion": "a)No es correcto. En el enfoque de equipo completo, los probadores desempeñan un papel vital compartiendo su experiencia en pruebas con el equipo y orientando el desarrollo del producto. Colaboran con otros miembros del equipo para alcanzar los niveles de calidad deseados y trabajan con representantes de la empresa para crear pruebas de aceptación. También colaboran con los desarrolladores para determinar la estrategia de pruebas y los métodos de automatización óptimos. b)Es correcto. Al aprovechar al máximo las diversas habilidades de cada miembro del equipo, el enfoque de equipo completo fomenta una dinámica de equipo superior, promueve una comunicación y colaboración sólidas y genera un efecto sinérgico que beneficia a todo el proyecto. c)No es correcto. El enfoque de equipo completo permite a cualquier miembro del equipo con las habilidades y conocimientos necesarios realizar cualquier tarea, por lo que los miembros especializados del equipo no son una ventaja de este enfoque. d)No es correcto. No hay ninguna orientación específica sobre el tamaño óptimo de los equipos que utilizan el enfoque de equipo completo, y no hay ninguna sugerencia de que los equipos más grandes son mejores FL-1.5.2 K1 1 Versión 1.5",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "¿Cuál de las siguientes afirmaciones sobre la independencia de las pruebas es CORRECTA?",
+    "opcion_a": "Los probadores independientes encontrarán defectos debido a su perspectiva técnica diferente de la de los desarrolladores, pero su independencia puede dar lugar a una relación de confrontación con los desarrolladores.",
+    "opcion_b": "La familiaridad de los desarrolladores con su propio código significa que sólo encuentran unos pocos defectos en él, sin embargo, su experiencia en software compartida con los evaluadores significa que estos también serían encontrados por los evaluadores.",
+    "opcion_c": "Las pruebas independientes requieren evaluadores que no pertenezcan al equipo de desarrollo e, idealmente, que no pertenezcan a la organización; sin embargo, estos evaluadores tienen dificultades para comprender el dominio de la aplicación.",
+    "opcion_d": "Los evaluadores externos al equipo de desarrollo son más independientes que los evaluadores internos, pero es más probable que se culpe a los evaluadores internos de los retrasos en el lanzamiento del producto.",
+    "respuesta_correcta": "A",
+    "explicacion": "a)Es correcto. La principal ventaja de la independencia en pruebas es que es más probable que los probadores identifiquen distintos tipos de fallos y defectos en comparación con los desarrolladores, debido a su variada formación, puntos de vista técnicos y posibles sesgos, incluido el sesgo cognitivo. Sin embargo, la principal desventaja de la independencia en las pruebas es que los probadores pueden quedar aislados del equipo de desarrollo, lo que provoca problemas de comunicación, falta de colaboración y, potencialmente, una relación de enfrentamiento, en la que se culpa a los probadores de los retrasos y cuellos de botella en el proceso de lanzamiento. b)No es correcto. La familiaridad de un desarrollador con el código no significa que rara vez encuentre defectos en él, sino que esta familiaridad significa que puede encontrar eficazmente muchos defectos en su propio código. Y, en lugar de que los desarrolladores y probadores tengan una formación común, normalmente se cita que los desarrolladores tienen una formación diferente a la de los probadores como la razón por la que los probadores y los desarrolladores encuentran diferentes tipos de defectos. c)No es correcto. Las pruebas pueden realizarse con distintos niveles de independencia, desde ninguna independencia para el autor hasta una independencia muy alta para los probadores ajenos a la organización. En la mayoría de los proyectos se utilizan varios niveles de independencia: los desarrolladores realizan las pruebas de componentes y de integración de componentes, el equipo de pruebas realiza las pruebas de sistemas y de integración de sistemas, y los representantes de la empresa realizan las pruebas de aceptación. Así, los probadores pueden estar en el equipo del desarrollador y no necesitan venir de fuera de la organización. El conocimiento del dominio de la aplicación cambiará de un caso a otro y no depende del nivel de independencia. d)No es correcto. Las pruebas pueden realizarse con diferentes niveles de independencia, desde ninguna independencia para el autor hasta una independencia muy alta para los probadores de fuera de la organización, siendo los probadores de fuera del equipo del desarrollador generalmente más independientes que los probadores de dentro del equipo. Sin embargo, hay más razones para creer que los probadores de fuera del equipo suelen estar más aislados del desarrolladores, por lo que es más probable que se les culpen de los retrasos en el lanzamiento de los productos. FL-1.5.3 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las siguientes es una buena práctica de pruebas que se aplica a todos los ciclos de vida de desarrollo de software?",
+    "opcion_b": "A cada nivel de prueba le corresponde un nivel de desarrollo",
+    "opcion_c": "Para cada objetivo de las pruebas hay un objetivo de desarrollo correspondiente",
+    "opcion_d": "Para cada actividad de prueba de software, hay una actividad de usuario correspondiente",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. El control de calidad se aplica a todas las actividades de actividad de prueba correspondiente. Sin embargo, aquí estamos tratando de equiparar los niveles de prueba con los niveles de desarrollo, y, aunque sabemos lo que se entiende por \"niveles de prueba\", no hay un entendimiento común del término \"nivel de desarrollo\". actividad de prueba; sin embargo, los objetivos de las pruebas son muy diferentes. Por ejemplo, puede haber un objetivo de prueba que garantice que un objeto de prueba cumple un requisito contractual según el cual debe realizarse un determinado tipo de pruebas antes de la entrega. En este caso, no hay razón para que exista un objetivo de desarrollo correspondiente. c)No es correcto. El control de calidad se aplica a todas las actividades de actividad de prueba correspondiente. Sin embargo, no se aplica la misma simetría a las actividades de prueba y de usuario. Por ejemplo, en algunos sistemas es difícil incluso identificar a los usuarios finales. Además, algunas actividades de prueba se centran en los desarrolladores (por ejemplo, las pruebas para facilitar el mantenimiento), lo que no tiene ningún aspecto relacionado con el usuario. d)Es correcto. El control de calidad se aplica a todas las actividades de desarrollo, es decir de prueba FL-2.1.2 K1 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de los siguientes es un ejemplo de enfoque de desarrollo basado en las pruebas?",
+    "opcion_b": "Desarrollo basado en pruebas de componentes",
+    "opcion_c": "Desarrollo basado en pruebas de integración",
+    "opcion_d": "Desarrollo basado en pruebas del sistema",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. El desarrollo basado en pruebas de componentes no es un ejemplo correcto de un enfoque de desarrollo basado en pruebas. b)No es correcto. El desarrollo basado en pruebas de integración no es un ejemplo correcto de enfoque de desarrollo basado en pruebas. c)No es correcto. El desarrollo basado en pruebas del sistema no es un ejemplo correcto de un enfoque de desarrollo basado en pruebas. d)Es correcto. El desarrollo basado en pruebas de aceptación (Acceptance Test-Driven Development, ATDD) es un ejemplo bien conocido de un enfoque de desarrollo basado en pruebas. FL-2.1.3 K1 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "¿Cuál de las siguientes opciones es la MEJOR descripción del enfoque de desplazamiento a la izquierda?",
+    "opcion_a": "Cuando así lo acuerdan los desarrolladores, se automatizan las actividades manuales de la parte izquierda del proceso de prueba para respaldar el principio de que \"las pruebas tempranas ahorran tiempo y dinero\".",
+    "opcion_b": "Cuando resulte rentable, las actividades de prueba se trasladarán a fases más tempranas del ciclo de vida de desarrollo del software (SDLC) para reducir el coste total de la calidad al disminuir el número de defectos detectados en fases posteriores del SDLC.",
+    "opcion_c": "Cuando  de tiempo libre, los probadores deben automatizar las pruebas de regresión, empezando por las pruebas de componentes y las pruebas de integración de componentes.",
+    "opcion_d": "Cuando es posible, se forma a los evaluadores para que realicen tareas en una fase temprana del SDLC para permitir la automatización de más actividades de prueba en fases posteriores del SDLC.",
+    "respuesta_correcta": "B",
+    "explicacion": "a)No es correcto. Las prácticas relacionadas con las pruebas de desplazamiento a la izquierda tienen como objetivo implementar más actividades de pruebas en las primeras fases del ciclo de vida de desarrollo, representando el SDLC como un desplazamiento de izquierda a derecha. No existe el lado izquierdo del proceso de prueba b)Es correcto. El cambio a la izquierda subraya la importancia de iniciar las pruebas aplicación de las pruebas de cambio a la izquierda requiere formación adicional y un mayor esfuerzo y costes durante las primeras fases del SDLC. c)No es correcto. Aunque las pruebas de componentes automatizadas y las pruebas de integración de componentes para las pruebas de regresión son generalmente valiosas, la creación de estas pruebas es normalmente responsabilidad de los desarrolladores, y si sigue un enfoque de integración continua/entrega continua (CI/CD), entonces estas pruebas se habrán enviado con el código. En algunas situaciones, el probador puede automatizar las pruebas de regresión y, a veces, incluso las pruebas de componentes y las pruebas de integración de componentes, pero esto no forma parte de un enfoque de \"cambio a la izquierda\" que traslada las pruebas a una fase más temprana del SDLC. d)No es correcto. Formar a los evaluadores para que realicen tareas en una fase temprana del SDLC apoyaría un enfoque de cambio a la izquierda, ya que destacaría la importancia de comenzar las pruebas en una fase más temprana del SDLC. Sin embargo, automatizar más actividades de prueba para no forma parte de un enfoque de \"cambio a la izquierda\". FL-2.1.5 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las siguientes situaciones es MENOS probable que se produzca como resultado de una retrospectiva?",
+    "opcion_b": "La calidad de los futuros objetos de prueba mejora gracias a la identificación de mejoras en las prácticas de desarrollo.",
+    "opcion_c": "Mejora de la eficacia de las pruebas al agilizar la configuración de los entornos de prueba mediante la automatización.",
+    "opcion_d": "Mejora la comprensión de los procesos de desarrollo y prueba por parte de los usuarios finales.",
+    "respuesta_correcta": "C",
+    "explicacion": "a)No es correcto. Una de las finalidades de las retrospectivas es identificar posibles mejoras del proceso que, si se ponen en práctica, deberían en una mayor calidad de los futuros resultados del proceso de desarrollo (objetos de prueba). Por lo tanto, es probable que esto ocurra como resultado de una retrospectiva b)No es correcto. Una de las ventajas de las retrospectivas para las pruebas es el aumento de la eficacia de las pruebas gracias a la mejora de los procesos. Por lo tanto, es probable que esto ocurra como resultado de una retrospectiva. c)Es correcto. Los participantes en las retrospectivas suelen ser probadores, desarrolladores, arquitectos, propietarios de productos y analistas de negocio, pero los usuarios finales rara vez son invitados o asisten a estas reuniones, y tampoco es probable que reciban ningún informe de estas reuniones. Por lo tanto, es muy poco probable que aprendan y comprendan más sobre los procesos de desarrollo y prueba a través de las retrospectivas. d)No es correcto. Una de las ventajas de las retrospectivas para las pruebas es la mejora de la calidad del material de prueba (incluidos los guiones de prueba automatizados) mediante revisiones conjuntas con los desarrolladores. Por tanto, es probable que esto ocurra como resultado de una retrospectiva FL-2.1.6 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de los siguientes niveles de prueba es MÁS probable que se realice si las pruebas se centran en la validación y no las realizan los probadores?",
+    "opcion_b": "Pruebas de componentes",
+    "opcion_c": "Pruebas de integración de componentes",
+    "opcion_d": "Pruebas de integración del sistema",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. Las pruebas de componentes (también llamadas pruebas unitarias) consisten en probar componentes individuales de forma aislada y, en la mayoría de los casos, se trata de una verificación con respecto a una especificación, más que de una validación con respecto a las necesidades del usuario. Sin embargo, los probadores no suelen realizar estas pruebas, ya que los desarrolladores suelen llevarlas a cabo en su entorno de desarrollo. b)No es correcto. Las pruebas de integración de componentes implican la comprobación de las interfaces e interacciones entre componentes y, en la mayoría de los casos, se trata de una verificación con respecto a una especificación, más que de una validación con respecto a las necesidades del usuario. Sin embargolos probadores no suelen realizar estas pruebas, ya que suelen ser los desarrolladores quienes las llevan a cabo. c)No es correcto. Las pruebas de integración del sistema examinan las interfaces con otros sistemas y servicios externos, y consisten sobre todo en la verificación con respecto a una especificación, más que en la validación con respecto a las necesidades del usuario. Este tipo de pruebas también suelen realizarlas los probadores d)Es correcto. Las pruebas de aceptación se centran en validar que el sistema satisface las necesidades empresariales del usuario y está listo para su despliegue. Lo ideal es que las pruebas las realicen los usuarios finales. FL-2.2.1 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "Se ha actualizado el software del sistema de navegación porque sugiere rutas que infringen las leyes de tráfico, como circular en sentido contrario por calles de sentido único. ¿Cuál de las siguientes opciones describe MEJOR las pruebas que se van a realizar?",
+    "opcion_b": "Sólo pruebas de confirmación",
+    "opcion_c": "Pruebas de confirmación y, a continuación, pruebas de regresión",
+    "opcion_d": "Sólo pruebas de regresión",
+    "respuesta_correcta": "B",
+    "explicacion": "a)no es correcta. Es necesario realizar pruebas de confirmación para comprobar que las actualizaciones han dado lugar a una implementación correcta, sin embargo, a continuación sería sensato realizar pruebas de regresión para garantizar que no se han introducido o descubierto defectos en áreas no modificadas del sistema. b)es correcta. Las pruebas de confirmación comprobarán que las actualizaciones han dado lugar a una aplicación correcta y, a continuación, se utilizarán las pruebas de regresión para garantizar que no se han introducido o descubierto defectos en áreas del sistema que no se han modificado. c)No es correcta. Las pruebas de regresión deben utilizarse para garantizar que no se han introducido o descubierto defectos en las áreas del que no se han modificado al realizar la actualización; sin embargo, también es necesario realizar pruebas de confirmación que comprueben que las actualizaciones han dado lugar a una aplicación correcta. d)no es correcta. Las pruebas de confirmación comprobarán que las actualizaciones han dado lugar a una aplicación correcta, y las pruebas de regresión servirán para asegurarse de que no se han introducido o descubierto defectos en zonas del sistema que no se han modificado. Sin embargo, cuando se realizan (es decir, cuando hay que probar una actualización), las pruebas de confirmación preceden a las de regresión. pruebas FL-2.2.3 K2 1 Versión 1.5",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "Dados los siguientes defectos de ejemplo:\nDos partes diferentes de la especificación del diseño discrepan debido a la complejidad del diseño\nUn tiempo de respuesta demasiado largo hace perder la paciencia a los usuarios\nNo se puede alcanzar una ruta en el código durante la ejecución\nSe declara una variable pero nunca se utiliza posteriormente en el programa\nLa cantidad de memoria que necesita el programa para generar un informe es demasiado alta",
+    "opcion_a": "¿Cuál de las siguientes opciones identifica MEJOR ejemplos de defectos que podrían detectarse mediante pruebas estáticas (en lugar de pruebas dinámicas)?",
+    "opcion_b": "ii, v",
+    "opcion_c": "iii, v",
+    "opcion_d": "i, ii, iv",
+    "respuesta_correcta": "D",
+    "explicacion": "Considerando cada uno de los ejemplos de defectos enumerados: i.Dos partes diferentes de la especificación del diseño no concuerdan debido a la complejidad del diseño: este es un ejemplo de defecto de especificación, que incluye incoherencias, ambigüedades, contradicciones, omisiones, imprecisiones y duplicaciones, que pueden detectarse más fácilmente mediante pruebas estáticas. ii.Un tiempo de respuesta demasiado largo hace que los usuarios pierdan la paciencia: éste es un ejemplo de defecto en el tiempo de respuesta, que sólo puede detectarse en la práctica ejecutando el programa y midiendo el tiempo de respuesta, lo que puede comprobarse más fácilmente mediante pruebas dinámicas. iii.Un camino en el código no puede ser alcanzado durante la ejecución - este es un ejemplo de un defecto de codificación, que incluye variables con valores indefinidos, variables no declaradas, código duplicado o inalcanzable, y excesiva complejidad del código, que puede ser encontrado más fácilmente mediante pruebas estáticas. iv.Se declara una variable pero nunca se utiliza posteriormente en el programa - este es un ejemplo de defecto de codificación, que incluye variables con valores indefinidos, variables no declaradas, código duplicado o inalcanzable, y excesiva complejidad del código, que se pueden encontrar más fácilmente mediante pruebas estáticas. v.La cantidad de memoria que necesita el programa para generar un informe es demasiado elevada: este es un ejemplo de defecto de rendimiento, que sólo puede detectarse en la práctica ejecutando el programa y midiendo la memoria utilizada, lo que puede detectarse más fácilmente mediante pruebas dinámicas. Así: a)No es correcto b)No es correcto c)No es correcto d)Es correcto. La correspondencia correcta para las pruebas estáticas es i, iii, y iv FL-3.1.3 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las siguientes es una ventaja de la retroalimentación temprana y frecuente de las partes interesadas?",
+    "opcion_b": "Los cambios en los requisitos se comprenden y aplican antes",
+    "opcion_c": "Garantiza que las partes interesadas comprendan los requisitos de los usuarios",
+    "opcion_d": "Permite a los propietarios de los productos cambiar sus requisitos tantas veces como quieran.",
+    "respuesta_correcta": "A",
+    "explicacion": "a)Es correcto. Obtener la opinión de las partes interesadas en una fase temprana y Facilita la comunicación temprana de posibles problemas de calidad, puede evitar malentendidos sobre los requisitos y garantiza que cualquier cambio en los requisitos de las partes interesadas se comprenda e implemente antes. b)No es correcto. Los comentarios proceden de las partes interesadas, y es poco probable que sus comentarios mejoren su comprensión de los requisitos de sus propios usuarios. c)No es correcto. Obtener la opinión de las partes interesadas en una fase beneficioso. Facilita la comunicación temprana de posibles problemas de calidad, puede evitar malentendidos sobre los requisitos y garantiza que cualquier cambio en los requisitos de las partes interesadas se comprenda e implemente antes. Sin embargo, el hecho de que los cambios en los requisitos puedan comprenderse y aplicarse antes no significa que se fomenten cambios ilimitados en los requisitos. d)No es correcto. La información procede de las partes interesadas y no se refiere a la comunicación con ellas. La comunicación a los usuarios finales podría incluir la información sobre los requisitos que no se van a aplicar antes de la entrada en vigor de la Directiva. liberar, pero lo ideal sería que esto no ocurriera en absoluto FL-3.2.1 K1 1 Versión 1.5",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "Dados los siguientes tipos de revisión:\nRevisión técnica\nRevisión informal\nInspección\nRecorrido\nY las siguientes descripciones:\nIncluye objetivos como la obtención de consenso, la generación de nuevas ideas y la motivación de los autores para mejorar.\nIncluye objetivos como educar a los revisores, obtener consenso, generar nuevas ideas y detectar posibles defectos.\nEl objetivo principal es detectar posibles defectos y requiere la recopilación de métricas para apoyar la mejora del proceso.\nEl objetivo principal es detectar posibles defectos y no genera ningún resultado formal documentado.\n¿Cuál de las siguientes opciones coincide MEJOR con los tipos de revisión y las descripciones?",
+    "opcion_a": "1A, 2B, 3C, 4D",
+    "opcion_b": "1A, 2D, 3C, 4B",
+    "opcion_c": "1B, 2C, 3D, 4A",
+    "opcion_d": "1C, 2D, 3A, 4B",
+    "respuesta_correcta": "B",
+    "explicacion": "Teniendo en cuenta cada uno de los tipos de revisión enumerados: 1.Revisión técnica - Este tipo de revisión es realizada por revisores técnicamente cualificados y dirigida por un moderador. Los objetivos son llegar a un consenso y tomar decisiones sobre problemas técnicos, al tiempo que se evalúa la calidad y se genera confianza en el producto del trabajo, se generan nuevas ideas, se motiva y permite los autores mejorar y se detectan anomalías... 2.Revisión informal - El objetivo principal es detectar anomalías. El proceso no está definido y no requiere una documentación formal. 3.Inspección: es el tipo de revisión más formal y sigue el proceso de revisión genérico completo. El objetivo principal es encontrar el mayor número de anomalías, y otros objetivos incluyen evaluar la calidad y generar confianza en el producto del trabajo, motivar y permitir a los autores mejorar, y recopilar métricas que puedan utilizarse para mejorar el ciclo de El autor no puede actuar como líder de la revisión ni como escriba. 4.Recorrido - Dirigido por el autor, este tipo de revisión tiene varios objetivos, como evaluar la calidad y generar confianza en el producto del trabajo, educar a los revisores, obtener consenso, generar nuevas ideas, motivar y permitir a los autores mejorar, y detectar anomalías. Los revisores pueden realizar una revisión individual antes del recorrido, pero no es obligatorio. A.Incluye objetivos como la obtención de consenso, la generación de nuevas ideas y la motivación de los autores para mejorar. B.Incluye objetivos como educar a los revisores, obtener consenso, generar nuevas ideas y detectar posibles defectos. C.El objetivo principal es detectar posibles defectos y requiere la recopilación de métricas para apoyar la mejora del proceso. FL-3.2.4 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos D. El objetivo principal es detectar posibles defectos y no genera ningún resultado formal documentado. Así: a)No es correcto b)Es correcto. c)No es correcto d)No es correcto",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de los siguientes es un factor que contribuye al éxito de una revisión?",
+    "opcion_b": "Garantizar la participación de la dirección como revisores",
+    "opcion_c": "Dividir grandes productos de trabajo en partes más pequeñas",
+    "opcion_d": "Establecer como objetivo la evaluación del revisor",
+    "respuesta_correcta": "B",
+    "explicacion": "a)No es correcto. Para garantizar el éxito de las revisiones, es importante garantizar el apoyo de la dirección al proceso de revisión, pero eso no significa que deban participar como revisores. b)Es correcto. Para garantizar el éxito de las revisiones, es importante dividir el producto de trabajo en partes que sean lo suficientemente pequeñas como para ser revisadas en un plazo razonable, con el fin de evitar que los revisores pierdan la concentración durante la revisión individual o las reuniones de revisión. c)No es correcto. Para garantizar el éxito de las revisiones, es importante definir claramente los objetivos y los criterios de salida medibles, sin evaluar a los participantes d)No es correcto. Para garantizar el éxito de las revisiones, es importante dividir la revisión en partes más pequeñas para evitar que los revisores pierdan la concentración durante la revisión individual o las reuniones de revisión. Por tanto, no debe prever un documento por revisión FL-3.2.5 K1 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál es la diferencia PRINCIPAL entre las técnicas de prueba de caja negra y las técnicas de prueba basadas en la experiencia?",
+    "opcion_b": "El objeto de ensayo",
+    "opcion_c": "El nivel en el que se utiliza la técnica de ensayo",
+    "opcion_d": "La base de la prueba",
+    "respuesta_correcta": "C",
+    "explicacion": "a)No es correcto. En la mayoría de los casos, para los mismos objetos de prueba pueden utilizarse tanto técnicas de prueba de caja negra como técnicas de prueba basadas en la experiencia. b)No es correcto. Tanto las técnicas de prueba de caja negra como las basadas en la experiencia pueden utilizarse en todos los niveles de prueba. c)Es correcto. Las técnicas de prueba de caja negra (también conocidas como técnicas basadas en especificaciones) se basan en un análisis del comportamiento especificado del objeto de prueba sin hacer referencia a su estructura interna. Por tanto, la base de la prueba suele ser una especificación. Las técnicas de prueba basadas en la experiencia utilizan eficazmente los conocimientos y la experiencia de los probadores para el diseño y la ejecución de los casos de prueba. Esto significa que, a la hora de diseñar las pruebas, el evaluador puede no utilizar la especificación en absoluto. d)No es correcto. Las técnicas de prueba basadas en la experiencia pueden detectar defectos que podrían pasar desapercibidos con las técnicas de prueba de caja negra (y de caja blanca). Por lo tanto, las técnicas de prueba basadas en la experiencia son complementarias de las técnicas de prueba de caja negra y de caja blanca, y tanto las técnicas de prueba de caja negra como las basadas en la experiencia pueden utilizarse en todos los casos. SDLCs FL-4.1.1 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "Está probando un validador de PIN que acepta PIN válidos y rechaza PIN no válidos. Un PIN es una secuencia de dígitos. Un PIN es válido si consta de cuatro dígitos y al menos dos de ellos son diferentes.\n¿Cuál de los siguientes conjuntos de datos de prueba de entrada cubre todas las particiones de equivalencia para este escenario?",
+    "opcion_a": "112, 1111, 1234, 123456",
+    "opcion_b": "1, 123, 1111, 1234",
+    "opcion_c": "12, 112, 1112, 11112",
+    "opcion_d": "1, 111, 1111, 11111",
+    "respuesta_correcta": "A",
+    "explicacion": "Hay cinco particiones equivalentes: (Entrada) Longitud: L1: Entre 1 y 3 L2: 4 L3: por encima de 4 (Entrada) Dígitos: D1: PIN que es todo con los mismos dígitos D2: PIN con al menos dos dígitos diferentes (Salida) Dos particiones: G1: PIN legal (cumple tanto L2 como D2) G2: PIN ilegal a)Es correcto. 112 cubre D2, L1, G2; 1111 cubre D1, L2, G2; 1234 cubre D2, L2, G1; 123456 cubre D2, L3, G2 b)No es correcto. No cubre L3 1 cubre D1, L1, G2; 123 cubre D2, L1, G2; 1111 cubre D1, L2, G2; 12345 cubre D2, L2, G1 c)No es correcto. No cubre D1 12 cubre D2, L1, G2; 112 cubre D2, L1, G2; 1112 cubre D2, L2, G1; 11112 cubre D2, L3, G2 d)No es correcto. No cubre D2 (y G1) 1 cubre D1, L1, G2; 111 cubre D1, L1, G2; 1111 cubre D1, L2, G2; 11111 cubre D1, L3, G2 FL-4.2.1 K3 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "W Se ha pedido a un desarrollador que implemente la siguiente regla de negocio:\nDiseñe los casos de prueba utilizando el análisis de valores límite de 2 valores.\n¿Cuál de los siguientes conjuntos de entradas de prueba logra la mayor cobertura?",
+    "opcion_a": "100, 150, 200, 201",
+    "opcion_b": "99, 100, 200, 201",
+    "opcion_c": "98, 99, 100, 101",
+    "opcion_d": "101, 150, 199, 200",
+    "respuesta_correcta": "D",
+    "explicacion": "Las particiones de equivalencia son: {..., 99, 100}, {101, 102, ..., 198, 199}, {200, 201, ...}. Así, hay 4 valores límite, que son: 100, 101, 199 y 200. En el BVA de 2 valores, para cada valor límite hay dos elementos de cobertura (el valor límite y su vecino más cercano perteneciente a la partición adyacente). Como los vecinos más cercanos también son valores límite de la partición adyacente, sólo hay cuatro elementos de cobertura. Así: a)No es correcto. Sólo 100 y 200 son elementos de cobertura válidos para BVA de 2 valores, por lo que alcanzamos una cobertura del 50%. b)No es correcto. Sólo 100 y 200 son elementos de cobertura válidos para BVA de 2 valores, por lo que alcanzamos una cobertura del 50%. c)No es correcto. Sólo 100 y 101 son elementos de cobertura válidos para BVA de 2 valores, por lo que alcanzamos una cobertura del 50%. d)Es correcto. 101, 199 y 200 son elementos de cobertura válidos para BVA de 2 valores, para que alcancemos el 75% de cobertura FL-4.2.2 K3 1",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "Está trabajando en un proyecto para desarrollar un sistema que analice los resultados de los exámenes de conducir. Se le ha pedido que diseñe casos de prueba basados en la siguiente tabla de decisiones.\n | R1 | R2 | R3\nC1: ¿Primer intento en el examen? | - | F\nC2: ¿Examen teórico aprobado? | T | F | -\nC3: ¿Examen práctico aprobado? | T | - | F\n¿Expedir un permiso de conducir? | X | \n¿Solicitar más clases de conducir? |  | X\n¿Solicitar presentarse de nuevo al examen? |  | X | \n¿Qué datos de prueba mostrarán que hay reglas contradictorias en la tabla de decisiones?",
+    "opcion_a": "C1= T, C2= T, C3 F=",
+    "opcion_b": "C1= T, C2= F, C3 T=",
+    "opcion_c": "C1= T, C2 = T, C3 = T y C1= F, C2 = T, C3 T=",
+    "opcion_d": "C1= F, C2= F, C3 F=",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcta. La combinación (T, T, F) no coincide con ninguna regla. Este es un ejemplo de omisión, no una contradicción b)no es correcta. La combinación (T, F, T) sólo coincide con una columna, R2, por lo que no hay contradicción c)no es correcta. Ambas combinaciones (T, T, T) y (F, T, T) coinciden sólo con una columna, R1, por lo que no hay contradicción d)es correcta. La combinación (F, F, F) coincide tanto con R2 como con R3, pero R2 y R3 tienen acciones diferentes, por lo que esto muestra una contradicción entre R2 y R3. FL-4.2.3 K3 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "Usted está diseñando casos de prueba basados en el siguiente diagrama de transición de estados:\n¿Cuál es el número MÍNIMO de casos de prueba necesarios para lograr una cobertura del 100% de transiciones válidas?",
+    "opcion_a": "3",
+    "opcion_b": "2",
+    "opcion_c": "5",
+    "opcion_d": "6",
+    "respuesta_correcta": "A",
+    "explicacion": "Las tres transiciones siguientes: \"SOLICITANDO -> CONFIRMADO\" \"LISTA DE ESPERA -> CONFIRMADO\" \"LISTA DE ESPERA - > FIN\" no pueden aparecer en el mismo caso de prueba, lo que sugiere que se necesitan al menos tres casos de prueba. Todas las demás transiciones pueden aparecer en combinación con una o varias de estas tres transiciones, por lo que necesitamos un mínimo de tres casos de prueba. De hecho, sólo son posibles tres secuencias: TC1: START (Solicitud de sala)🡪 SOLICITANDO (Disponible🡪 CONFIRMADO (Pago)🡪 FIN TC2: START (Solicitud de sala)🡪 SOLICITANDO (No disponible🡪 LISTA DE ESPERA (Disponible)🡪 CONFIRMADO (Pago)🡪 FIN TC3: START (Solicitud de sala)🡪 SOLICITANDO (No disponible🡪 LISTA DE ESPERA (Cancelar)🡪 FIN Así: a)Es correcto b)No es correcto c)No es correcto d)No es correcto FL-4.2.4 K3 1",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "Desea aplicar la prueba de ramas al código representado por el siguiente gráfico de flujo de control.\n¿Cuántos elementos de cobertura necesita probar?",
+    "opcion_a": "2",
+    "opcion_b": "4",
+    "opcion_c": "8",
+    "opcion_d": "7",
+    "respuesta_correcta": "C",
+    "explicacion": "En las pruebas de ramas, los elementos de cobertura son las ramas, representadas por las aristas de un gráfico de flujo de control. Hay 8 aristas en el gráfico de flujo de control. Así: a)No es correcto b)No es correcto c)Es correcto d)No es correcto FL-4.3.2 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cómo pueden ser útiles las pruebas de caja blanca en apoyo de las pruebas de caja negra?",
+    "opcion_b": "Las medidas de cobertura de caja blanca pueden ayudar a los probadores a evaluar las pruebas de caja negra en términos de la cobertura de código lograda por estas pruebas de caja negra.",
+    "opcion_c": "El análisis de cobertura de caja blanca puede ayudar a los encargados de las pruebas a identificar fragmentos inalcanzables del código fuente.",
+    "opcion_d": "Las pruebas de bifurcación engloban las técnicas de pruebas de caja negra, por lo que una cobertura total de las bifurcaciones garantiza la cobertura total de cualquier técnica de caja negra.",
+    "respuesta_correcta": "A",
+    "explicacion": "a)Es correcto. Realizar sólo pruebas de caja negra no proporciona una medida de la cobertura real del código. Las medidas de cobertura de caja blanca proporcionan una medición objetiva de la cobertura y aportan la información necesaria para permitir la generación de pruebas adicionales que aumenten esta cobertura y, por consiguiente, la confianza en el código. b)No es correcto. Esta afirmación es correcta, pero no tiene nada que ver con las pruebas de caja negra. c)No es correcto. En general, no existen relaciones de subsunción entre las técnicas de caja blanca y de caja negra. d)No es correcto. Las técnicas de caja blanca se utilizan para diseñar pruebas basadas en el propio objeto de prueba, mientras que las técnicas de caja negra se utilizan para diseñar pruebas basadas en la especificación. Por lo tanto, no hay relación entre elementos de cobertura derivados de estos dos tipos de técnicas FL-4.3.3 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "Considere la siguiente lista:\nNo se acepta la entrada correcta\nEntrada incorrecta aceptada\nFormato de salida incorrecto\nDivisión por cero",
+    "opcion_a": "¿Qué técnica de prueba utiliza MÁS PROBABLEMENTE el probador que utiliza esta al realizar las pruebas?",
+    "opcion_b": "Pruebas exploratorias",
+    "opcion_c": "Ataque por fallo",
+    "opcion_d": "Pruebas basadas en listas de control",
+    "respuesta_correcta": "B",
+    "explicacion": "a)No es correcto. Las pruebas exploratorias utilizan cartas de pruebas, no una lista de posibles defectos/fallos. Aunque las pruebas exploratorias pueden incorporar el uso de otras técnicas de prueba, en este caso el ataque de fallos es la opción más probable b)Es correcto. Se trata de una lista de posibles fallos. Los ataques de fallos son un enfoque metódico para la aplicación de la adivinación de errores y requieren que el probador cree o adquiera una lista de posibles errores, defectos y fallos, y que diseñe pruebas que identifiquen los defectos asociados a los errores, expongan los defectos o causen los fallos c)No es correcto. El probador está utilizando una lista de comprobación de elementos para apoyar sus pruebas. Sin embargo, en este caso se trata de una lista de posibles fallos, no de condiciones de prueba, por lo que la técnica de prueba MÁS PROBABLE es el ataque de fallos, que se centra en errores, defectos y fallos. d)No es correcto. BVA se basa en un análisis de los valores límite de las particiones de equivalencia. La lista anterior no menciona la equivalencia particiones o sus límites FL-4.4.1 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "¿Cuál de las siguientes opciones describe MEJOR cómo el uso de pruebas basadas en listas de comprobación puede aumentar la cobertura?",
+    "opcion_a": "Los elementos de la lista de comprobación pueden definirse con un nivel de detalle lo suficientemente bajo como para que la persona encargada de las pruebas pueda implementar y ejecutar casos de prueba detallados basados en estos elementos.",
+    "opcion_b": "Las listas de comprobación pueden automatizarse, de modo que cada vez que una ejecución de prueba automatizada cubre los elementos de la lista de comprobación, se obtiene una cobertura adicional.",
+    "opcion_c": "Cada elemento de la lista de comprobación debe probarse por separado y de forma independiente, de modo que los elementos cubran diferentes áreas del software.",
+    "opcion_d": "Dos evaluadores que diseñen y ejecuten pruebas basadas en los mismos elementos de la lista de comprobación de alto realizarán normalmente las pruebas de formas ligeramente diferentes",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. Aunque es cierto que el probador puede implementar y ejecutar casos de prueba detallados basados en la lista de comprobación, no explica cómo esto daría lugar a una mayor cobertura b)No es correcto. Los elementos de la lista de comprobación no deben automatizarse. Pero incluso si son, los scripts de prueba automatizados siempre ejecutan las pruebas de la misma manera, lo que no suele traducirse en una mayor cobertura. c)No es correcto. Es cierto que cada elemento de la lista de comprobación debe probarse por separado e independientemente. Pero esto afecta al orden de ejecución de las pruebas y no a la cobertura conseguida, por lo que no se traduce en un aumento de la cobertura. d)Es correcto. Si las listas de comprobación son de alto nivel, es probable que se produzca cierta variabilidad en las pruebas reales, lo que se traduce en una cobertura potencialmente mayor, pero menos repetibilidad. Si dos probadores siguen una lista de comprobación de elementos de alto nivel, cada uno de ellos puede utilizar datos de prueba, pasos de prueba, etc. diferentes. De este modo, uno probador cubrirá probablemente algunas áreas no cubiertas por el otro probador y esto dará lugar a una mayor cobertura FL-4.4.3 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "¿Cuál de los siguientes es el MEJOR ejemplo de un criterio de aceptación orientado a un escenario?",
+    "opcion_a": "La aplicación debe permitir a los usuarios eliminar su cuenta y todos los datos asociados si así lo solicitan.",
+    "opcion_b": "Cuando un cliente añade un artículo a su cesta y pasa por caja, se le pide que inicie sesión o cree una cuenta si aún no lo ha hecho.",
+    "opcion_c": "IF (contain(product(23).Name, cart.products())) THEN return FALSE",
+    "opcion_d": "El sitio web debe cumplir las Normas 508 de Accesibilidad de las TIC y garantizar que todos los contenidos sean accesibles para usuarios con discapacidades.",
+    "respuesta_correcta": "B",
+    "explicacion": "a)no es correcto. Este criterio de aceptación describe qué normas o reglas debe cumplir el sistema (en este caso, el derecho al olvido). Este es un ejemplo de criterio de aceptación orientado a normas b)Es correcto. Este criterio de aceptación describe un escenario de ejemplo que debe ser realizable por el sistema. Este es un ejemplo de criterio de aceptación orientado a un escenario c)No es correcto. Esta frase se parece más a una línea de código que implementa alguna regla de negocio. Los criterios de aceptación deben redactarse en colaboración con los representantes de la empresa y, por tanto, deben estar escritos en un lenguaje que entiendan. Lo más probable es que esta frase sea ininteligible para estas partes interesadas d)No es correcto. Este criterio de aceptación describe qué normas o reglamentos debe cumplir el sistema y cómo se garantizará su cumplimiento. Por lo tanto, es un ejemplo de aceptación orientada a normas. y no un criterio de aceptación basado en escenarios FL-4.5.2 K2 1",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "Está utilizando el desarrollo basado en pruebas de aceptación y diseñando casos de prueba basados en la siguiente historia de usuario:",
+    "opcion_a": "¿Qué caso de prueba es el MÁS razonable para probar AC3?",
+    "opcion_b": "Comprobar que un usuario normal puede acceder a las plantas 1 y 3",
+    "opcion_c": "Comprobar que un usuario normal no puede acceder a la planta 4",
+    "opcion_d": "Comprobar que un usuario especial puede acceder a la planta 5",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. Queremos comprobar que los usuarios especiales tienen los derechos de los usuarios normales, por lo que necesitamos comprobar los derechos de acceso de un usuario especial, no de un usuario normal. b)No es correcto. Queremos comprobar que los usuarios especiales tienen los derechos de los usuarios normales, por lo que necesitamos comprobar los derechos de acceso de un usuario especial, no de un usuario normal. c)No es correcto. No hay ningún piso 5 descrito en los criterios de aceptación. Los casos de prueba no deben ampliar el alcance de la historia de usuario. Pero incluso si quisiéramos realizar una prueba negativa, esta prueba no está directamente relacionada con AC3 d)es correcto. De esta manera podemos comprobar si un usuario especial puede acceder a pisos accesibles para un usuario habitual FL-4.5.3 K3 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "¿Cuál de las siguientes NO es la finalidad de un plan de pruebas?",
+    "opcion_a": "Definir los datos de las pruebas y los resultados esperados para las pruebas de componentes y las pruebas de integración de componentes.",
+    "opcion_b": "Definir como criterios de salida del nivel de prueba de componentes que \"debe alcanzarse el 100% de cobertura de enunciados y el 100% de cobertura de ramas\".",
+    "opcion_c": "Describir qué campos debe contener el informe de progreso de las pruebas y cuál debe ser la forma de este informe.",
+    "opcion_d": "Explicar por qué las pruebas de integración del sistema se excluirán de las pruebas, aunque la estrategia de pruebas requiera este nivel de pruebas.",
+    "respuesta_correcta": "A",
+    "explicacion": "a)Es correcto. El plan de pruebas puede incluir requisitos de datos de prueba (como parte del enfoque de la prueba), pero no los datos de prueba detallados para los casos de prueba. Los datos de prueba forman parte de los casos de prueba, no del plan de pruebas. Además, suele ser imposible definir esos datos cuando se crea el plan de pruebas, porque no se sabe exactamente cómo serán los componentes b)No es correcto. Uno de los propósitos de un plan de pruebas es ayudar a garantizar que las actividades de prueba realizadas cumplirán los criterios establecidos, mediante la inclusión de criterios de entrada y criterios de salida. Los criterios de cobertura del código son un ejemplo de tales criterios para el nivel de prueba de componentes c)No es correcto. Las plantillas de documentación son el contenido típico de un plan de pruebas. Ayudan a facilitar la comunicación entre las partes interesadas al definir una forma estándar de comunicar o informar. d)No es correcto. Uno de los propósitos de un plan de pruebas es demostrar que las pruebas se ajustarán a la política y la estrategia de pruebas existentes, o explicar por qué las pruebas se desviarán de ellas. Este es un ejemplo de explicación de la , en relación con los niveles de prueba que se realizarán (o no se realizarán). ser) seguido FL-5.1.1 K2 1",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "Al principio de cada iteración, el equipo estima la cantidad de trabajo (en días-persona) que necesitará completar durante la iteración. Sea E(n) la cantidad estimada de para la iteración n, y sea A(n) la cantidad real de trabajo realizado en la iteración n. A partir de la tercera iteración, el equipo utiliza el siguiente modelo de estimación basado en la extrapolación:\n𝐸(𝑛=\n3 ∗𝐴 (𝑛 - 1) (+ 𝐴𝑛−   2)\n4\nEl gráfico muestra la cantidad de trabajo estimada y real para las cuatro primeras iteraciones.\nEsfuerzo estimado y real (en días-persona)\n13\n12\n11\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\n0\nIteración nº 1\tIteración nº 2\tIteración nº 3\tIteración nº 4\nEstimación   Real",
+    "opcion_a": "¿Cuál es la cantidad estimada de trabajo para la iteración nº 5?",
+    "opcion_b": "10,5 días-persona",
+    "opcion_c": "8,25 personas-día",
+    "opcion_d": "6,5 días-persona",
+    "respuesta_correcta": "C",
+    "explicacion": "Del gráfico tenemos: A(4)=6 y A(3)=8 (las dos últimas casillas grises). De la fórmula obtenemos: E(5)= (3*A(4)+ A(3)) / 4= (3*6+8) / 4 = 26 / 4= 6,5 personas-día. Así: a)No es correcto b)No es correcto c)Es correcto d)No es correcto FL-5.1.4 K3 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "Está preparando un programa de ejecución de pruebas para ejecutar siete casos de prueba TC 1 a TC 7.\nLa siguiente figura incluye las prioridades de estos casos de prueba (1=mayor prioridad, 3= menor prioridad).\nLa figura también muestra las dependencias entre los casos de prueba mediante flechas. Por ejemplo, la flecha que va del CT 4 al CT 5 significa que el CT 5 sólo puede ejecutarse si previamente se ha ejecutado el CT 4.\n¿Qué caso de prueba debe ejecutarse en sexto lugar?",
+    "opcion_a": "TC 3",
+    "opcion_b": "TC 5",
+    "opcion_c": "TC 6",
+    "opcion_d": "TC 2",
+    "respuesta_correcta": "A",
+    "explicacion": "Queremos ejecutar los casos de prueba según sus prioridades, pero también debemos tener en cuenta las dependencias. Si sólo tenemos en cuenta las prioridades, queremos ejecutar primero TC 5 y TC 7 (máxima prioridad), luego TC 1, TC 3 y TC 4 y, por último, TC 2 y TC 6 (mínima prioridad). Sin embargo, para poder ejecutar TC 7, primero tenemos que ejecutar TC 4. Para ejecutar el CT 5, necesitamos ejecutar el CT 4 y el CT 2, pero el CT 2 está bloqueado por el CT 1, que debería ejecutarse antes que el CT 2. Así pues, para ejecutar los casos de prueba de prioridad 1 lo antes posible, los cinco primeros casos de prueba deberían ser: TC 4 - TC 7 - TC 1 - TC 2 - TC 5. A continuación, debemos ejecutar el CT 3, ya que tiene mayor prioridad que el CT 6. Así, el calendario completo será CT 4 - CT 7 - CT 1 - CT 2 - CT 5 - CT 3 - CT 6. Por lo tanto, el sexto caso de prueba será TC 3. Así: a)Es correcto b)No es correcto c)No es correcto d)No es correcto FL-5.1.5 K3 1",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Qué muestra el modelo de pirámide de pruebas?",
+    "opcion_b": "Que las pruebas pueden tener diferentes prioridades",
+    "opcion_c": "Que las pruebas pueden tener una granularidad diferente",
+    "opcion_d": "Que las pruebas pueden requerir diferentes criterios de cobertura",
+    "respuesta_correcta": "B",
+    "explicacion": "a)No es correcto. El modelo de pirámide de pruebas no proporciona información sobre las prioridades de las pruebas b)Es correcto. El modelo de pirámide de pruebas muestra que las diferentes pruebas tienen diferentes niveles de granularidad c)No es correcto. El modelo de pirámide de pruebas es independiente de los criterios de cobertura d)No es correcto. El modelo piramidal de prueba no muestra ninguna relación entre diferentes pruebas FL-5.1.6 K1 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "¿Cuál es la relación entre los cuadrantes de pruebas, los niveles de pruebas y los tipos de pruebas?",
+    "opcion_a": "Los cuadrantes de pruebas representan combinaciones particulares de niveles de pruebas y tipos de pruebas, definiendo su ubicación en el ciclo de vida de desarrollo de software.",
+    "opcion_b": "Los cuadrantes de pruebas describen el grado de granularidad de los tipos de pruebas individuales realizadas en cada nivel de prueba",
+    "opcion_c": "Los cuadrantes de pruebas asignan los tipos de pruebas que pueden realizarse a los niveles de prueba",
+    "opcion_d": "Los cuadrantes de pruebas agrupan los niveles y tipos de pruebas en función de varios criterios, como dirigirse a partes interesadas específicas",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. Los cuadrantes de pruebas agrupan los niveles de prueba y los tipos de prueba por separado según varios criterios. No representan ninguna combinación de niveles y tipos de pruebas y no están relacionados Tanto los niveles como los tipos de pruebas se tratan por separado en el modelo de cuadrantes de pruebas. b)No es correcto. Los cuadrantes de pruebas agrupan los niveles de pruebas y los tipos de pruebas en función de varios criterios. No describen el grado de granularidad de los tipos de prueba individuales realizados en cada nivel de prueba. Un modelo de este tipo, en lo que respecta a los niveles de prueba, se denomina pirámide de pruebas c)No es correcta. La afirmación es incorrecta, porque en general cualquier tipo de prueba puede realizarse en cualquier nivel de prueba d)Es correcto. Los cuadrantes de pruebas agrupan niveles de pruebas, tipos de pruebas, actividades, técnicas de pruebas y productos de trabajo en el desarrollo o a la tecnología. Las pruebas pueden apoyar al equipo (es decir, guiar el desarrollo) o criticar el producto (es decir, medir su comportamiento frente a las expectativas). La combinación de estos dos puntos de vista determinan los cuatro cuadrantes FL-5.1.7 K2 1",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de los siguientes es un ejemplo de cómo el análisis de riesgos del producto puede influir en la minuciosidad y el alcance de las pruebas?",
+    "opcion_b": "La supervisión continua de los riesgos nos permite identificar los riesgos emergentes lo antes posible",
+    "opcion_c": "La identificación de riesgos nos permite poner en marcha actividades para mitigarlos y reducir el nivel de riesgo",
+    "opcion_d": "El nivel de riesgo evaluado nos ayuda a seleccionar el rigor de las pruebas",
+    "respuesta_correcta": "C",
+    "explicacion": "a)No es correcto. La supervisión de riesgos forma parte del control de riesgos, no del análisis de riesgos. b)No es correcto. La identificación del riesgo por sí misma no nos permite poner en marcha actividades de mitigación del riesgo. Las acciones de mitigación se definen durante la fase de control del riesgo c)Es correcto. Este es un ejemplo de cómo el análisis de riesgos influye en la minuciosidad y el alcance de las pruebas d)No es correcto. Los elementos de cobertura se derivan utilizando técnicas de prueba, no mediante el análisis de riesgos FL-5.2.3 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las siguientes actividades del proceso de pruebas es la que MÁS utiliza los informes de progreso de las pruebas?",
+    "opcion_b": "Diseño de pruebas",
+    "opcion_c": "Finalización de la prueba",
+    "opcion_d": "Análisis de pruebas",
+    "respuesta_correcta": "B",
+    "explicacion": "a)No es correcto. Los informes de progreso de las pruebas se utilizan principalmente durante el seguimiento y control de las pruebas, y la finalización de las pruebas, no durante el diseño de las pruebas. b)Es correcto. Un informe de finalización de pruebas se elabora durante la finalización de las pruebas, cuando un proyecto, nivel de prueba o tipo de prueba se ha completado y cuando, idealmente, se han cumplido sus criterios de salida. Este informe utiliza información de los informes de progreso de las pruebas y otros datos c)No es correcto. Los informes sobre el progreso de las pruebas se utilizan principalmente durante el seguimiento y control de las pruebas y su finalización, no durante el análisis de las mismas. d)No es correcto. Los informes de progreso de las pruebas se utilizan sobre todo durante las pruebas seguimiento y control, y finalización de la prueba, no durante la planificación de la prueba FL-5.3.2 K2 1",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de los siguientes NO es un ejemplo de cómo la gestión de la configuración apoya las pruebas?",
+    "opcion_b": "Todos los envíos al repositorio están identificados de forma única y su versión está controlada.",
+    "opcion_c": "Se realiza un seguimiento de todos los cambios en los elementos del entorno de pruebas",
+    "opcion_d": "Todas las especificaciones de requisitos están referenciadas de forma inequívoca en los planes de pruebas.",
+    "respuesta_correcta": "D",
+    "explicacion": "la identificación única de los commits, es posible reensamblar los archivos de correspondientes de los scripts de prueba) y así reproducir el fallo y localizar el defecto más rápidamente. b)no es correcta. Si un cambio en el entorno de pruebas provoca problemas inesperados durante las pruebas, la gestión de la configuración permite a los probadores volver a una versión anterior del entorno. Esto garantiza que las pruebas puedan continuar sin verse afectadas por el cambio. c)No es correcto. La gestión de la configuración garantiza que toda la documentación identificada (p. ej., especificaciones de requisitos) y los elementos ej., planes de prueba). d)Es correcto. Esto lo garantiza la gestión de defectos, no la configuración proceso de gestión FL-5.4.1 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "Considere el siguiente informe de defectos para una aplicación de compras basada en web:",
+    "opcion_a": "¿Cuál es la información MÁS importante que falta en este informe?",
+    "opcion_b": "Nombre del verificador y fecha del informe",
+    "opcion_c": "Elementos del entorno de pruebas y sus números de versión",
+    "opcion_d": "Identificación del objeto de ensayo",
+    "respuesta_correcta": "B",
+    "explicacion": "a)no es correcto. Esto es importante, pero no tanto como los elementos del entorno de prueba b)Es correcto.  importante que falta es la identificación del navegador y el dispositivo utilizados para las pruebas. La información sobre el navegador y el dispositivo es importante porque un defecto de este tipo puede ser específico del navegador o del dispositivo. Por ejemplo, un botón de inicio de sesión puede funcionar bien en un navegador (o en una versión de un navegador específico) pero no en otro. Por lo tanto, la información sobre el navegador y el dispositivo puede ayudar a los desarrolladores a reproducir el problema y encontrar su causa más rápidamente. c)No es correcto. El objeto de prueba está identificado (WebShop v0.99) d)No es correcto. El impacto está incluido - esto es severidad (alta) FL-5.5.1 K3 1",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuáles de las siguientes categorías de herramientas ayudan a organizar los casos de prueba, los defectos detectados y la gestión de la configuración?",
+    "opcion_b": "Herramientas de ejecución y cobertura de pruebas",
+    "opcion_c": "Herramientas de diseño y ejecución de pruebas",
+    "opcion_d": "Herramientas de gestión de defectos",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. Las herramientas de ejecución y cobertura de pruebas facilitan la ejecución automatizada de casos de prueba y la medición de la cobertura lograda al ejecutar esos casos de prueba. Sin embargo, estas herramientas no ayudan a organizar los defectos ni a gestionar la configuración. b)No es correcto. Las herramientas de diseño e implementación de pruebas facilitan la generación de casos de prueba, datos de prueba y procedimientos de prueba, pero no ayudan con la organización de los defectos y la gestión de la configuración. c)No es correcto. Las herramientas de gestión de defectos se utilizan para gestionar los defectos, pero no son herramientas de pruebas y no se utilizan para organizar los casos de prueba o la gestión de la configuración. d)Es correcto. Las herramientas de gestión de pruebas aumentan la eficacia del proceso de pruebas al facilitar la gestión del ciclo de vida de desarrollo del (SDLC), requisitos, pruebas, defectos y gestión de la configuración FL-6.1.1 K2 1 Versión 1.5 Número de pregunta (#) Respues ta correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las siguientes opciones es MÁS probable que sea una ventaja de la automatización de pruebas?",
+    "opcion_b": "Capacidad de generar casos de prueba sin acceder a la base de pruebas.",
+    "opcion_c": "Aumento de la cobertura mediante una evaluación más objetiva",
+    "opcion_d": "Aumento de los tiempos de ejecución de las pruebas gracias a una mayor potencia de procesamiento",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. La capacidad de generar casos de prueba sin acceder a la base de pruebas\" no es posible. La generación de casos de prueba por parte de probadores o herramientas requiere acceso a la base de pruebas. b)No es correcto. El logro de una mayor cobertura mediante una evaluación más objetiva\" no es una ventaja directa de la automatización de pruebas. La automatización de pruebas proporcionará una evaluación más objetiva de la cobertura, pero esa evaluación objetiva no aumentará la cobertura. Sólo utilizando los resultados de la cobertura para escribir más casos de prueba se puede aumentar la cobertura. c)No es correcto. El aumento de los tiempos de ejecución de las pruebas con una mayor capacidad de procesamiento\" es una afirmación contradictoria, ya que una mayor capacidad de procesamiento normalmente reduciría los tiempos de ejecución, y el aumento de los tiempos de ejecución no es una ventaja, ya que las pruebas durarían más tiempo. d)Es correcto. La prevención de errores humanos mediante una mayor coherencia y repetibilidad es una ventaja de la automatización de pruebas, ya que ésta no puede sufrir errores humanos. Por ejemplo, significa que las pruebas se derivan sistemáticamente de los requisitos, los datos de las pruebas se crean de forma sistemática y las pruebas uta una herramienta en el mismo orden. con la misma frecuencia FL-6.2.1 K1 1",
+    "modelo_examen": "C"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de los siguientes es un objetivo típico de una prueba?",
+    "opcion_b": "Encontrar y corregir defectos en el objeto de prueba",
+    "opcion_c": "Mantener una comunicación eficaz con los promotores",
+    "opcion_d": "Validación del cumplimiento de los requisitos legales",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. Encontrar y corregir defectos en el objeto de la prueba no es un objetivo típico de la prueba, ya que aunque identificar defectos es un objetivo de la prueba, corregir defectos no es una actividad de la prueba. b)No es correcto. Mantener una comunicación eficaz con los desarrolladores no es un objetivo típico de las pruebas, ya que, aunque es útil para lograr otros objetivos de las pruebas, como proporcionar a las partes interesadas información que les permita tomar decisiones informadas, no es una razón principal para realizar las pruebas. c)No es correcto. Validar el cumplimiento de los requisitos legales no es un objetivo típico de las pruebas, ya que la validación consiste en comprobar si el sistema satisface las necesidades de los usuarios y otras partes interesadas en su entorno operativo. Comprobar que se cumplen los requisitos legales es una forma de verificación. d)Es correcto. La confianza en la calidad del objeto de prueba se consigue ejecutando pruebas que pasan FL-1.1.1 K1 1",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Un diseñador documenta un diseño para una interfaz de usuario que no tiene en cuenta adecuadamente a los usuarios discapacitados porque el diseñador está cansado. El programador implementa la interfaz de usuario de acuerdo con el diseño, pero como está trabajando bajo una gran presión de tiempo, no incluye un tratamiento de excepciones adecuado en su código de programa para los cálculos de bonificaciones. Cuando se utiliza el sistema operativo, algunos usuarios discapacitados se quejan de la interfaz y la empresa multada por la autoridad reguladora pertinente. Nadie se da cuenta de que los cálculos de las bonificaciones a veces son incorrectos.",
+    "opcion_a": "¿Cuál de las siguientes afirmaciones es CORRECTA?",
+    "opcion_b": "El cálculo erróneo de las primas es un defecto que se produce ocasionalmente",
+    "opcion_c": "La multa recibida por no atender a algunos usuarios discapacitados es un fracaso",
+    "opcion_d": "El programador que trabaja bajo una fuerte presión de tiempo es una causa fundamental",
+    "respuesta_correcta": "C",
+    "explicacion": "a)No es correcto. El cálculo erróneo de las primas es un fallo del sistema, no un defecto. b)No es correcto. Que el sistema no apoye adecuadamente a los usuarios discapacitados es un fallo que finalmente se traduce en una multa, pero la multa en sí no es un fallo (parece que es el correcto funcionamiento del sistema normativo) c)Es correcto. El error lo comete el programador y este error se debe a que trabaja bajo una gran presión de tiempo, lo cual es la causa principal del defecto subsiguiente. d)No es correcto. El mal diseño de la interfaz de usuario, que no se dirige adecuadamente a los usuarios discapacitados, es un defecto de diseño causado por el error del diseñador. Así pues, el diseño de la interfaz de usuario incluye un diseño defecto no un error de diseño FL-1.2.3 K2 1 Respuestas Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "Los probadores utilizan las condiciones de prueba para generar casos de prueba y ejecutar pruebas. Aunque las condiciones de prueba siguen siendo las mismas, los casos de prueba varían cada vez. ¿Cuál de los siguientes \"principios de las pruebas\" se aborda mediante la variación de los casos de prueba?",
+    "opcion_b": "Las pruebas se desgastan",
+    "opcion_c": "Falacia de ausencia de defectos",
+    "opcion_d": "Las pruebas tempranas ahorran tiempo y dinero",
+    "respuesta_correcta": "A",
+    "explicacion": "a)Es correcto. El principio de \"desgaste de las pruebas\" se basa en la idea de que repetir pruebas idénticas en un código inalterado tiene pocas probabilidades de descubrir nuevos defectos y, por tanto, puede ser esencial modificar las pruebas. Al utilizar condiciones de prueba para generar pruebas nuevas cada vez, las pruebas no serán idénticas y se reduce el riesgo de que se desgasten. b)No es correcto. El principio de \"falacia de ausencia de defectos\" se refiere a garantizar que se satisfagan las necesidades de los usuarios aunque se realicen muchas pruebas y no se encuentre ningún defecto (es decir, también es necesaria la validación). El uso de condiciones de prueba para generar casos de prueba y ejecutar pruebas no responde directamente a esta preocupación. c)No es correcto. El principio de \"las pruebas tempranas ahorran tiempo y dinero\" tiene que ver con la corrección temprana de defectos para evitar la aparición de defectos posteriores en productos derivados, reduciendo así los costes y la probabilidad de fallos. Esto se consigue normalmente iniciando las pruebas (tanto estáticas como dinámicas) lo antes posible, pero no se consigue utilizando condiciones de prueba para generar casos de prueba y ejecutar pruebas. d)No es correcto. El principio de \"agrupación de defectos\" se refiere a la distribución de defectos en un sistema, que suele seguir una distribución de Pareto. El uso de condiciones de prueba para generar casos de prueba y ejecutar pruebas no aborda este problema, que suele resolverse mediante pruebas basadas en el riesgo FL-1.3.1 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Dadas las siguientes tareas de prueba:\nDerivar casos de prueba a partir de condiciones de prueba\nIdentificar el software de prueba reutilizable\nOrganizar los casos de prueba en procedimientos de prueba\nEvaluar la base y el objeto de la prueba\nY las siguientes actividades de prueba:\nAnálisis de pruebas\nDiseño de pruebas\nPrueba de aplicación\nFinalización de la prueba\n¿Cuál de las siguientes opciones relaciona MEJOR las tareas con las actividades?",
+    "opcion_a": "1B, 2A, 3D, 4C",
+    "opcion_b": "1B, 2D, 3C, 4A",
+    "opcion_c": "1C, 2A, 3B, 4D",
+    "opcion_d": "1C, 2D, 3A, 4B",
+    "respuesta_correcta": "B",
+    "explicacion": "Considerando cada una de las actividades de prueba enumeradas y sus tareas: A.Análisis de las pruebas - Para identificar las características que requieren pruebas, se analizan las bases de las pruebas y se definen como condiciones de prueba, que luego se priorizan junto con los riesgos relacionados. Durante este análisis, se suelen descubrir defectos en la base de la prueba, y también se puede evaluar la comprobabilidad del objeto de prueba. (Tarea 4) B.Diseño de la prueba: consiste en utilizar las condiciones de la prueba para crear casos de prueba y otro material de prueba necesario, como requisitos de datos de prueba y cartas de prueba para pruebas exploratorias. (Tarea 1) C.Ejecución de las pruebas: los procedimientos de prueba, como los guiones de prueba manuales y automatizados, se crean a partir de casos de prueba y pueden agruparse en conjuntos de pruebas. Los procedimientos de prueba se priorizan y organizan en un calendario de ejecución de pruebas. (Tarea 3) D.Finalización de las pruebas: se produce en los hitos del proyecto, como el lanzamiento, el final de la iteración o el final del nivel de pruebas. El material de prueba se identifica y archiva o se entrega a los equipos apropiados para su reutilización, se cierra el entorno de prueba y se analizan las actividades de prueba para extraer lecciones aprendidas y mejoras futuras. (Tarea 2) Así: a)No es correcto b)Es correcto. La pareja CORRECTA es: 1B, 2D, 3C, 4A c)No es correcto d)No es correcto FL-1.4.1 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Dado el siguiente testware:\nInforme de finalización de la prueba\nDatos almacenados en una base de datos utilizados para las entradas de las pruebas y los resultados esperados.\nLa lista de elementos necesarios para construir el entorno de pruebas\nSecuencias documentadas de casos de prueba en orden de ejecución\nCasos de prueba",
+    "opcion_a": "¿Cuál de las siguientes opciones muestra MEJOR el software de prueba producido como resultado de la ejecución de la prueba?",
+    "opcion_b": "ii, iv",
+    "opcion_c": "iii, v",
+    "opcion_d": "i, ii, v",
+    "respuesta_correcta": "A",
+    "explicacion": "Considerando cada uno de los testware enumerados, y la actividad de prueba que los produce: i.El informe de finalización de la prueba es un resultado de la actividad de finalización de la prueba ii.Los datos almacenados en una base de datos utilizados para las entradas de las pruebas y los resultados esperados son los datos de las pruebas: resultado de la actividad de aplicación de las pruebas. iii.La lista de elementos necesarios para crear el entorno de pruebas es el resultado de la actividad de diseño de pruebas: los requisitos del entorno de pruebas. iv.Las secuencias documentadas de casos de prueba en orden de ejecución son los procedimientos de prueba, resultado de la actividad de aplicación de las pruebas. v.Casos de prueba: resultado de la actividad de diseño de pruebas La ejecución de las pruebas genera los siguientes resultados: procedimientos de prueba (iv), guiones de prueba automatizados, conjuntos de pruebas, datos de prueba (ii), calendario de ejecución de las pruebas y elementos del entorno de prueba como stubs, controladores, simuladores y virtualizaciones de servicios. Así: a)Es correcto. Los puntos ii y iv de la lista se producen como resultado de la aplicación de la prueba b)No es correcto c)No es correcto d)No es correcto FL-1.4.3 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las  opciones es la que MÁS probablemente describa una tarea realizada por alguien que desempeña una función de gestión de pruebas?",
+    "opcion_b": "Evaluar la base y el objeto de la prueba",
+    "opcion_c": "Definir los requisitos del entorno de pruebas",
+    "opcion_d": "Evaluar la comprobabilidad del objeto de ensayo",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. La función de pruebas es la principal responsable de los aspectos técnicos y de ingeniería de las pruebas, como el análisis de pruebas, el diseño de pruebas, la implementación de pruebas y la ejecución de pruebas. Evaluar la base de la prueba en busca de defectos y el objeto de la prueba en busca de verificabilidad son tareas realizadas como parte del análisis de la prueba, por lo que es probable que sean tareas realizadas por la función de pruebas. b)No es correcto. La función de pruebas es la principal responsable de los aspectos técnicos y de ingeniería de las pruebas, como el análisis de pruebas, el diseño de pruebas, la implementación de pruebas y la ejecución de pruebas. Definir los requisitos del entorno de pruebas es una tarea que se realiza como parte del diseño de las pruebas, por lo que es probable que sea una tarea realizada por la función de pruebas. c)No es correcto. La función de pruebas es la principal responsable de los aspectos técnicos y de ingeniería de las pruebas, como el análisis de pruebas, el diseño de pruebas, la implementación de pruebas y la ejecución de pruebas. Evaluar la comprobabilidad de un objeto de prueba es una tarea que se realiza como parte del análisis de pruebas, por lo que es probable que sea una tarea realizada por la función de pruebas. d)Es correcto. La función de gestión de pruebas implica principalmente actividades relacionadas con la planificación, el seguimiento y el control de las pruebas, y la finalización de las mismas. Por lo tanto, la creación del informe de finalización de la prueba, que es el principal resultado del actividad de finalización de pruebas, es probable que sea una tarea realizada por la función de gestión de pruebas FL-1.4.5 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las siguientes es una ventaja del enfoque de equipo completo?",
+    "opcion_b": "Mejora de la comunicación entre los miembros del equipo",
+    "opcion_c": "Menor responsabilidad individual por la calidad",
+    "opcion_d": "Despliegue más rápido de los productos a los usuarios finales",
+    "respuesta_correcta": "A",
+    "explicacion": "a)Es correcto. El enfoque de equipo completo fomenta una comunicación y colaboración sólidas entre los miembros del equipo. b)No es correcto. Aunque el enfoque de equipo completo da prioridad a la responsabilidad colectiva por la calidad, cada miembro del equipo es igualmente responsable de la calidad. c)No es correcto. El enfoque de equipo completo se refiere a la forma en que el equipo trabaja conjuntamente, con el objetivo de obtener resultados de mayor calidad, pero no se traduce necesariamente en un despliegue más rápido para los usuarios finales. d)No es correcto. Cuando se utiliza el enfoque de equipo completo, los probadores trabajan con representantes de la empresa para crear pruebas de aceptación. No se sugiere que el enfoque reduzca la colaboración con los usuarios empresariales FL-1.5.2 K1 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Teniendo en cuenta las siguientes ventajas e inconvenientes de la independencia de las pruebas:\nLos probadores trabajan en un lugar distinto al de los desarrolladores\nLos probadores cuestionan las suposiciones que hacen los programadores al escribir el código\nSe ha establecido una dinámica de confrontación entre probadores y desarrolladores\nLos desarrolladores se han convencido de que los probadores son los principales responsables de la calidad.",
+    "opcion_a": "Los probadores tienen prejuicios diferentes de los que tienen los desarrolladores ¿Cuáles son las ventajas MÁS probables?",
+    "opcion_b": "i, iv",
+    "opcion_c": "ii, v",
+    "opcion_d": "i, iii, iv",
+    "respuesta_correcta": "B",
+    "explicacion": "Considerando cada una de las ventajas e inconvenientes enumerados de la independencia de las pruebas: i.Lo ideal es una estrecha colaboración entre probadores y desarrolladores, que no aumenta con el aislamiento. Por tanto, esto es una desventaja ii.Los probadores y los desarrolladores tienen una formación, unos puntos de vista técnicos y unos prejuicios potenciales muy variados, lo que les permite cuestionar de forma útil las suposiciones realizadas por las partes interesadas durante la especificación y la implementación del sistema. Por tanto, es una ventaja iii.La principal desventaja de la independencia en las pruebas es que los probadores pueden quedar aislados del equipo de desarrollo, lo que provoca problemas de comunicación, falta de colaboración y, potencialmente, una relación de enfrentamiento, en la que se culpa a los probadores de los retrasos y cuellos de botella en el proceso de lanzamiento. Por tanto, es una desventaja iv.Una de las desventajas de la independencia en las pruebas es que los probadores pueden quedar aislados del equipo de desarrollo, lo  hace que los desarrolladores se sientan menos responsables de la calidad. Por tanto, se trata de una desventaja v.La principal ventaja de la independencia en las pruebas es que es más probable que los evaluadores identifiquen diferentes tipos de fallos y defectos en comparación con los desarrolladores, debido a su variada formación, puntos de vista técnicos y posibles sesgos, incluido el sesgo cognitivo. Así: a)No es correcto b)Es correcto. Las entradas de la lista que muestran beneficios son ii y v c)No es correcto d)No es correcto FL-1.5.3 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las siguientes es una buena práctica de pruebas que se aplica a todos los ciclos de vida de desarrollo de software?",
+    "opcion_b": "Cada nivel de prueba tiene objetivos específicos y distintos",
+    "opcion_c": "La implementación y ejecución de las pruebas para un nivel determinado debe comenzar durante fase de desarrollo correspondiente.",
+    "opcion_d": "Los responsables de las pruebas deben empezar a diseñarlas en cuanto dispongan de los borradores de los productos de trabajo pertinentes.",
+    "respuesta_correcta": "A",
+    "explicacion": "a)Es correcto. Cada nivel de prueba tiene objetivos de prueba específicos y distintos, ya que en cada nivel de prueba se prueba una forma diferente de objeto de prueba (por ejemplo, un solo componente, un sistema completo) y la superposición de objetivos de prueba daría lugar a una duplicación innecesaria. b)No es correcto. El análisis y el diseño de las pruebas de un determinado nivel deben comenzar durante la fase de desarrollo correspondiente para facilitar la realización de pruebas tempranas (por ejemplo, el análisis y el diseño de las pruebas de aceptación deben comenzar durante el análisis de requisitos). La implementación de las pruebas suele comenzar más tarde, y su ejecución, durante el nivel de prueba. c)No es correcto. El diseño de la prueba para un nivel de prueba dado debe comenzar durante la fase de desarrollo correspondiente para facilitar las pruebas tempranas, sin embargo, el diseño de la prueba (por ejemplo, la generación de casos de prueba) debe basarse en una base de prueba acordada, no en un borrador temprano, de lo contrario se puede desperdiciar un esfuerzo significativo en la creación de casos de prueba para un diseño que cambia más tarde. d)No es correcto. El control de calidad se aplica a todas las actividades de desarrollo, lo prueba correspondiente. Sin embargo, no se aplica la misma simetría a las pruebas dinámicas y estáticas. Hay algunas actividades de pruebas estáticas (por ejemplo, el análisis estático) para las que no hay pruebas dinámicas correspondientes obvias. actividad FL-2.1.2 K1 1",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de los siguientes es un ejemplo de enfoque de desarrollo basado en las pruebas?",
+    "opcion_b": "Desarrollo orientado al comportamiento",
+    "opcion_c": "Desarrollo basado en pruebas",
+    "opcion_d": "Desarrollo orientado a funciones",
+    "respuesta_correcta": "A",
+    "explicacion": "a)Es correcto. Behavior-Driven Development (BDD) es un ejemplo bien conocido de un enfoque de desarrollo que da prioridad a las pruebas. b)No es correcto. El desarrollo basado en pruebas no es un ejemplo correcto de un enfoque de desarrollo basado en pruebas. c)No es correcto. El desarrollo basado en funciones no es un ejemplo correcto de un enfoque de desarrollo basado en pruebas. d)No es correcto. El desarrollo orientado al rendimiento no es un ejemplo correcto de un enfoque de desarrollo basado en las pruebas. FL-2.1.3 K1 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las siguientes opciones es MÁS probable que sea un reto al implantar DevOps?",
+    "opcion_b": "Asegurarse de que no se pasan por alto las características de calidad no funcionales.",
+    "opcion_c": "Gestión de entornos de prueba en continuo cambio",
+    "opcion_d": "Necesidad de más probadores manuales con la experiencia adecuada",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. En general, DevOps aumenta la visibilidad de las características de calidad no funcionales, como el rendimiento y la fiabilidad. b)No es correcto. Los procesos automatizados como la integración continua/entrega continua (CI/CD) utilizados en DevOps facilitan entornos de prueba estables. c)No es correcto. Los procesos automatizados como CI/CD utilizados en DevOps generalmente reducen la necesidad de pruebas manuales. d)Es correcto. La implantación de DevOps puede plantear varios riesgos y retos, como la necesidad de definir y configurar el canal de entrega, introducir y mantener herramientas CI/CD, y establecer y mantener la automatización de pruebas FL-2.1.4 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "¿Cuál de las siguientes opciones describe MEJOR las retrospectivas?",
+    "opcion_a": "Las retrospectivas permiten a los miembros del equipo identificar a otros miembros que no han contribuido plenamente a la consecución de la calidad exigida por el enfoque de todo el equipo.",
+    "opcion_b": "Las retrospectivas brindan a los evaluadores la oportunidad de identificar las actividades que han tenido éxito, de modo que se mantengan cuando se realicen posibles mejoras en el futuro.",
+    "opcion_c": "Las retrospectivas permiten a los miembros del equipo ágil expresar sus preocupaciones sobre la gestión y los clientes en un entorno libre de culpas.",
+    "opcion_d": "Las retrospectivas ofrecen a los miembros del equipo ágil un foro en el que debatir el plan y las decisiones técnicas para la siguiente iteración.",
+    "respuesta_correcta": "B",
+    "explicacion": "a)No es correcto. Los beneficios de las retrospectivas incluyen la unión del equipo y el aprendizaje a partir de la puesta en común de problemas, así como una mejor colaboración entre desarrolladores y probadores a través de la revisión y la mejora de las prácticas de trabajo. Señalar a personas que, en opinión de un miembro del equipo, no han contribuido plenamente a la consecución de la calidad exigida por el enfoque de todo el equipo no contribuirá a esta unión y colaboración. b)Es correcta. Durante la retrospectiva, el grupo debate qué aspectos del proyecto tuvieron éxito y deben conservarse, así como las áreas que podrían mejorarse, y cómo hacerlo c)No es correcto. Los beneficios de las retrospectivas se basan en el aumento de la eficacia y la eficiencia a través de la mejora de los procesos; no son una oportunidad para desahogarse y criticar a la dirección y a los clientes. Además, los resultados se registran, normalmente en el informe de finalización de las pruebas, por lo que cualquier cosa que se diga en la reunión puede ser leída por otras partes interesadas. d)No es correcto. Las retrospectivas son reuniones que suelen celebrarse al final de una iteración y en las que los miembros del equipo se centran en debatir los problemas relacionados con la calidad que se han producido en la iteración actual. No se utilizan para hacer planes o tomar decisiones técnicas para la siguiente iteración. iteración; esto se haría en la reunión de planificación de la iteración al inicio de la siguiente iteración. FL-2.1.6 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "¿Cuál de las siguientes pruebas es MÁS probable que se realice como parte de las pruebas funcionales?",
+    "opcion_a": "La prueba comprueba que la función de ordenación coloca los elementos de la lista o matriz en orden ascendente",
+    "opcion_b": "La prueba comprueba si la función de ordenación completa la ordenación antes de que transcurra un segundo desde su inicio",
+    "opcion_c": "La prueba comprueba la facilidad con la que se puede cambiar la función de ordenación de ascendente a descendente",
+    "opcion_d": "La prueba comprueba que la función de ordenación sigue funcionando correctamente cuando se pasa de una arquitectura de 32 bits a una de 64 bits",
+    "respuesta_correcta": "A",
+    "explicacion": "a)es correcta. Comprobar que la función de ordenación coloca los elementos de la lista o matriz en orden ascendente es evaluar la corrección funcional de la función de ordenación, lo que forma parte de las pruebas funcionales b)No es correcto. Evaluar si la función de ordenación cumple su requisito no funcional de completarse en un segundo forma parte de la comprobación de la eficacia de su rendimiento, que es parte de la comprobación no funcional. c)No es correcto. Evaluar la facilidad con la que la función de ordenación modificarse de ordenación ascendente a ordenación descendente es probar su modificabilidad, una forma de prueba de mantenibilidad no funcional, que forma parte de las pruebas no funcionales. d)No es correcto. Evaluar que la función de ordenación sigue funcionando correctamente cuando se pasa de una arquitectura de 32 bits a una de 64 bits es probar su adaptabilidad, una forma de prueba de portabilidad, que forma parte de las pruebas no funcionales FL-2.2.2 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "¿Cuál de los siguientes es el desencadenante MÁS probable de una prueba de mantenimiento de un sistema de cambio de divisas?",
+    "opcion_a": "Los desarrolladores informaron de que cambiar el sistema de cambio de divisas era difícil y los probadores decidieron comprobar si esto era cierto",
+    "opcion_b": "Se suprimió la opción de reembolso del sistema de cambio de divisas, ya que no siempre devolvía el importe correcto a los clientes.",
+    "opcion_c": "El equipo ágil ha empezado a desarrollar una historia de usuario que añade una nueva función de fidelización de clientes al sistema de cambio de divisas",
+    "opcion_d": "La opción del sistema de cambio de divisas se utilizó para permitir las transacciones en inglés y en el idioma local.",
+    "respuesta_correcta": "B",
+    "explicacion": "a)No es correcto. Suponiendo que los probadores pudieran comprobar la facilidad de cambiar el sistema de cambio de moneda, entonces se haría mediante pruebas de mantenibilidad en lugar de pruebas de mantenimiento, por lo que esto no es un disparador para las pruebas de mantenimiento. b)Es correcto. Una modificación del sistema (como una corrección o una mejora) es un ejemplo de desencadenante de pruebas de mantenimiento. La supresión de la opción de reembolso del sistema de cambio de divisas es una corrección que da lugar a pruebas de mantenimiento. c)No es correcto. Si el equipo ágil ha empezado a desarrollar una historia de usuario que añade una nueva función de fidelización de clientes al sistema de cambio de divisas, entonces probarán la nueva función luego realizarán pruebas de regresión. En esta situación no es necesario realizar pruebas de mantenimiento d)No es correcto. La reconfiguración del sistema de cambio de divisas para que admita tanto el idioma local como las transacciones en moneda inglesa no es una modificación del sistema, un cambio del entorno operativo ni un retirada del sistema, que son los tres desencadenantes de las pruebas de mantenimiento FL-2.3.1 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de los siguientes NO puede examinarse mediante pruebas estáticas?",
+    "opcion_b": "Contrato",
+    "opcion_c": "Plan de pruebas",
+    "opcion_d": "Código cifrado",
+    "respuesta_correcta": "C",
+    "explicacion": "a)No es correcto. La mayoría de los productos de trabajo pueden examinarse utilizando alguna forma de prueba estática, y un contrato debe ser interpretable por los seres humanos y por lo tanto podría ser revisado, que es una forma de prueba estática. b)No es correcto. La mayoría de los productos de trabajo pueden examinarse utilizando alguna forma de prueba estática, y un plan de prueba debe ser interpretable por los seres humanos y por lo tanto podría ser revisado, que es una forma de prueba estática. c)Es correcto. La mayoría de los productos de trabajo pueden ser examinados utilizando alguna forma de prueba estática; sin embargo, no es adecuado para productos de trabajo que son demasiado complejos para la interpretación humana y no deben ser analizados por herramientas, y el código cifrado es demasiado complejo para los seres humanos y si está correctamente cifrado no será analizable por la mayoría de las herramientas. d)No es correcto. La mayoría de los productos de trabajo pueden examinarse utilizando alguna forma de prueba estática, y una carta de pruebas debe ser interpretable por humanos y por lo que podría ser revisado, que es una forma de prueba estática FL-3.1.1 K1 1",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "¿Cuál de las siguientes afirmaciones sobre el valor de las pruebas estáticas es CORRECTA?",
+    "opcion_a": "Los tipos de defectos detectados mediante pruebas estáticas son diferentes de los que pueden detectarse mediante pruebas dinámicas.",
+    "opcion_b": "Las pruebas dinámicas pueden detectar los tipos de defectos que pueden detectarse mediante pruebas estáticas, además de algunos tipos de defectos adicionales.",
+    "opcion_c": "Las pruebas dinámicas pueden detectar algunos de los defectos que se detectan con las pruebas estáticas, pero no todos.",
+    "opcion_d": "Las pruebas estáticas pueden identificar los tipos de defectos que pueden detectarse mediante pruebas dinámicas, así como algunos tipos de defectos adicionales.",
+    "respuesta_correcta": "C",
+    "explicacion": "Algunos tipos de defectos que sólo pueden detectarse mediante pruebas estáticas, como código inalcanzable, patrones de diseño no implementados como se desea y defectos en productos de trabajo no ejecutables. Algunos tipos de defectos que pueden detectarse tanto mediante pruebas estáticas como dinámicas, como un defecto de programación que puede ser observado por un revisor en una revisión del código y que provoca un fallo observable durante las pruebas dinámicas. Y algunos tipos de defectos que sólo pueden detectarse mediante pruebas dinámicas, como problemas de rendimiento o de memoria que sólo pueden observarse al ejecutar el código o el sistema. Así: a)No es correcto b)No es correcto c)Es correcto d)No es correcto FL-3.1.2 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Dadas las siguientes descripciones de las actividades de revisión:\nSe delibera sobre las anomalías detectadas y se su estatus, propiedad y cualquier otro paso necesario.\nSe registran los problemas y se abordan las actualizaciones necesarias antes de aceptar el producto del trabajo.\nLos revisores emplean técnicas para formular sugerencias y preguntas sobre el producto del trabajo y detectar anomalías.\nEl objetivo de la revisión y su calendario se establecen para garantizar una revisión centrada y eficaz.\nSe facilita a los participantes el acceso al artículo objeto de revisión\n¿Cuál de las siguientes es la secuencia CORRECTA en el proceso de revisión de las actividades que corresponden a las descripciones?",
+    "opcion_a": "4 - 3 - 5 - 2 - 1",
+    "opcion_b": "4 - 5 - 3 - 1 - 2",
+    "opcion_c": "5 - 4 - 1 - 3 - 2",
+    "opcion_d": "5 - 4 - 3 - 2 - 1",
+    "respuesta_correcta": "B",
+    "explicacion": "Las cinco descripciones enumeradas y las correspondientes actividades del proceso de revisión son: 1.Describe parte de la actividad de \"comunicación y análisis\". 2.Describe parte de la actividad de \"fijación y notificación\". 3.Describe parte de la actividad de \"revisión individual\". 4.Esto describe parte de la actividad de \"planificación 5.Describe parte de la actividad de \"inicio de la revisión\". El proceso genérico de revisión de la norma ISO/IEC 20246, que se describe en el plan de estudios, comprende las siguientes actividades en este orden lógico: • Planificación (4) • Inicio de la revisión (5) • Revisión individual (3) • Comunicación y análisis (1) • Fijación e informes (2) Así: a)No es correcto b)Es correcto. La secuencia correcta de actividades es: 4 - 5 - 3 - 1 - 2 c)No es correcto d)No es correcto FL-3.2.2 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Qué participante en el proceso de revisión es responsable de garantizar que las reuniones de revisión se desarrollen con eficacia y que todos los asistentes puedan expresar libremente sus opiniones?",
+    "opcion_b": "Director",
+    "opcion_c": "Moderador",
+    "opcion_d": "Presidente",
+    "respuesta_correcta": "B",
+    "explicacion": "a)No es correcto. El director es responsable de decidir qué debe revisarse y de asignar recursos, como personal y tiempo, para la revisión. b)Es correcto. El moderador (o facilitador) es responsable de garantizar que las reuniones de revisión se desarrollen eficazmente, incluyendo la gestión del tiempo, la mediación en los debates y la creación de un entorno seguro en el que todos puedan expresar libremente sus opiniones. c)No es correcto. El presidente no es una función reconocida en las revisiones d)No es correcto. El jefe de revisión es responsable de supervisar el proceso de revisión, como la selección de los miembros del equipo de revisión, la programación de las reuniones de revisión y la garantía de que se complete la revisión. con éxito FL-3.2.3 K1 1",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Usted realiza la prueba del sistema de una aplicación web de comercio electrónico y se le proporciona el siguiente requisito:\nREQ 05-017. Si el coste total de las compras supera los 100 $, el cliente obtiene un descuento del 5% en las compras posteriores. En caso contrario, el cliente no recibe ningún descuento.\n¿Qué técnicas de prueba serán MÁS útiles para diseñar casos de prueba basados en este requisito?",
+    "opcion_a": "Técnicas de prueba de caja blanca",
+    "opcion_b": "Técnicas de prueba de caja negra",
+    "opcion_c": "Técnicas de ensayo basadas en la experiencia",
+    "opcion_d": "Técnicas de prueba basadas en el riesgo Seleccione UNA opti on.",
+    "respuesta_correcta": "B",
+    "explicacion": "a)No es correcto. El documento no hace referencia a la estructura interna del objeto de prueba, sino que especifica el comportamiento deseado del objeto de prueba. Por lo tanto, las técnicas de prueba de caja blanca no serán útiles para diseñar casos de prueba. b)Es correcto. El documento es un requisito que especifica el comportamiento deseado del objeto de prueba. Por lo tanto, las técnicas de prueba más adecuadas en este caso son las técnicas de prueba de caja negra (por ejemplo, el análisis de valores límite o la prueba de tablas de decisión). c)No es correcto. Aunque se pueden utilizar técnicas de prueba basadas en la experiencia para diseñar casos de prueba basados en este , las técnicas de prueba de caja negra serán más adecuadas. El documento describe una regla de negocio precisa y, además, expresiones como \"supera los 100 dólares\" sugieren la existencia de importantes límites de partición de equivalencia que deberían comprobarse mediante técnicas de prueba de caja negra como el análisis de valores límite. d)No es correcto. Las técnicas de pruebas basadas en el riesgo no son un tipo reconocido de técnica de ensayo FL-4.1.1 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "El sistema de venta de entradas de cine calcula el tipo de descuento en función del año de nacimiento del cliente (BY) y del año en curso (CY) del siguiente modo:\nSea D la diferencia entre CY y BY, es decir, D= CY - BY\nSi D < 0\tentonces imprime el mensaje de error \"el año de nacimiento no puede ser mayor que el año actual\"\nSi 0≤ D< 18\tentonces aplica el descuento de estudiante\nSi 18≤ D< 65\tno se aplica ningún descuento\nSi D≥ 65\tentonces aplica el descuento de pensionista\nSu conjunto de pruebas ya contiene dos casos de prueba:\nPOR= 1990,\tCY=  2020,\tresultado esperado: sin descuento\nPOR= 2030,\tCY=  2029,\tresultado esperado: imprimir el mensaje de error\n¿Cuál de los siguientes conjuntos de datos de prueba debe añadirse para lograr una cobertura completa de partición de equivalencia válida para el tipo de descuento?\nPOR= 2001,\tCY=  2065",
+    "opcion_a": "POR= 1900,\tCY=  1965",
+    "opcion_b": "POR= 1965,\tCY=  1900",
+    "opcion_c": "POR= 2011,\tCY=  2029",
+    "opcion_d": "POR= 2000,\tCY=  2000",
+    "respuesta_correcta": "B,E",
+    "explicacion": "Hay dos particiones de equivalencia que aún no están cubiertas, que corresponden al \"descuento para estudiantes\" y al \"descuento para pensionistas\". a)No es correcto. CY - BY= 64, por lo que estas entradas corresponden a la partición ya cubierta \"sin descuento\". b)Es correcto. CY - BY= 65, por lo que estas entradas corresponden a una partición que aún no está cubierta (\"descuento de pensionista\") c)No es correcto. CY - BY= -65, por lo que estas entradas corresponden a la ya cubierta \"mensaje de error\" partición d)No es correcto. CY - BY= 18, por lo que estas entradas corresponden a la partición ya cubierta \"sin descuento\". e)Es correcto. CY - BY= 0, por lo que estas entradas corresponden a una partición que es aún no cubierto (\"descuento para estudiantes\") FL-4.2.1 K3 1",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Está probando un sistema de control de temperatura para un almacén frigorífico hortícola. El sistema recibe como entrada la temperatura (en grados centígrados enteros). Si la temperatura está entre 0 y 2 grados, el sistema muestra el mensaje \"temperatura correcta\". Para temperaturas inferiores, el sistema muestra el mensaje \"temperatura demasiado baja\" y para temperaturas superiores muestra el mensaje \"temperatura demasiado alta\".\nUtilizando el análisis de valor límite de dos valores, ¿cuál de los siguientes conjuntos de entradas de prueba proporciona el mayor nivel de cobertura de valor límite?",
+    "opcion_a": "-1, 3",
+    "opcion_b": "0, 2",
+    "opcion_c": "-1, 0, 2, 3",
+    "opcion_d": "-2, 0, 2, 4",
+    "respuesta_correcta": "C",
+    "explicacion": "Hay tres particiones de equivalencia: {..., -2, -1}, {0, 1, 2}, {3, 4, ...}. Para el BVA de 2 valores, deben cubrirse todos los valores límite de todas las particiones de equivalencia. Los valores límite son -1 (para la partición \"temperatura demasiado baja\"), 0, 2 (para la partición \"temperatura OK\") y 3 (para la partición \"temperatura demasiado alta\"). Así: a)No es correcto b)No es correcto c)Es correcta. La opción correcta es: -1, 0, 2, 3 d)No es correcto FL-4.2.2 K3 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Está diseñando casos de prueba basados en la siguiente tabla de decisiones.\n | R1 | R2 | R3 | R4 | R5 | R6 | R7\nC1: Edad | 0-18 | 19-65 | >65 | 0-18 | 19-65 | >65\nC2: Experiencia | - | 0-4 | >4 | -\nC3: ¿Registrado? | NO | SÍ\nCategoría | A | B | D | C\nHasta ahora ha diseñado los siguientes casos de prueba:\nTC1: hombre de 19 años, no registrado y sin experiencia; resultado esperado: categoría A\nTC2: mujer de 65 años, no registrada, con 5 años de experiencia; resultado esperado: categoría B\nTC3: hombre de 66 años, empadronado y sin experiencia; resultado esperado: categoría C\nTC4: mujer de 65 años, registrada y con 4 años de experiencia; resultado esperado: categoría D",
+    "opcion_a": "¿Cuál de los siguientes casos de prueba, al añadirse al conjunto de casos de prueba existente, aumentará la cobertura de la tabla de decisiones?",
+    "opcion_b": "Hombre de 66 años, no registrado y sin experiencia;\tresultado esperado: categoría B",
+    "opcion_c": "Mujer de 55 años, no registrada, con 2 años de experiencia;\tresultado esperado: categoría A",
+    "opcion_d": "Mujer de 19 años, registrada y con 5 años de experiencia;\tresultado esperado: categoría D",
+    "respuesta_correcta": "A",
+    "explicacion": "Los casos de prueba TC1, TC2, TC3 y TC4 cubren, respectivamente, las reglas R2, R3, R7 y R6 de la tabla de decisiones. a)Es correcto. Las condiciones \"66 años\", \"no registrado\" y \"sin experiencia\" coinciden con la regla R4, que no está cubierta por los casos de prueba existentes, por lo que después de añadir este caso de prueba, la cobertura de la tabla de decisión aumentará. b)No es correcto. Las condiciones \"55 años\", \"no registrado\" y \"2 años de experiencia\" coinciden con la norma R2, ya cubierta por TC1. Así que añadir este caso de prueba no aumentará la cobertura. c)No es correcto. Las condiciones \"19 años\", \"matriculado\" y \"5 años de experiencia\" coinciden con la norma R6, ya cubierta por TC4. Así que añadir este caso de prueba no aumentará la cobertura. d)No es correcto. Los casos de prueba existentes sólo cubren 4 de las 7 columnas de la tabla de decisiones. La cobertura puede aumentarse añadiendo casos de prueba que cubren columnas aún sin cubrir, es decir, R1, R4 y R5 FL-4.2.3 K3 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Usted está aplicando pruebas de transición de estados al sistema de reserva de habitaciones de hotel modelado por la siguiente tabla de transición de estados, con 4 estados y 5 eventos diferentes:\n | Eventos\nEstado | Disponible | No disponible | ChangeRoom | Cancelar | Pagar\nS1: Solicitud | S2 | S3 | \nS2: Confirmado |  | S1 | S4\nS3: Lista de espera | S2 |  | S4 | \nS4: Fin | ",
+    "opcion_a": "Suponiendo que todos los casos de prueba comienzan en el estado \"Solicitando\", ¿cuál de los siguientes casos de prueba, representados como secuencias de eventos, alcanza la mayor cobertura de transiciones válidas?",
+    "opcion_b": "No disponible, Disponible,\tChangeRoom, NotAvailable,\tCancelar",
+    "opcion_c": "Disponible,\tChangeRoom, NotAvailable,\tDisponible,\tPagar",
+    "opcion_d": "Disponible,\tChangeRoom, Disponible,\tChangeRoom, NoDisponible",
+    "respuesta_correcta": "B",
+    "explicacion": "a)no es correcta. Esta secuencia de cinco eventos cubre 4 transiciones válidas diferentes (ambos eventos \"No disponible\" corresponden a la misma transición entre S1 y S3). Este caso de prueba cubre 4 de 7 transiciones válidas b)es correcta. Esta secuencia de cinco eventos cubre 5 transiciones diferentes (el primer evento \"Disponible\" corresponde a una transición entre S1 y S2, y el segundo evento \"Disponible\" corresponde a una transición entre S3 y S2, por lo que se cubren dos transiciones diferentes). Este caso de prueba cubre 5 de las 7 transiciones válidas y consigue la mayor cobertura de transiciones válidas c)no es correcta. Esta secuencia de cinco eventos cubre 3 transiciones diferentes (ambos eventos \"Disponible\" corresponden a la misma transición de S1 a S2; ambos eventos \"CambiarSala\" corresponden a la misma transición de S2 a S1). Este caso de prueba cubre 3 de las 7 transiciones válidas d)No es correcto. Esta secuencia de cinco eventos no representa un caso de prueba viable, porque después de \"Cancelar\" el sistema termina en el estado Final y no se pueden ejecutar más transiciones válidas. FL-4.2.4 K3 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "El conjunto de pruebas S de un programa P tiene una cobertura de sentencias del 100%. Consta de tres casos de prueba, cada uno de los cuales alcanza el 50% de cobertura de sentencias.\n¿Cuál de las siguientes afirmaciones es CORRECTA?",
+    "opcion_a": "La ejecución de S provocará todos los fallos posibles en P",
+    "opcion_b": "S logra una cobertura de ramas del 100% para P",
+    "opcion_c": "Cada sentencia ejecutable en P que contiene un defecto se ha ejecutado al menos una vez durante la ejecución de S",
+    "opcion_d": "Tras eliminar un caso de prueba de S, los dos casos de prueba restantes seguirán alcanzando una cobertura de enunciados del 100",
+    "respuesta_correcta": "C",
+    "explicacion": "a)No es correcto. Una línea con un defecto, cuando se ejecuta, no tiene por qué causar un fallo. Por ejemplo, una línea x := y / z causará un fallo sólo cuando z sea igual a 0 b)No es correcto. Un 100% de cobertura de sentencias no garantiza un 100% de cobertura de ramas. Por ejemplo, un caso de prueba con x=0 para el código 1.IF (x=0) THEN 2.A; 3.ENDIF consigue una cobertura del 100% de los enunciados, pero no cubre la rama de 1 a 3 c)Es correcto. 100% de cobertura de sentencias significa que cada sentencia ejecutable fue ejecutada al menos una vez d)No es correcto. El caso de prueba eliminado puede proporcionar cobertura de algunas afirmaciones que no están cubiertas por ninguno de los otros dos casos de prueba, en cuyo caso los dos casos de prueba restantes juntos no alcanzarán el 100%. cobertura de declaraciones FL-4.3.1 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Por qué las pruebas de caja blanca facilitan la detección de defectos incluso cuando la especificación del software es vaga, obsoleta o incompleta?",
+    "opcion_b": "Los casos de prueba se diseñan en función de la estructura del objeto de prueba y no de la especificación.",
+    "opcion_c": "Para cada técnica de prueba de caja blanca, la cobertura puede estar bien definida y medirse fácilmente",
+    "opcion_d": "Las técnicas de prueba de caja blanca están muy bien diseñadas para detectar omisiones en los requisitos",
+    "respuesta_correcta": "A",
+    "explicacion": "a)Es correcto. Un punto fuerte fundamental que comparten todas las técnicas de pruebas de caja blanca es que durante las pruebas se tiene en cuenta toda la implementación blanca pueden detectar defectos como una función adicional añadida al código (accidental o deliberadamente) que no debería estar ahí, algo que las pruebas de caja negra no pueden detectar. b)no es correcta. El hecho de que la cobertura pueda definirse con precisión no es la razón correcta. El nivel de cobertura alcanzado tendría mucho más impacto que la posibilidad de medir la cobertura. que las pruebas de caja blanca detecten los defectos de omisión resultantes. d)No es correcta. Aunque esto es cierto, no es la respuesta correcta, porque no hay ninguna conexión entre la capacidad de ser utilizado tanto en pruebas estáticas como en pruebas dinámicas y la afirmación de que las pruebas de caja blanca facilita la detección de defectos con especificaciones deficientes FL-4.3.3 K2 1",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de los siguientes NO es previsto por el probador al aplicar la adivinación de errores?",
+    "opcion_b": "El desarrollador malinterpretó la fórmula en la historia de usuario para calcular el interés",
+    "opcion_c": "El desarrollador escribió \"FA= A*(1+IR^N)\" en lugar de \"FA= A*(1+IR)^N\" en el código fuente.",
+    "opcion_d": "El promotor no asistió al seminario sobre la nueva legislación relativa a los tipos de interés compuestos",
+    "respuesta_correcta": "C",
+    "explicacion": "La adivinación de errores consiste en anticipar los errores, defectos y fallos basándose en los conocimientos del probador. a)no es correcto. Este es un ejemplo de anticipar el error del desarrollador b)no es correcto. Este es un ejemplo de anticipar el defecto c)es correcta. Este es un ejemplo de una posible causa raíz de un defecto, que no es ni un error, ni un defecto, ni un fallo, y difícil de prever para la persona que realiza las pruebas d)no es correcto. Este es un ejemplo de anticipar un fracaso, tal vez basada en la experiencia de sistemas anteriores en este ámbito de aplicación FL-4.4.1 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las siguientes afirmaciones es cierta sobre las pruebas exploratorias?",
+    "opcion_b": "Los casos de prueba se diseñan antes de que comience la sesión de pruebas exploratorias",
+    "opcion_c": "El probador puede realizar la ejecución de la prueba, pero no puede realizar el diseño de la prueba",
+    "opcion_d": "Los resultados de las pruebas exploratorias son buenos predictores del número de defectos restantes",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. En las pruebas exploratorias, los casos de prueba suelen crearse durante la sesión de pruebas exploratorias, junto con el análisis de pruebas, la implementación de pruebas y la ejecución de pruebas. b)No es correcto. En las pruebas exploratorias, las pruebas se diseñan, se ejecutan y se evalúan simultáneamente mientras el evaluador aprende sobre el objeto de prueba. c)No es correcto. Los resultados de las pruebas exploratorias dependen en gran medida de la experiencia del probador, por lo que incluso si los resultados de las pruebas exploratorias se pueden utilizar como un predictor de riesgo y se utilizan para evaluar si habrá menos o más defectos, por ejemplo, en comparación con la sesión anterior de pruebas exploratorias, no son un buen ejemplo de modelos fiables de predicción de defectos que puedan predecir el número de defectos restantes d)Es correcto. Durante las pruebas exploratorias, los probadores pueden utilizar cualquier técnicas que les resulten útiles FL-4.4.2 K2 1",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Qué práctica de redacción colaborativa de historias de usuario permite al equipo alcanzar una comprensión colectiva de lo que hay que entregar?",
+    "opcion_b": "Póquer de planificación, para que un equipo pueda llegar a un consenso sobre el esfuerzo necesario para implementar una historia de usuario.",
+    "opcion_c": "Revisiones, para que un equipo pueda detectar incoherencias y contradicciones en una historia de usuario.",
+    "opcion_d": "Planificación de iteraciones, de modo que las historias de usuario con mayor valor de negocio para un cliente puedan priorizarse para su implementación.",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. El póquer de planificación puede estimar el esfuerzo para una historia de usuario que ya está escrita. No ayuda a comprender lo que debe entregarse. b)No es correcto. Las revisiones no son una práctica colaborativa de redacción de historias de usuario c)No es correcto. La planificación de iteraciones es una práctica relacionada con el proyecto, que se utiliza para planificar el trabajo, no para comprender lo que hay que entregar. a menudo permite al equipo definir criterios de aceptación significativos, obteniendo así una visión compartida de lo que debe entregarse FL-4.5.1 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Acaba de empezar a diseñar los casos de prueba para la siguiente historia de usuario.\nEn todos los casos de prueba, la condición previa es la siguiente: sólo hay dos productos disponibles, los productos A y B. El producto A cuesta 100 $ y el producto B cuesta 110 $.\n¿Cuál de los siguientes es el MEJOR ejemplo de caso de prueba para esta historia de usuario?\nIntroduzca la página web y configure el filtro para que muestre precios entre 90 y 100 dólares. Resultado esperado: los resultados muestran sólo el producto A. Fijar el precio máximo en 110 $. Resultado esperado: los resultados incluyen ahora los productos A y B.\nIntroduzca la página web. Resultado esperado: los precios mínimo y máximo por defecto son 100$ y",
+    "opcion_a": "$110 respectivamente. Añadir el producto C al stock, con un precio de 120 $. Actualice la página web del cliente.",
+    "opcion_b": "Resultado previsto: el precio máximo por defecto pasa a 120 $.",
+    "opcion_c": "Introduzca la página web y configure el filtro para que muestre precios entre 90 y 115 dólares. Resultado esperado: los resultados muestran los productos A y B. Cambie la divisa de USD a EUR. Resultado esperado: el rango del filtro cambia correctamente a valores en EUR, según el tipo de cambio actual.",
+    "opcion_d": "Entra en la página web con tres navegadores diferentes: Edge, Chrome y Opera. En cada navegador establezca el filtro entre 90 y 110 dólares. Resultado esperado: los resultados incluyen los productos A y B y el diseño de los resultados es el mismo en los tres navegadores.",
+    "respuesta_correcta": "A",
+    "explicacion": "a)Es correcto. Este caso de prueba está relacionado con los criterios de aceptación 2 y 3, porque comprobamos si podemos establecer el rango de precios (criterio de aceptación 2) y si los resultados se actualizan dinámicamente después de ajustar el filtro de rango de precios (criterio de aceptación 3). b)No es correcto. Este caso de prueba no está relacionado con ninguno de los criterios de aceptación. Comprueba si el filtro establece dinámicamente el rango de precios mínimo y máximo por defecto, y no que un cliente pueda hacerlo c)No es correcto. Este caso de prueba no está relacionado con ninguno de los criterios de aceptación. Comprueba la función de cambio de divisas, que no se trata en esta historia de usuario. d)No es correcto. Este caso de prueba no está relacionado con ninguna de las pruebas de aceptación. criterios. Comprueba la compatibilidad de la aplicación con diferentes navegadores, lo que no se trata en esta historia de usuario. FL-4.5.3 K3 1",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "¿Cuál de las siguientes opciones define MEJOR los criterios de SALIDA en un proyecto de pruebas?",
+    "opcion_a": "Se aprueba el presupuesto",
+    "opcion_b": "Se acaba el presupuesto",
+    "opcion_c": "Base de pruebas disponible",
+    "opcion_d": "Los casos de prueba alcanzaron al menos un 80% de cobertura de enunciados",
+    "respuesta_correcta": "B,D",
+    "explicacion": "a)No es correcto. La aprobación del presupuesto es un ejemplo de criterio de entrada. No tendría sentido aprobar el presupuesto de una actividad que ya se ha realizado. b)Es correcto. Quedarse sin presupuesto puede considerarse un criterio de salida válido. c)No es correcto. La disponibilidad de recursos es un ejemplo de criterio de entrada para las pruebas d)Correcto. La cobertura es una medida de la minuciosidad, por lo que es un típico criterio de salida e)no es correcto. Este es un ejemplo de un criterio de entrada, comprobado antes de se inicia el proyecto FL-5.1.3 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "El equipo quiere estimar el tiempo necesario para que un evaluador ejecute cuatro casos de prueba de un componente de software. El equipo ha reunido las siguientes medidas del esfuerzo empleado para ejecutar un solo caso de prueba:\nel mejor de los casos:\t1 hora\nel peor de los casos:\t8 horas\nEl escenario más probable:\t3 horas",
+    "opcion_a": "Dado que se utilizando la técnica de estimación de tres puntos, ¿cuál es la estimación final del tiempo necesario para ejecutar los cuatro casos de prueba?",
+    "opcion_b": "14 horas",
+    "opcion_c": "3,5 horas",
+    "opcion_d": "16 horas",
+    "respuesta_correcta": "A",
+    "explicacion": "Utilizando la técnica de estimación de tres puntos, la estimación final (E) se calcula como: E= (a+ 4*m + b) / 6, donde a es la estimación más optimista, m es la estimación más probable y b es la estimación más pesimista. Así: a) Es correcta. En este caso, la estimación para ejecutar un solo caso de prueba es: E = (1h + 4*3h + 8h) / 6 = 3,5 horas Por lo tanto, el tiempo total necesario para que el probador ejecute 4 casos de prueba es: 3,5h * 4= 14 horas b)No es correcto c)No es correcto d)No es correcto FL-5.1.4 K3 1",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "La tabla muestra la matriz de trazabilidad de los casos de prueba a los requisitos. Una \"X\" significa que un caso de prueba determinado cubre el requisito correspondiente.\n | Req1 | Req2 | Req3 | Req4 | Req5 | Req6 | Req7\nTC1 | X |  | X |  | X\nTC2 | X |  | X |  | X\nTC3 |  | X | \nTC4 |  | X | \nDesea priorizar los casos de prueba siguiendo la técnica de priorización de cobertura adicional. Ejecute los cuatro casos de prueba.\n¿Qué caso de prueba debe ejecutarse como  ÚLTIMO?",
+    "opcion_a": "TC1",
+    "opcion_b": "TC2",
+    "opcion_c": "TC3",
+    "opcion_d": "TC4",
+    "respuesta_correcta": "B",
+    "explicacion": "TC1 consigue la mayor cobertura (4/7 - Req1, Req3, Req4 y Req7), por lo que debería ejecutarse en primer lugar. Los Req2, Req5 y Req6 siguen sin estar cubiertos. El siguiente caso de prueba que consigue la mayor cobertura adicional de los requisitos restantes es TC3, que cubre 2 de estos 3 requisitos (Req5 y Req6). Por lo tanto, TC3 debe ejecutarse como el segundo. Ahora el único requisito que aún no está cubierto es el Req2, que está cubierto por TC4. Por lo tanto, TC4 debe ejecutarse como el tercer caso de prueba. Así, el último caso de prueba ejecutado será TC2. Así: a)No es correcto b)Es correcto c)No es correcto d)No es correcto FL-5.1.5 K3 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "¿Cómo pueden ser beneficiosos los cuadrantes de pruebas?",
+    "opcion_a": "Ayudan a planificar las pruebas dividiendo el proceso en cuatro etapas, que corresponden a los cuatro niveles básicos de las pruebas: pruebas de componentes, de integración, de sistemas y de aceptación.",
+    "opcion_b": "Ayudan a evaluar la cobertura de alto nivel (por ejemplo, cobertura de requisitos) a partir de la cobertura de bajo nivel (por ejemplo, cobertura de código).",
+    "opcion_c": "Ayudan a las partes interesadas no técnicas a comprender los diferentes tipos de pruebas y que algunos tipos de pruebas son más pertinentes para determinados niveles de pruebas que otros.",
+    "opcion_d": "Ayudan a los equipos ágiles a desarrollar una estrategia de comunicación basada en la clasificación de las personas según cuatro tipos psicológicos básicos, y en la modelización de las relaciones entre ellos",
+    "respuesta_correcta": "C",
+    "explicacion": "a)No es correcto. Los cuadrantes de prueba no tienen nada que ver con la descripción de las relaciones entre los niveles de prueba b)No es correcto. Probar cuadrantes no puede ayudar a evaluar ningún tipo de cobertura c)Es correcto. Los cuadrantes de pruebas permiten los gestores y otras partes interesadas comprender las relaciones entre los tipos de pruebas, las actividades a las que prestan apoyo (apoyo al equipo o crítica del producto) y el punto de vista en el que se centran (orientado a la empresa o a la tecnología). d)No es correcto. Probar los cuadrantes no es un modelo psicológico FL-5.1.7 K2 1",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Para un riesgo determinado, su nivel de riesgo es de 1.000 $ y su probabilidad de riesgo se estima en un 50%. ¿Cuál es el impacto del riesgo?",
+    "opcion_a": "$500",
+    "opcion_b": "$2,000",
+    "opcion_c": "$50,000",
+    "opcion_d": "$200",
+    "respuesta_correcta": "B",
+    "explicacion": "La evaluación del riesgo puede utilizar un enfoque cuantitativo o cualitativo, o una combinación de ambos. En el enfoque cuantitativo, el nivel de riesgo se calcula multiplicando la probabilidad y el impacto del riesgo. Así, Nivel de riesgo = Probabilidad de riesgo * Impacto del riesgo. Entonces, Impacto del riesgo= Nivel de riesgo / Probabilidad de riesgo. En nuestro caso, Impacto del riesgo= 1.000 $ / 50%= 1.000 $ / 0,5= 2.000 $. Así: a)No es correcto b)Es correcto c)No es correcto d)No es correcto FL-5.2.1 K1 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "¿Cuáles de los siguientes son riesgos del producto?",
+    "opcion_a": "Ampliación del ámbito de aplicación",
+    "opcion_b": "Arquitectura deficiente",
+    "opcion_c": "Reducción de costes",
+    "opcion_d": "Poco apoyo a las herramientas",
+    "respuesta_correcta": "B,E",
+    "explicacion": "a)No es correcto. La ampliación del alcance es un ejemplo de riesgo del proyecto relacionado con cuestiones técnicas. b)Es correcto. Una arquitectura deficiente es un ejemplo de riesgo de producto, ya se refiere a una característica del producto c)No es correcto. La reducción de costes es un ejemplo de riesgo del proyecto, relacionado con cuestiones organizativas d)No es correcto. Un soporte deficiente de las herramientas es un ejemplo de riesgo del proyecto relacionado con cuestiones técnicas e)Es correcto. Un tiempo de respuesta demasiado largo es un ejemplo de riesgo de producto, ya que se refiere a una característica del producto. FL-5.2.2 K2 1",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de las siguientes NO es una finalidad válida de un informe de ensayo?",
+    "opcion_b": "Seguimiento del progreso de las pruebas e identificación de las áreas que requieren mayor atención",
+    "opcion_c": "Proporcionar información sobre las pruebas realizadas, sus resultados y cualquier problema o defecto detectado.",
+    "opcion_d": "Proporcionar información sobre cada defecto, como los pasos para reproducirlo.",
+    "respuesta_correcta": "C",
+    "explicacion": "a)No es correcto. El seguimiento del progreso de las pruebas y la identificación de áreas que requieren mayor atención es un ejemplo de apoyo al control continuo de las pruebas. Este es uno de los propósitos de los informes de pruebas b)No es correcto. Proporcionar información sobre las pruebas ejecutadas, sus resultados y cualquier problema o defecto encontrado es un ejemplo de resumen de las actividades de prueba realizadas en un nivel de prueba determinado. Esta es una de las finalidades de los informes de pruebas c)Es correcto. Proporcionar información sobre los defectos es el objetivo de un informe de defectos, no de un informe de pruebas. d)No es correcto. Proporcionar información sobre las pruebas previstas para el próximo es uno de los objetivos de los informes de pruebas FL-5.3.2 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "El usuario informó de un fallo de software. Un ingeniero del equipo de soporte pidió al usuario el número de versión del software en el que se había observado el fallo. Basándose en el número de versión, el equipo volvió a reunir todos los archivos que componían la versión. Esto permitió después a un desarrollador realizar un análisis, encontrar el defecto y solucionarlo.",
+    "opcion_a": "¿Cuál de las siguientes opciones permitió al realizar la actividad anterior?",
+    "opcion_b": "Gestión de riesgos",
+    "opcion_c": "Seguimiento y control de las pruebas",
+    "opcion_d": "Enfoque de equipo",
+    "respuesta_correcta": "D",
+    "explicacion": "a)No es correcto. La gestión de riesgos consiste en el análisis y el control de riesgos. Ninguna de estas actividades apoya el reensamblaje de los archivos que componían la liberación, porque estas actividades se ocupan de los riesgos, no de los elementos de configuración b)No es correcto. El seguimiento de las pruebas consiste en recopilar información sobre las pruebas. Esta información se utiliza para evaluar el progreso de las pruebas y medir si se cumplen los criterios de salida de las pruebas o las tareas de prueba asociadas a los criterios de salida, como el cumplimiento de los objetivos de cobertura de los riesgos del producto, los requisitos u otros criterios de aceptación. El control de las pruebas utiliza la información del seguimiento de las pruebas para proporcionar, en forma de directivas de control, orientación y las acciones correctivas necesarias para lograr las pruebas más eficaces y eficientes. Ninguna de estas actividades se ocupa de la gestión de los elementos de configuración. c)No es correcto. El enfoque de todo el equipo se basa en la habilidad del evaluador para trabajar eficazmente en un contexto de equipo y contribuir positivamente a los objetivos del equipo. Por tanto, se centra en cuestiones relacionadas con el equipo, no en elementos de configuración. d)Es correcto. La gestión de la configuración proporciona una disciplina para identificar, controlar y realizar el seguimiento de los productos de trabajo. La gestión de la configuración mantiene un registro de los elementos de configuración modificados cuando se crea una nueva línea de base. La gestión de la configuración permite volver a una línea de base anterior para reproducir pruebas anteriores. resultados FL-5.4.1 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Considere el siguiente informe de defectos para un sistema de préstamo de libros.\n¿Cuál de las siguientes opciones tiene MÁS probabilidades de ayudar al desarrollador a reproducir el fallo rápidamente?",
+    "opcion_a": "Añadir información sobre los usuarios y los libros a los que afecta el problema en la sección \"Descripción\".",
+    "opcion_b": "Rellenar el valor que falta en el campo \"Prioridad",
+    "opcion_c": "Añadir volcados de memoria e instantáneas de bases de datos tomadas después de cada paso descrito en la sección \"Pasos a reproducir\" a la sección \"Anexos\".",
+    "opcion_d": "Repetición del mismo caso de prueba para diferentes entornos y redacción de informes de defectos para cada uno de ellos por separado.",
+    "respuesta_correcta": "A",
+    "explicacion": "a)es correcto. Añadir esta información permite al desarrollador utilizar los mismos datos de entrada, por lo que es más probable que sea capaz de reproducir el fallo rápidamente y así identificar el defecto con mayor rapidez. b)No es correcto. Añadir el valor de Prioridad no ayudará a reproducir el defecto. c)No es correcto. Aunque parte de esta información puede ser valiosa, añadir los volcados de memoria y las instantáneas de la base de datos después de cada paso será demasiado, porque la mayoría de estos artefactos contendrán información inútil para el desarrollador y harán que el informe sea menos legible. Además, el desarrollador tendrá que dedicar mucho tiempo a analizar esta información, lo que alargará el proceso de reparación. d)No es correcto. La pregunta se refería a ayudar al promotor a reproducir el defecto observado para una configuración de entorno específica FL-5.5.1 K3 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "Dadas las siguientes categorías de herramientas de prueba:\nHerramientas de colaboración\nHerramientas DevOps\nHerramientas de gestión\nHerramientas de pruebas no funcionales\nHerramientas de diseño y ejecución de pruebas",
+    "opcion_a": "¿Cuáles son las herramientas que MÁS facilitan la ejecución de las pruebas?",
+    "opcion_b": "i, v",
+    "opcion_c": "ii, iv",
+    "opcion_d": "i, iii, v",
+    "respuesta_correcta": "B",
+    "explicacion": "Teniendo en cuenta cada una de las categorías de herramientas enumeradas: i.Herramientas de colaboración: facilitan la comunicación. La comunicación no incluye la facilitación de la ejecución de pruebas ii.Herramientas DevOps: apoyan el canal de entrega DevOps, el seguimiento del flujo de trabajo, los procesos de creación automatizados y CI/CD. El canal de entrega y CI/CD incluyen la facilitación de la ejecución de pruebas, como las pruebas de componentes para CI. iii.Herramientas de gestión: aumentan la eficacia del proceso de pruebas facilitando la gestión del SDLC, los requisitos, las pruebas, los defectos y la configuración. La gestión de estos elementos no incluye la facilitación de la ejecución de las pruebas. iv.Herramientas de pruebas no funcionales: permiten al probador realizar pruebas no funcionales que son difíciles o imposibles de realizar manualmente. Las pruebas no funcionales pueden incluir tanto pruebas estáticas como dinámicas, incluida la ejecución de pruebas. v.Herramientas de diseño y ejecución de pruebas: facilitan la generación de casos de prueba, datos de prueba y procedimientos de prueba. La ejecución de las pruebas. Así: a)No es correcto b)Es correcto. Tanto las herramientas DevOps (ii) como las herramientas de pruebas no funcionales (iv) facilitan la ejecución de las pruebas c)No es correcto d)No es correcto FL-6.1.1 K2 1 Versión 1.4 Número de pregunta (#) Respuest a correcta Explicación / Justificación Objetivo de aprendizaje (LO) Nivel K Número de Puntos",
+    "modelo_examen": "D"
+  },
+  {
+    "enunciado": "",
+    "opcion_a": "¿Cuál de los siguientes es el riesgo MÁS probable de la automatización de pruebas?",
+    "opcion_b": "La detección de defectos adicionales de alta gravedad",
+    "opcion_c": "Proporcionar medidas que son demasiado complicadas para que los humanos las deriven",
+    "opcion_d": "Incompatibilidad con la plataforma de desarrollo",
+    "respuesta_correcta": "C",
+    "explicacion": "a)No es correcto. La detección defectos adicionales de alta gravedad sería una ventaja de la automatización de las pruebas, más que un riesgo. b)No es correcto. El suministro de medidas que son demasiado complicadas para que los humanos las obtengan por sí mismos se considera normalmente una ventaja de la automatización de pruebas. c)Es correcto. Si la automatización de pruebas es incompatible con la plataforma de desarrollo, no podrá integrarlas y, por ejemplo, pasar entradas de prueba al objeto de prueba y recibir resultados de prueba del objeto de prueba. d)No es correcto. Normalmente, la reducción sustancial del tiempo de ejecución de las pruebas se considera una ventaja de la automatización de las pruebas. FL-6.2.1 K1 1",
+    "modelo_examen": "D"
+  }
+]
