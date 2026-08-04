@@ -66,8 +66,30 @@ def parse_docx_questions(path):
             
     if current_q:
         process_question(current_q, accumulated_items, questions)
-        
+
     return questions
+
+OPTION_MARKER_RE = re.compile(r'^([a-e])\)\s*', re.IGNORECASE)
+
+
+def split_enunciado_and_options(items):
+    """Escanea `items` desde el final hacia el principio, tomando como opción cada
+    línea de texto que empieza con un marcador de letra (a) a e)). Se detiene en
+    cuanto encuentra un ítem que no matchea (o que no es texto) — ese ítem y todos
+    los anteriores quedan como parte del enunciado. Devuelve (enunciado_items, options)."""
+    remaining = list(items)
+    opt_candidates = []
+    while remaining:
+        curr = remaining[-1]
+        if not isinstance(curr, str):
+            break
+        match = OPTION_MARKER_RE.match(curr.strip())
+        if not match:
+            break
+        clean_opt = OPTION_MARKER_RE.sub('', curr.strip(), count=1).strip()
+        opt_candidates.insert(0, clean_opt)
+        remaining.pop()
+    return remaining, opt_candidates
 
 def process_question(q, items, questions_list):
     if not items:
