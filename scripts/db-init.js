@@ -37,13 +37,19 @@ async function main() {
     `);
     console.log("Tabla 'preguntas' creada o ya existente.");
 
+    // 1.1 Agregar columna opcion_e para preguntas con 5ta alternativa (no todas la tienen)
+    await client.query(`ALTER TABLE preguntas ADD COLUMN IF NOT EXISTS opcion_e TEXT;`);
+    console.log("Columna 'opcion_e' asegurada en la tabla 'preguntas'.");
+
     // 2. Crear un índice GIN para búsqueda de texto completo (Full Text Search) en español
     // Esto acelerará enormemente las búsquedas por voz.
+    // Recreamos el índice porque cambió la expresión indexada (ahora incluye opcion_e)
+    await client.query(`DROP INDEX IF EXISTS preguntas_fts_idx;`);
     await client.query(`
-      CREATE INDEX IF NOT EXISTS preguntas_fts_idx ON preguntas 
-      USING gin(to_tsvector('spanish', enunciado || ' ' || opcion_a || ' ' || opcion_b || ' ' || opcion_c || ' ' || opcion_d));
+      CREATE INDEX preguntas_fts_idx ON preguntas
+      USING gin(to_tsvector('spanish', enunciado || ' ' || opcion_a || ' ' || opcion_b || ' ' || opcion_c || ' ' || opcion_d || ' ' || COALESCE(opcion_e, '')));
     `);
-    console.log("Índice de búsqueda por texto completo (FTS) en español configurado.");
+    console.log("Índice de búsqueda por texto completo (FTS) en español configurado (incluye opcion_e).");
 
   } catch (err) {
     console.error("Error al inicializar la base de datos:", err);
