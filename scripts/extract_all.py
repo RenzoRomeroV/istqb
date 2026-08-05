@@ -131,6 +131,28 @@ def process_question(q, items, questions_list):
     q["opciones"] = options
     questions_list.append(q)
 
+def validate_questions(compiled_questions):
+    errors = []
+    opt_fields = {"A": "opcion_a", "B": "opcion_b", "C": "opcion_c", "D": "opcion_d", "E": "opcion_e"}
+
+    for q in compiled_questions:
+        label = f"Examen {q.get('modelo_examen', '?')} - {q.get('enunciado', '')[:50]!r}"
+
+        if not q.get("enunciado") or len(q["enunciado"].strip()) < 10:
+            errors.append(f"{label}: enunciado vacío o demasiado corto")
+
+        respuestas = [r.strip().upper() for r in q.get("respuesta_correcta", "").split(",") if r.strip()]
+        for letra in respuestas:
+            field = opt_fields.get(letra)
+            if field is None or not q.get(field):
+                errors.append(f"{label}: respuesta_correcta incluye '{letra}' pero {field or 'esa letra'} está vacío")
+
+        num_opciones = sum(1 for f in ("opcion_a", "opcion_b", "opcion_c", "opcion_d", "opcion_e") if q.get(f))
+        if num_opciones < 4:
+            errors.append(f"{label}: solo se capturaron {num_opciones} opciones (se esperaban al menos 4)")
+
+    return errors
+
 def parse_pdf_answers(path):
     reader = pypdf.PdfReader(path)
     grid_page_idx = -1
@@ -253,11 +275,18 @@ def main():
         else:
             print(f"ADVERTENCIA: Examen D Pregunta {num} descartada, solo se detectaron {len(q['opciones'])} opciones")
 
+    validation_errors = validate_questions(compiled_questions)
+    if validation_errors:
+        print(f"\nSe encontraron {len(validation_errors)} problema(s) de validación. No se escribirá preguntas.json:")
+        for err in validation_errors:
+            print(f"  - {err}")
+        sys.exit(1)
+
     # Output to preguntas.json
     output_path = r"c:\Users\Admin\Desktop\Proyect-ISTQ\simulador-istq\src\app\preguntas.json"
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(compiled_questions, f, ensure_ascii=False, indent=2)
-        
+
     print(f"Successfully compiled and saved {len(compiled_questions)} questions to {output_path}")
 
 if __name__ == "__main__":

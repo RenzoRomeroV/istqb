@@ -1,5 +1,5 @@
 import unittest
-from extract_all import split_enunciado_and_options
+from extract_all import split_enunciado_and_options, validate_questions
 
 
 class TestSplitEnunciadoAndOptions(unittest.TestCase):
@@ -78,6 +78,42 @@ class TestSplitEnunciadoAndOptions(unittest.TestCase):
         enunciado, options = split_enunciado_and_options(items)
         self.assertEqual(options, ["Opción A", "Opción B", "Opción C", "Opción D"])
         self.assertEqual(len(enunciado), 5)
+
+
+class TestValidateQuestions(unittest.TestCase):
+    def _valid_question(self, **overrides):
+        q = {
+            "enunciado": "¿Cuál de las siguientes es una técnica de caja negra?",
+            "opcion_a": "Análisis de valor límite",
+            "opcion_b": "Cobertura de sentencias",
+            "opcion_c": "Revisión por pares",
+            "opcion_d": "Análisis estático",
+            "opcion_e": None,
+            "respuesta_correcta": "A",
+            "explicacion": "Porque sí.",
+            "modelo_examen": "C",
+        }
+        q.update(overrides)
+        return q
+
+    def test_valid_question_has_no_errors(self):
+        errors = validate_questions([self._valid_question()])
+        self.assertEqual(errors, [])
+
+    def test_empty_enunciado_is_flagged(self):
+        errors = validate_questions([self._valid_question(enunciado="")])
+        self.assertEqual(len(errors), 1)
+        self.assertIn("enunciado", errors[0])
+
+    def test_missing_option_text_for_correct_answer_letter_is_flagged(self):
+        errors = validate_questions([self._valid_question(respuesta_correcta="E", opcion_e=None)])
+        self.assertEqual(len(errors), 1)
+        self.assertIn("E", errors[0])
+
+    def test_multi_letter_answer_with_all_options_present_is_valid(self):
+        q = self._valid_question(respuesta_correcta="B,E", opcion_e="Quinta opción")
+        errors = validate_questions([q])
+        self.assertEqual(errors, [])
 
 
 if __name__ == "__main__":
