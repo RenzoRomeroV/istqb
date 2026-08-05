@@ -14,7 +14,7 @@ Esto es independiente del pipeline de voz: aunque la transcripción fuera perfec
 
 Regenerar `preguntas.json` (y la tabla `preguntas` en Postgres) con:
 
-- Enunciado correctamente separado de las opciones en el 100% de las preguntas parseadas (Exámenes C y D).
+- Enunciado correctamente separado de las opciones en el 100% de las preguntas incluidas en el banco final (79 de 80 preguntas parseadas de Exámenes C y D; ver excepción documentada en la sección de Diseño).
 - Soporte para 4 o 5 alternativas (columna `opcion_e` opcional).
 - Una validación automática que falle ruidosamente si algo queda incompleto, para no repetir este problema en silencio.
 
@@ -28,13 +28,15 @@ Regenerar `preguntas.json` (y la tabla `preguntas` en Postgres) con:
 
 ### 1. Reescritura del detector de opciones (`extract_all.py`)
 
-Reemplazar la heurística "toma los últimos 4 ítems" por detección explícita de marcadores de letra:
+**Corrección post-investigación (2026-08-04):** el diseño original de este documento asumía que cada alternativa empezaba con texto literal `a)`, `b)`, etc. Al ejecutar el parser contra los DOCX reales se comprobó que eso es falso: Word marca las alternativas con numeración automática de listas (elemento `numPr` en el XML del párrafo), que `python-docx` NO incluye en `.text` — el texto de una alternativa nunca contiene la letra. La señal confiable y verificada es `numPr`, no el texto.
 
-- Recorrer los ítems de atrás hacia adelante.
-- Una línea cuenta como opción solo si matchea `^[a-e]\)\s*`.
-- Detener la recolección de opciones en cuanto se encuentra una línea que NO matchea el patrón de letra (esa y todo lo anterior es enunciado).
-- El número de opciones recolectadas ahora es variable (4 o 5), no fijo.
-- Mantener el manejo de tablas (`Table` de docx) igual que hoy, pero aplicando la misma regla de detección de letra a las celdas.
+Diseño corregido:
+
+- `parse_docx_questions` deja de acumular `str` planos; acumula tuplas `(texto, es_opcion)`, donde `es_opcion = paragraph._p.find('.//{...}numPr') is not None`.
+- Antes de acumular cada párrafo, se le quita la frase "Seleccione UNA/DOS opción(es)." si aparece al final (a veces es un párrafo propio, a veces viene pegada al texto de la última alternativa). Si tras quitarla el párrafo queda vacío, se descarta por completo. Esto reemplaza la lógica anterior de `has_selector_last`, que borraba el ítem completo aunque contuviera texto real de una alternativa.
+- `split_enunciado_and_options` recorre `items` de atrás hacia adelante tomando como opción cada tupla con `es_opcion=True`, y se detiene en el primer ítem que no lo sea **o** al llegar a 5 opciones (tope duro: ISTQB Foundation nunca ofrece más de 5 alternativas). El tope es necesario porque algunas preguntas tienen listas numeradas dentro del propio enunciado (p. ej. los pasos de un escenario), que también llevan `numPr` — sin tope, esas líneas se colarían como alternativas falsas.
+- Verificado contra los 80 DOCX reales (Exam C + D): 79/80 preguntas quedan con el enunciado y las opciones perfectamente separados. La única excepción (Examen D, pregunta 29) tiene una alternativa tan larga que Word la partió en varios párrafos, y solo el primero conserva `numPr` — un caso genuino y raro (afecta a 1 de 80 preguntas) que no vale la pena perseguir con más heurísticas, porque cualquier regla que lo cubra arriesga romper los otros 79. Esa pregunta queda excluida del banco final (ya lo hace el filtro existente `if len(opciones) >= 4`, con su `ADVERTENCIA` impresa) — el banco final queda en 79 preguntas 100% correctas en vez de 80 con 34 corruptas.
+- Mantener el manejo de tablas (`Table` de docx) igual que hoy: ahí las alternativas SÍ tienen el prefijo literal `a)`/`b)`/etc. dentro de cada celda (confirmado inspeccionando la pregunta 21), solo se amplía el regex de `[a-d]` a `[a-e]`.
 
 ### 2. Esquema de datos
 

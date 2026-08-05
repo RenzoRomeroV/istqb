@@ -20,12 +20,14 @@
 
 ### Task 1: Función pura `split_enunciado_and_options` + tests unitarios
 
+> **Corrección post-investigación (2026-08-04):** la Task 1 original asumía que las alternativas tenían texto literal `a)`, `b)`, etc. Se comprobó contra los DOCX reales que eso es falso — Word las marca con numeración automática de listas (`numPr` en el XML), invisible en `.text`. Esta versión corregida opera sobre tuplas `(texto, es_opcion)` en vez de strings crudos; `es_opcion` se calcula en Task 2 (que sí toca objetos reales de docx) y se pasa ya resuelto a esta función pura.
+
 **Files:**
 - Modify: `scripts/extract_all.py`
 - Create: `scripts/test_extract_all.py`
 
 **Interfaces:**
-- Produces: `split_enunciado_and_options(items: list) -> tuple[list, list[str]]` en `scripts/extract_all.py`, definida a nivel de módulo (junto a `OPTION_MARKER_RE`). Recibe una lista de strings (y opcionalmente otros tipos, que cortan el escaneo), devuelve `(enunciado_items, options)`.
+- Produces: `split_enunciado_and_options(items: list) -> tuple[list, list[str]]` en `scripts/extract_all.py`, definida a nivel de módulo (junto a `MAX_OPTIONS`). Recibe una lista de tuplas `(texto: str, es_opcion: bool)` (y opcionalmente otros tipos no-tupla, que cortan el escaneo igual que un `es_opcion=False`), devuelve `(enunciado_items, options)` donde `options` ya es una lista de strings planos.
 
 - [ ] **Step 1: Escribir el test que falla**
 
@@ -39,14 +41,14 @@ from extract_all import split_enunciado_and_options
 class TestSplitEnunciadoAndOptions(unittest.TestCase):
     def test_four_options_clean_split(self):
         items = [
-            "¿Cuál de las siguientes es una técnica de caja negra?",
-            "a) Análisis de valor límite",
-            "b) Cobertura de sentencias",
-            "c) Revisión por pares",
-            "d) Análisis estático",
+            ("¿Cuál de las siguientes es una técnica de caja negra?", False),
+            ("Análisis de valor límite", True),
+            ("Cobertura de sentencias", True),
+            ("Revisión por pares", True),
+            ("Análisis estático", True),
         ]
         enunciado, options = split_enunciado_and_options(items)
-        self.assertEqual(enunciado, ["¿Cuál de las siguientes es una técnica de caja negra?"])
+        self.assertEqual(enunciado, [("¿Cuál de las siguientes es una técnica de caja negra?", False)])
         self.assertEqual(options, [
             "Análisis de valor límite",
             "Cobertura de sentencias",
@@ -56,42 +58,62 @@ class TestSplitEnunciadoAndOptions(unittest.TestCase):
 
     def test_five_options_supported(self):
         items = [
-            "¿Cuáles de las siguientes son actividades del proceso de pruebas?",
-            "a) Planificación",
-            "b) Análisis",
-            "c) Diseño",
-            "d) Implementación",
-            "e) Ejecución",
+            ("¿Cuáles de las siguientes son actividades del proceso de pruebas?", False),
+            ("Planificación", True),
+            ("Análisis", True),
+            ("Diseño", True),
+            ("Implementación", True),
+            ("Ejecución", True),
         ]
         enunciado, options = split_enunciado_and_options(items)
         self.assertEqual(len(options), 5)
         self.assertEqual(options[4], "Ejecución")
 
-    def test_enunciado_paragraph_without_marker_is_not_swallowed(self):
-        # Caso del bug real: el enunciado no tiene marcador de letra,
-        # no debe tratarse como si fuera la opción A.
+    def test_enunciado_paragraph_is_not_swallowed_even_without_marker(self):
+        # Caso del bug real: el enunciado no está marcado como opción (es_opcion=False),
+        # así que nunca debe tratarse como si fuera la opción A, sin importar su texto.
         items = [
-            "¿Cuál de los siguientes es un objetivo típico de una prueba?",
-            "a) Validación del cumplimiento de los requisitos documentados",
-            "b) Causar fallos e identificar defectos",
-            "c) Iniciación a los errores e identificación de las causas profundas",
-            "d) Verificar que el objeto de ensayo cumple las expectativas del usuario",
+            ("¿Cuál de los siguientes es un objetivo típico de una prueba?", False),
+            ("Validación del cumplimiento de los requisitos documentados", True),
+            ("Causar fallos e identificar defectos", True),
+            ("Iniciación a los errores e identificación de las causas profundas", True),
+            ("Verificar que el objeto de ensayo cumple las expectativas del usuario", True),
         ]
         enunciado, options = split_enunciado_and_options(items)
         self.assertEqual(len(enunciado), 1)
-        self.assertIn("objetivo típico de una prueba", enunciado[0])
+        self.assertIn("objetivo típico de una prueba", enunciado[0][0])
         self.assertEqual(len(options), 4)
 
-    def test_stops_at_first_non_matching_line(self):
+    def test_stops_at_first_non_option_item(self):
         items = [
-            "Texto de enunciado",
-            "más texto de enunciado que no es una opción",
-            "a) Primera opción",
-            "b) Segunda opción",
+            ("Texto de enunciado", False),
+            ("más texto de enunciado que no es una opción", False),
+            ("Primera opción", True),
+            ("Segunda opción", True),
         ]
         enunciado, options = split_enunciado_and_options(items)
-        self.assertEqual(enunciado, ["Texto de enunciado", "más texto de enunciado que no es una opción"])
+        self.assertEqual(enunciado, [("Texto de enunciado", False), ("más texto de enunciado que no es una opción", False)])
         self.assertEqual(options, ["Primera opción", "Segunda opción"])
+
+    def test_caps_at_max_options_when_enunciado_has_embedded_numbered_list(self):
+        # Caso real verificado (Examen C, pregunta 5): una lista numerada dentro del
+        # propio enunciado (p.ej. pasos de un escenario) también puede llevar la marca
+        # de lista. El tope de 5 evita que esos ítems se confundan con las alternativas
+        # reales, que son siempre las últimas de la pregunta.
+        items = [
+            ("Dado el siguiente escenario:", False),
+            ("Paso 1", True),
+            ("Paso 2", True),
+            ("Paso 3", True),
+            ("¿Cuál de las siguientes opciones es correcta?", False),
+            ("Opción A", True),
+            ("Opción B", True),
+            ("Opción C", True),
+            ("Opción D", True),
+        ]
+        enunciado, options = split_enunciado_and_options(items)
+        self.assertEqual(options, ["Opción A", "Opción B", "Opción C", "Opción D"])
+        self.assertEqual(len(enunciado), 5)
 
 
 if __name__ == "__main__":
@@ -108,25 +130,25 @@ Expected: `ImportError: cannot import name 'split_enunciado_and_options' from 'e
 Agregar, antes de `def process_question(...)` (línea 72 actual):
 
 ```python
-OPTION_MARKER_RE = re.compile(r'^([a-e])\)\s*', re.IGNORECASE)
+MAX_OPTIONS = 5  # ISTQB Foundation nunca ofrece más de 5 alternativas (A-E)
 
 
 def split_enunciado_and_options(items):
-    """Escanea `items` desde el final hacia el principio, tomando como opción cada
-    línea de texto que empieza con un marcador de letra (a) a e)). Se detiene en
-    cuanto encuentra un ítem que no matchea (o que no es texto) — ese ítem y todos
-    los anteriores quedan como parte del enunciado. Devuelve (enunciado_items, options)."""
+    """Escanea `items` (tuplas (texto, es_opcion), u otros tipos como Table que
+    cortan el escaneo igual que es_opcion=False) desde el final hacia el principio,
+    tomando como opción cada ítem marcado como es_opcion=True. Se detiene en cuanto
+    encuentra un ítem que no lo es, o al alcanzar MAX_OPTIONS — esto evita que listas
+    numeradas dentro del propio enunciado (p.ej. los pasos de un escenario) se cuelen
+    como si fueran alternativas de respuesta, ya que las alternativas reales son
+    siempre las últimas del bloque. Devuelve (enunciado_items, options) con options
+    ya como texto plano."""
     remaining = list(items)
     opt_candidates = []
-    while remaining:
+    while remaining and len(opt_candidates) < MAX_OPTIONS:
         curr = remaining[-1]
-        if not isinstance(curr, str):
+        if not (isinstance(curr, tuple) and curr[1]):
             break
-        match = OPTION_MARKER_RE.match(curr.strip())
-        if not match:
-            break
-        clean_opt = OPTION_MARKER_RE.sub('', curr.strip(), count=1).strip()
-        opt_candidates.insert(0, clean_opt)
+        opt_candidates.insert(0, curr[0])
         remaining.pop()
     return remaining, opt_candidates
 ```
@@ -134,7 +156,7 @@ def split_enunciado_and_options(items):
 - [ ] **Step 4: Correr el test y verificar que pasa**
 
 Run: `py scripts/test_extract_all.py -v`
-Expected: `OK` (4 tests pasan)
+Expected: `OK` (5 tests pasan)
 
 - [ ] **Step 5: Commit**
 
@@ -147,25 +169,75 @@ git commit -m "feat: agregar split_enunciado_and_options con tests unitarios"
 
 ### Task 2: Conectar la función al parser real y soportar 5ª alternativa
 
+> **Corrección post-investigación (2026-08-04):** verificado directamente contra los 80 DOCX reales (ver spec, sección de Diseño). El cambio clave es que `parse_docx_questions` debe capturar la señal `numPr` de cada párrafo (marca de lista numerada de Word) en vez de asumir texto literal `a)`/`b)`, y la limpieza de la frase "Seleccione UNA/DOS opción(es)." debe aplicarse a CADA párrafo al acumularlo (no solo al último ítem), porque a veces esa frase viene pegada al texto de la última alternativa en el mismo párrafo, y el código anterior (`has_selector_last`) borraba el párrafo completo perdiendo esa alternativa real.
+
 **Files:**
 - Modify: `scripts/extract_all.py`
 
 **Interfaces:**
-- Consumes: `split_enunciado_and_options` de Task 1.
+- Consumes: `split_enunciado_and_options` de Task 1 (ahora opera sobre tuplas `(texto, es_opcion)`).
 - Produces: `process_question` ahora deja `q["opciones"]` con 4 o 5 elementos correctamente separados del enunciado. `compiled_questions` (dentro de `main()`) incluye la clave `"opcion_e"` (string o `None`) en cada dict.
 
-- [ ] **Step 1: Reemplazar el cuerpo de `process_question`**
+- [ ] **Step 1: Modificar `parse_docx_questions` para capturar `numPr` y limpiar la frase selectora en cada párrafo**
 
-Reemplazar la función completa (actualmente líneas 72-116) por:
+Reemplazar la función completa (agregar las dos constantes/función antes de ella, y modificar su cuerpo):
+
+```python
+NUMPR_TAG = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}numPr'
+SELECTOR_PHRASE_RE = re.compile(r'\s*Seleccione\s+(?:UNA|DOS)\s+opci(?:ó|o)n(?:es)?\.?\s*$', re.IGNORECASE)
+
+
+def is_option_paragraph(paragraph):
+    """Word marca las alternativas a), b), c)... con numeración automática de listas
+    (elemento numPr en el XML del párrafo) en vez de escribir la letra como texto
+    literal — .text nunca contiene la letra. Esta es la señal confiable para
+    distinguir una alternativa del enunciado."""
+    return paragraph._p.find('.//' + NUMPR_TAG) is not None
+
+
+def parse_docx_questions(path):
+    doc = docx.Document(path)
+    questions = []
+    current_q = None
+    q_start_re = re.compile(r'^Pregunta\s+(?:nº|no\.|nro\.?)\s*(\d+)', re.IGNORECASE)
+    accumulated_items = []
+
+    for item in iter_block_items(doc):
+        if isinstance(item, Paragraph):
+            text = item.text.strip()
+            if not text:
+                continue
+            match = q_start_re.match(text)
+            if match:
+                if current_q:
+                    process_question(current_q, accumulated_items, questions)
+                    accumulated_items = []
+                current_q = {
+                    "num": match.group(1),
+                    "enunciado": "",
+                    "opciones": []
+                }
+            elif current_q:
+                clean_text = SELECTOR_PHRASE_RE.sub('', text).strip()
+                if clean_text:
+                    accumulated_items.append((clean_text, is_option_paragraph(item)))
+        elif isinstance(item, Table) and current_q:
+            accumulated_items.append(item)
+
+    if current_q:
+        process_question(current_q, accumulated_items, questions)
+
+    return questions
+```
+
+Nota importante: `SELECTOR_PHRASE_RE` corrige un bug que ya existía en el regex original (`opci(?:ó|o)nes?` exige una "e" después de la "n", por lo que NUNCA hacía match con el singular "opción" — solo con el plural "opciones"). El patrón corregido es `opci(?:ó|o)n(?:es)?`, que matchea tanto "opción" como "opciones".
+
+- [ ] **Step 2: Reemplazar el cuerpo de `process_question`**
 
 ```python
 def process_question(q, items, questions_list):
     if not items:
         return
-    last_item = items[-1]
-    has_selector_last = isinstance(last_item, str) and ("seleccione" in last_item.lower() and "opci" in last_item.lower())
-    if has_selector_last:
-        items.pop()
 
     options = []
     enunciado_parts = []
@@ -177,16 +249,11 @@ def process_question(q, items, questions_list):
             clean_opt = re.sub(r'^[a-e]\)\s*', '', row_text, flags=re.IGNORECASE).strip()
             options.append(clean_opt)
     else:
-        if items and isinstance(items[-1], str):
-            last_p = items[-1]
-            clean_last = re.sub(r'\s*Seleccione\s+(?:UNA|DOS)\s+opci(?:ó|o)nes?\.?$', '', last_p, flags=re.IGNORECASE).strip()
-            items[-1] = clean_last
-
         items, options = split_enunciado_and_options(items)
 
     for item in items:
-        if isinstance(item, str):
-            enunciado_parts.append(item)
+        if isinstance(item, tuple):
+            enunciado_parts.append(item[0])
         elif isinstance(item, Table):
             enunciado_parts.append(format_table_as_text(item))
 
@@ -195,9 +262,9 @@ def process_question(q, items, questions_list):
     questions_list.append(q)
 ```
 
-Nota: el único cambio en la rama de `Table` es el regex `[a-d]` → `[a-e]`; el resto es igual a hoy.
+Nota: la rama de `Table` sigue igual que hoy salvo el regex `[a-d]` → `[a-e]` — ahí las alternativas SÍ tienen el prefijo literal `a)`/`b)`/etc. dentro de cada celda (confirmado inspeccionando la pregunta 21 del Examen C), a diferencia de los párrafos normales. Ya no existe `has_selector_last`: la limpieza de "Seleccione UNA/DOS opción(es)." ahora ocurre en `parse_docx_questions` (Step 1), aplicada a cada párrafo, no solo al último.
 
-- [ ] **Step 2: Actualizar la compilación de resultados para Exam C**
+- [ ] **Step 3: Actualizar la compilación de resultados para Exam C**
 
 En `main()`, reemplazar el bloque del Exam C (actualmente):
 
@@ -245,9 +312,10 @@ Reemplazar el bloque equivalente de `questions_d` con la misma estructura (mismo
 - [ ] **Step 4: Correr el script completo contra los archivos reales**
 
 Run: `cd simulador-istq && py scripts/extract_all.py`
-Expected: imprime `Exam C: Parsed N questions...` y `Exam D: Parsed M questions...`, sin excepciones. Un examen ISTQB Foundation estándar tiene 40 preguntas — si N o M no es 40, cuenta manualmente las preguntas en el DOCX correspondiente (`2. Preguntas - C.docx` / `3. Preguntas - D.docx`) para confirmar si son menos en la fuente o si el parser descartó alguna. Anota si aparece alguna línea `ADVERTENCIA:` (indicaría una pregunta con menos de 4 opciones detectadas — investigar esa pregunta puntual en el DOCX original antes de continuar).
 
-- [ ] **Step 5: Verificar manualmente el caso conocido del bug**
+Expected (verificado de antemano contra los DOCX reales, ver spec): `Exam C: Parsed 40 questions...` y `Exam D: Parsed 40 questions...`. Debe aparecer **exactamente una** línea `ADVERTENCIA: Examen D Pregunta 29 descartada, solo se detectaron 2 opciones` — es un caso conocido y aceptado (una alternativa tan larga que Word la partió en varios párrafos y solo el primero conserva la marca de lista; ver spec, sección de Diseño). Si aparece cualquier OTRA línea `ADVERTENCIA:` además de esa, o si los conteos de "Parsed" no son 40 y 40, DETENTE y reporta como concern — no continúes asumiendo que está bien.
+
+- [ ] **Step 5: Verificar manualmente el caso conocido del bug y los conteos finales**
 
 Run:
 ```bash
@@ -257,21 +325,24 @@ const q = data.find(q => q.enunciado.includes('objetivo típico de una prueba'))
 console.log(JSON.stringify(q, null, 2));
 "
 ```
-Expected: `enunciado` es `"¿Cuál de los siguientes es un objetivo típico de una prueba?"`, y `opcion_a` es `"Validación del cumplimiento de los requisitos documentados"` (ya NO el enunciado). Confirma también que el conteo de `enunciado` vacíos bajó a 0:
+Expected: `enunciado` es `"¿Cuál de los siguientes es un objetivo típico de una prueba?"`, y `opcion_a` es `"Validación del cumplimiento de los requisitos documentados"` (ya NO el enunciado).
+
+Run:
 ```bash
 node -e "
 const data = require('./src/app/preguntas.json');
+console.log('total:', data.length);
 console.log('vacios:', data.filter(q => !q.enunciado || !q.enunciado.trim()).length);
 console.log('con opcion_e:', data.filter(q => q.opcion_e).length);
 "
 ```
-Expected: `vacios: 0`, `con opcion_e: 4` (o el número real de preguntas de 5 alternativas detectadas).
+Expected: `total: 79` (40 de Exam C + 39 de Exam D, la pregunta 29 de D queda excluida), `vacios: 0`, `con opcion_e: 5` (1 en Exam C + 4 en Exam D).
 
 - [ ] **Step 6: Commit**
 
 ```bash
 git add scripts/extract_all.py src/app/preguntas.json
-git commit -m "fix: separar enunciado de opciones por marcador de letra, soportar 5ta alternativa"
+git commit -m "fix: separar enunciado de opciones usando la marca de lista de Word (numPr), soportar 5ta alternativa"
 ```
 
 ---
@@ -367,7 +438,7 @@ def validate_questions(compiled_questions):
 - [ ] **Step 4: Correr los tests y verificar que pasan**
 
 Run: `py scripts/test_extract_all.py -v`
-Expected: `OK` (8 tests en total pasan)
+Expected: `OK` (9 tests en total pasan: 5 de `TestSplitEnunciadoAndOptions` + 4 de `TestValidateQuestions`)
 
 - [ ] **Step 5: Integrar la validación en `main()`**
 
@@ -385,7 +456,7 @@ En `scripts/extract_all.py`, justo antes del bloque `# Output to preguntas.json`
 - [ ] **Step 6: Correr el script completo end-to-end**
 
 Run: `py scripts/extract_all.py`
-Expected: `Successfully compiled and saved N questions to ...` sin bloque de errores de validación. Si aparecen errores, investigar la pregunta señalada en el DOCX/PDF original y ajustar `split_enunciado_and_options` o los datos fuente según corresponda antes de continuar a la Task 4.
+Expected: `Successfully compiled and saved 79 questions to ...` sin bloque de errores de validación (la pregunta 29 de Examen D ya quedó excluida antes de llegar al validador, con su `ADVERTENCIA` de la Task 2 — el validador solo ve las 79 preguntas que sí tienen 4+ opciones, así que debería reportar 0 errores). Si el validador SÍ reporta errores sobre alguna de esas 79, investiga la pregunta señalada en el DOCX original y ajusta `split_enunciado_and_options` según corresponda antes de continuar a la Task 4.
 
 - [ ] **Step 7: Commit**
 
