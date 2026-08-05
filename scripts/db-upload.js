@@ -30,6 +30,8 @@ async function main() {
   const { error: deleteError } = await supabase.from("preguntas").delete().neq("id", "00000000-0000-0000-0000-000000000000");
   if (deleteError) {
     console.error("Error al limpiar la tabla preguntas:", deleteError);
+    process.exitCode = 1;
+    return;
   } else {
     console.log("Tabla 'preguntas' limpiada con éxito.");
   }
@@ -56,6 +58,7 @@ async function main() {
 
     if (insertError) {
       console.error(`Error al insertar lote ${i / batchSize + 1}:`, insertError);
+      process.exitCode = 1;
     } else {
       console.log(`Lote ${i / batchSize + 1} insertado con éxito (${batch.length} preguntas).`);
     }

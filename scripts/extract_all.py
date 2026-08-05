@@ -141,6 +141,9 @@ def validate_questions(compiled_questions):
         if not q.get("enunciado") or len(q["enunciado"].strip()) < 10:
             errors.append(f"{label}: enunciado vacío o demasiado corto")
 
+        if not q.get("respuesta_correcta", "").strip():
+            errors.append(f"{label}: respuesta_correcta está vacío")
+
         respuestas = [r.strip().upper() for r in q.get("respuesta_correcta", "").split(",") if r.strip()]
         for letra in respuestas:
             field = opt_fields.get(letra)
@@ -274,6 +277,23 @@ def main():
             })
         else:
             print(f"ADVERTENCIA: Examen D Pregunta {num} descartada, solo se detectaron {len(q['opciones'])} opciones")
+
+    # Guarda agregada de seguridad: hoy se pierde 1 pregunta conocida (Examen D,
+    # pregunta 29, advertencia intencional). Si un cambio en la detección de
+    # opciones (p.ej. is_option_paragraph dejara de matchear) hiciera que se
+    # descarten muchas más preguntas de las esperadas, abortamos ruidosamente en
+    # vez de escribir un preguntas.json vacío o casi vacío con exit code 0 (que
+    # db-upload.js subiría igual, vaciando la producción).
+    total_parsed = len(questions_c) + len(questions_d)
+    min_expected_compiled = total_parsed - 2
+    if len(compiled_questions) < min_expected_compiled:
+        print(
+            f"\nERROR: se compilaron solo {len(compiled_questions)} preguntas de "
+            f"{total_parsed} parseadas (se esperaba perder a lo sumo 2, hoy se "
+            f"pierde 1 conocida). Esto indica un fallo catastrófico en la "
+            f"detección de opciones. No se escribirá preguntas.json."
+        )
+        sys.exit(1)
 
     validation_errors = validate_questions(compiled_questions)
     if validation_errors:

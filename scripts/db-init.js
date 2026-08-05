@@ -53,6 +53,7 @@ async function main() {
 
   } catch (err) {
     console.error("Error al inicializar la base de datos:", err);
+    process.exitCode = 1;
   } finally {
     await client.end();
   }

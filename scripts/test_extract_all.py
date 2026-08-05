@@ -115,6 +115,13 @@ class TestValidateQuestions(unittest.TestCase):
         errors = validate_questions([q])
         self.assertEqual(errors, [])
 
+    def test_empty_respuesta_correcta_is_flagged(self):
+        # Caso real: si respuesta_correcta queda vacío, el loop de letras no
+        # itera y, sin este chequeo dedicado, no se reporta ningún error.
+        errors = validate_questions([self._valid_question(respuesta_correcta="")])
+        self.assertEqual(len(errors), 1)
+        self.assertIn("respuesta_correcta", errors[0])
+
 
 if __name__ == "__main__":
     unittest.main()
