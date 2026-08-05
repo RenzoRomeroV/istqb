@@ -37,13 +37,25 @@ def format_table_as_text(table):
         lines.append(" | ".join(unique_cells))
     return "\n".join(lines)
 
+NUMPR_TAG = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}numPr'
+SELECTOR_PHRASE_RE = re.compile(r'\s*Seleccione\s+(?:UNA|DOS)\s+opci(?:ó|o)n(?:es)?\.?\s*$', re.IGNORECASE)
+
+
+def is_option_paragraph(paragraph):
+    """Word marca las alternativas a), b), c)... con numeración automática de listas
+    (elemento numPr en el XML del párrafo) en vez de escribir la letra como texto
+    literal — .text nunca contiene la letra. Esta es la señal confiable para
+    distinguir una alternativa del enunciado."""
+    return paragraph._p.find('.//' + NUMPR_TAG) is not None
+
+
 def parse_docx_questions(path):
     doc = docx.Document(path)
     questions = []
     current_q = None
     q_start_re = re.compile(r'^Pregunta\s+(?:nº|no\.|nro\.?)\s*(\d+)', re.IGNORECASE)
     accumulated_items = []
-    
+
     for item in iter_block_items(doc):
         if isinstance(item, Paragraph):
             text = item.text.strip()
@@ -60,10 +72,12 @@ def parse_docx_questions(path):
                     "opciones": []
                 }
             elif current_q:
-                accumulated_items.append(text)
+                clean_text = SELECTOR_PHRASE_RE.sub('', text).strip()
+                if clean_text:
+                    accumulated_items.append((clean_text, is_option_paragraph(item)))
         elif isinstance(item, Table) and current_q:
             accumulated_items.append(item)
-            
+
     if current_q:
         process_question(current_q, accumulated_items, questions)
 
@@ -94,45 +108,25 @@ def split_enunciado_and_options(items):
 def process_question(q, items, questions_list):
     if not items:
         return
-    last_item = items[-1]
-    has_selector_last = isinstance(last_item, str) and ("seleccione" in last_item.lower() and "opci" in last_item.lower())
-    if has_selector_last:
-        items.pop()
-        
+
     options = []
     enunciado_parts = []
-    
+
     if items and isinstance(items[-1], Table):
         opt_table = items.pop()
         for row in opt_table.rows:
             row_text = " ".join([cell.text.strip() for cell in row.cells])
-            clean_opt = re.sub(r'^[a-d]\)\s*', '', row_text, flags=re.IGNORECASE).strip()
+            clean_opt = re.sub(r'^[a-e]\)\s*', '', row_text, flags=re.IGNORECASE).strip()
             options.append(clean_opt)
     else:
-        if items and isinstance(items[-1], str):
-            last_p = items[-1]
-            clean_last = re.sub(r'\s*Seleccione\s+(?:UNA|DOS)\s+opci(?:ó|o)nes?\.?$', '', last_p, flags=re.IGNORECASE).strip()
-            items[-1] = clean_last
-            
-        text_count = 0
-        opt_candidates = []
-        idx = len(items) - 1
-        while idx >= 0 and text_count < 4:
-            curr = items[idx]
-            if isinstance(curr, str):
-                clean_opt = re.sub(r'^[a-d]\)\s*', '', curr, flags=re.IGNORECASE).strip()
-                opt_candidates.insert(0, clean_opt)
-                text_count += 1
-                items.pop(idx)
-            idx -= 1
-        options = opt_candidates
+        items, options = split_enunciado_and_options(items)
 
     for item in items:
-        if isinstance(item, str):
-            enunciado_parts.append(item)
+        if isinstance(item, tuple):
+            enunciado_parts.append(item[0])
         elif isinstance(item, Table):
             enunciado_parts.append(format_table_as_text(item))
-            
+
     q["enunciado"] = "\n".join(enunciado_parts)
     q["opciones"] = options
     questions_list.append(q)
@@ -222,18 +216,21 @@ def main():
     print(f"Exam C: Parsed {len(questions_c)} questions, {len(answers_c)} answers, {len(explanations_c)} explanations")
     for q in questions_c:
         num = q["num"]
-        if len(q["opciones"]) == 4:
+        if len(q["opciones"]) >= 4:
             compiled_questions.append({
                 "enunciado": q["enunciado"],
                 "opcion_a": q["opciones"][0],
                 "opcion_b": q["opciones"][1],
                 "opcion_c": q["opciones"][2],
                 "opcion_d": q["opciones"][3],
+                "opcion_e": q["opciones"][4] if len(q["opciones"]) >= 5 else None,
                 "respuesta_correcta": answers_c.get(num, ""),
                 "explicacion": explanations_c.get(num, ""),
                 "modelo_examen": "C"
             })
-            
+        else:
+            print(f"ADVERTENCIA: Examen C Pregunta {num} descartada, solo se detectaron {len(q['opciones'])} opciones")
+
     # 2. Parse Exam D
     questions_d = parse_docx_questions(os.path.join(simulacros_dir, "3. Preguntas - D.docx"))
     answers_d, explanations_d = parse_pdf_answers(os.path.join(simulacros_dir, "3.1 Respuestas - D.pdf"))
@@ -241,18 +238,21 @@ def main():
     print(f"Exam D: Parsed {len(questions_d)} questions, {len(answers_d)} answers, {len(explanations_d)} explanations")
     for q in questions_d:
         num = q["num"]
-        if len(q["opciones"]) == 4:
+        if len(q["opciones"]) >= 4:
             compiled_questions.append({
                 "enunciado": q["enunciado"],
                 "opcion_a": q["opciones"][0],
                 "opcion_b": q["opciones"][1],
                 "opcion_c": q["opciones"][2],
                 "opcion_d": q["opciones"][3],
+                "opcion_e": q["opciones"][4] if len(q["opciones"]) >= 5 else None,
                 "respuesta_correcta": answers_d.get(num, ""),
                 "explicacion": explanations_d.get(num, ""),
                 "modelo_examen": "D"
             })
-            
+        else:
+            print(f"ADVERTENCIA: Examen D Pregunta {num} descartada, solo se detectaron {len(q['opciones'])} opciones")
+
     # Output to preguntas.json
     output_path = r"c:\Users\Admin\Desktop\Proyect-ISTQ\simulador-istq\src\app\preguntas.json"
     with open(output_path, "w", encoding="utf-8") as f:
