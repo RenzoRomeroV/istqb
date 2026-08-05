@@ -18,7 +18,7 @@ export async function GET() {
 
     // Obtener todas las preguntas de la base de datos
     const res = await client.query(`
-      SELECT id, enunciado, opcion_a, opcion_b, opcion_c, opcion_d, respuesta_correcta, explicacion, modelo_examen
+      SELECT id, enunciado, opcion_a, opcion_b, opcion_c, opcion_d, opcion_e, respuesta_correcta, explicacion, modelo_examen
       FROM preguntas
       ORDER BY modelo_examen ASC, id ASC;
     `);

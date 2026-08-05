@@ -29,14 +29,14 @@ export async function GET(request: Request) {
 
     // Búsqueda de texto completo con ranking de relevancia
     const sql = `
-      SELECT id, enunciado, opcion_a, opcion_b, opcion_c, opcion_d, respuesta_correcta, explicacion, modelo_examen,
+      SELECT id, enunciado, opcion_a, opcion_b, opcion_c, opcion_d, opcion_e, respuesta_correcta, explicacion, modelo_examen,
              ts_rank(
-               to_tsvector('spanish', enunciado || ' ' || opcion_a || ' ' || opcion_b || ' ' || opcion_c || ' ' || opcion_d), 
+               to_tsvector('spanish', enunciado || ' ' || opcion_a || ' ' || opcion_b || ' ' || opcion_c || ' ' || opcion_d || ' ' || COALESCE(opcion_e, '')),
                query
              ) as rank
-      FROM preguntas, 
+      FROM preguntas,
            plainto_tsquery('spanish', $1) query
-      WHERE to_tsvector('spanish', enunciado || ' ' || opcion_a || ' ' || opcion_b || ' ' || opcion_c || ' ' || opcion_d) @@ query
+      WHERE to_tsvector('spanish', enunciado || ' ' || opcion_a || ' ' || opcion_b || ' ' || opcion_c || ' ' || opcion_d || ' ' || COALESCE(opcion_e, '')) @@ query
       ORDER BY rank DESC
       LIMIT 1;
     `;
@@ -62,6 +62,7 @@ export async function GET(request: Request) {
           opcion_b: match.opcion_b,
           opcion_c: match.opcion_c,
           opcion_d: match.opcion_d,
+          opcion_e: match.opcion_e,
           respuesta_correcta: match.respuesta_correcta,
           explicacion: match.explicacion,
           modelo_examen: match.modelo_examen
