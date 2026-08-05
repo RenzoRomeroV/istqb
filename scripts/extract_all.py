@@ -69,25 +69,25 @@ def parse_docx_questions(path):
 
     return questions
 
-OPTION_MARKER_RE = re.compile(r'^([a-e])\)\s*', re.IGNORECASE)
+MAX_OPTIONS = 5  # ISTQB Foundation nunca ofrece más de 5 alternativas (A-E)
 
 
 def split_enunciado_and_options(items):
-    """Escanea `items` desde el final hacia el principio, tomando como opción cada
-    línea de texto que empieza con un marcador de letra (a) a e)). Se detiene en
-    cuanto encuentra un ítem que no matchea (o que no es texto) — ese ítem y todos
-    los anteriores quedan como parte del enunciado. Devuelve (enunciado_items, options)."""
+    """Escanea `items` (tuplas (texto, es_opcion), u otros tipos como Table que
+    cortan el escaneo igual que es_opcion=False) desde el final hacia el principio,
+    tomando como opción cada ítem marcado como es_opcion=True. Se detiene en cuanto
+    encuentra un ítem que no lo es, o al alcanzar MAX_OPTIONS — esto evita que listas
+    numeradas dentro del propio enunciado (p.ej. los pasos de un escenario) se cuelen
+    como si fueran alternativas de respuesta, ya que las alternativas reales son
+    siempre las últimas del bloque. Devuelve (enunciado_items, options) con options
+    ya como texto plano."""
     remaining = list(items)
     opt_candidates = []
-    while remaining:
+    while remaining and len(opt_candidates) < MAX_OPTIONS:
         curr = remaining[-1]
-        if not isinstance(curr, str):
+        if not (isinstance(curr, tuple) and curr[1]):
             break
-        match = OPTION_MARKER_RE.match(curr.strip())
-        if not match:
-            break
-        clean_opt = OPTION_MARKER_RE.sub('', curr.strip(), count=1).strip()
-        opt_candidates.insert(0, clean_opt)
+        opt_candidates.insert(0, curr[0])
         remaining.pop()
     return remaining, opt_candidates
 
