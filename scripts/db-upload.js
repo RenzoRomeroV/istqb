@@ -46,6 +46,7 @@ async function main() {
       opcion_b: q.opcion_b,
       opcion_c: q.opcion_c,
       opcion_d: q.opcion_d,
+      opcion_e: q.opcion_e || null,
       respuesta_correcta: q.respuesta_correcta,
       explicacion: q.explicacion,
       modelo_examen: q.modelo_examen
