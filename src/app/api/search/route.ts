@@ -1,6 +1,41 @@
 import { NextResponse } from "next/server";
 import { Client } from "pg";
 
+// Palabras que aparecen en casi cualquier pregunta y no ayudan a identificarla
+const STOPWORDS = new Set([
+  "cual", "cuales", "según", "durante", "opcion", "opción", "opciones",
+  "para", "como", "cómo", "este", "esta", "esto", "estos", "estas",
+  "desde", "hasta", "entre", "sobre", "cuando", "cuándo", "donde", "dónde",
+  "porque", "respuesta", "pregunta", "siguiente", "siguientes",
+  "mejor", "describe", "describen", "utiliza", "utilizan", "istqb", "foundation"
+]);
+
+function stripAccents(text: string): string {
+  return text.normalize("NFD").replace(new RegExp("[\\u0300-\\u036f]", "g"), "");
+}
+
+function extractKeywords(text: string): string[] {
+  return Array.from(new Set(
+    text
+      .toLowerCase()
+      .split(/[^a-zñáéíóúü0-9]+/i)
+      .filter((w) => w.length > 3 && !STOPWORDS.has(stripAccents(w)))
+  ));
+}
+
+type PreguntaRow = {
+  id: string;
+  enunciado: string;
+  opcion_a: string;
+  opcion_b: string;
+  opcion_c: string;
+  opcion_d: string;
+  opcion_e: string | null;
+  respuesta_correcta: string;
+  explicacion: string;
+  modelo_examen: string;
+};
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const q = searchParams.get("q");
@@ -24,48 +59,64 @@ export async function GET(request: Request) {
   try {
     await client.connect();
 
-    // Limpiamos la query del usuario para que sea apta para plainto_tsquery
     const cleanQuery = q.trim();
-
-    // Búsqueda de texto completo con ranking de relevancia
-    const sql = `
-      SELECT id, enunciado, opcion_a, opcion_b, opcion_c, opcion_d, opcion_e, respuesta_correcta, explicacion, modelo_examen,
-             ts_rank(
-               to_tsvector('spanish', enunciado || ' ' || opcion_a || ' ' || opcion_b || ' ' || opcion_c || ' ' || opcion_d || ' ' || COALESCE(opcion_e, '')),
-               query
-             ) as rank
-      FROM preguntas,
-           plainto_tsquery('spanish', $1) query
-      WHERE to_tsvector('spanish', enunciado || ' ' || opcion_a || ' ' || opcion_b || ' ' || opcion_c || ' ' || opcion_d || ' ' || COALESCE(opcion_e, '')) @@ query
-      ORDER BY rank DESC
-      LIMIT 1;
-    `;
-
-    const res = await client.query(sql, [cleanQuery]);
+    const keywords = extractKeywords(cleanQuery);
 
     let dbMatchFound = false;
     let matchData: any = null;
     let confidenceVal = 0;
 
-    if (res.rows.length > 0) {
-      const match = res.rows[0];
-      const rankVal = parseFloat(match.rank);
-      
-      // Si la coincidencia es válida, la tomamos
-      if (rankVal >= 0.05) {
+    if (keywords.length > 0) {
+      // Unimos las palabras clave con OR: ninguna palabra mal transcrita anula la búsqueda.
+      // Traemos varios candidatos por ranking y luego confirmamos el mejor por coincidencia real.
+      const orQuery = keywords.join(" | ");
+
+      const sql = `
+        SELECT id, enunciado, opcion_a, opcion_b, opcion_c, opcion_d, opcion_e, respuesta_correcta, explicacion, modelo_examen,
+               ts_rank(
+                 to_tsvector('spanish', enunciado || ' ' || opcion_a || ' ' || opcion_b || ' ' || opcion_c || ' ' || opcion_d || ' ' || COALESCE(opcion_e, '')),
+                 query
+               ) as rank
+        FROM preguntas,
+             to_tsquery('spanish', $1) query
+        WHERE to_tsvector('spanish', enunciado || ' ' || opcion_a || ' ' || opcion_b || ' ' || opcion_c || ' ' || opcion_d || ' ' || COALESCE(opcion_e, '')) @@ query
+        ORDER BY rank DESC
+        LIMIT 5;
+      `;
+
+      const res = await client.query<PreguntaRow>(sql, [orQuery]);
+
+      let bestMatch: PreguntaRow | null = null;
+      let bestOverlap = 0;
+
+      for (const row of res.rows) {
+        const rowText = stripAccents(
+          `${row.enunciado} ${row.opcion_a} ${row.opcion_b} ${row.opcion_c} ${row.opcion_d} ${row.opcion_e || ""}`.toLowerCase()
+        );
+        const hits = keywords.filter((k) => rowText.includes(stripAccents(k))).length;
+        const overlap = hits / keywords.length;
+
+        if (overlap > bestOverlap) {
+          bestOverlap = overlap;
+          bestMatch = row;
+        }
+      }
+
+      // Exigimos al menos 50% de las palabras clave para no aceptar coincidencias débiles
+      if (bestMatch && bestOverlap >= 0.5) {
         dbMatchFound = true;
-        confidenceVal = Math.min(Math.round(rankVal * 100) + 40, 100);
+        confidenceVal = Math.round(bestOverlap * 100);
         matchData = {
-          id: match.id,
-          enunciado: match.enunciado,
-          opcion_a: match.opcion_a,
-          opcion_b: match.opcion_b,
-          opcion_c: match.opcion_c,
-          opcion_d: match.opcion_d,
-          opcion_e: match.opcion_e,
-          respuesta_correcta: match.respuesta_correcta,
-          explicacion: match.explicacion,
-          modelo_examen: match.modelo_examen
+          id: bestMatch.id,
+          enunciado: bestMatch.enunciado,
+          opcion_a: bestMatch.opcion_a,
+          opcion_b: bestMatch.opcion_b,
+          opcion_c: bestMatch.opcion_c,
+          opcion_d: bestMatch.opcion_d,
+          opcion_e: bestMatch.opcion_e,
+          respuesta_correcta: bestMatch.respuesta_correcta,
+          explicacion: bestMatch.explicacion,
+          modelo_examen: bestMatch.modelo_examen
         };
       }
     }
