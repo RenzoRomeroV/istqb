@@ -51,6 +51,25 @@ async function main() {
     `);
     console.log("Índice de búsqueda por texto completo (FTS) en español configurado (incluye opcion_e).");
 
+    // 3. Crear tabla de fragmentos del temario oficial (para anclar el respaldo de IA)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS temario_chunks (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        fuente TEXT NOT NULL,
+        orden INTEGER NOT NULL,
+        contenido TEXT NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    console.log("Tabla 'temario_chunks' creada o ya existente.");
+
+    await client.query(`DROP INDEX IF EXISTS temario_chunks_fts_idx;`);
+    await client.query(`
+      CREATE INDEX temario_chunks_fts_idx ON temario_chunks
+      USING gin(to_tsvector('spanish', contenido));
+    `);
+    console.log("Índice de búsqueda por texto completo (FTS) en español configurado para 'temario_chunks'.");
+
   } catch (err) {
     console.error("Error al inicializar la base de datos:", err);
     process.exitCode = 1;

@@ -36,6 +36,44 @@ type PreguntaRow = {
   modelo_examen: string;
 };
 
+type TemarioChunkRow = {
+  fuente: string;
+  contenido: string;
+};
+
+// Busca los fragmentos del temario oficial más relevantes para anclar la respuesta de la IA,
+// usando la misma técnica de OR + coincidencia de palabras clave que la búsqueda de preguntas.
+async function retrieveTemarioContext(client: Client, keywords: string[]): Promise<string> {
+  if (keywords.length === 0) return "";
+
+  const orQuery = keywords.join(" | ");
+
+  const sql = `
+    SELECT fuente, contenido
+    FROM temario_chunks,
+         to_tsquery('spanish', $1) query
+    WHERE to_tsvector('spanish', contenido) @@ query
+    ORDER BY ts_rank(to_tsvector('spanish', contenido), query) DESC
+    LIMIT 10;
+  `;
+
+  const res = await client.query<TemarioChunkRow>(sql, [orQuery]);
+
+  const scored = res.rows
+    .map((row) => {
+      const rowText = stripAccents(row.contenido.toLowerCase());
+      const hits = keywords.filter((k) => rowText.includes(stripAccents(k))).length;
+      return { ...row, overlap: hits / keywords.length };
+    })
+    .filter((c) => c.overlap > 0)
+    .sort((a, b) => b.overlap - a.overlap);
+
+  return scored
+    .slice(0, 3)
+    .map((c) => `[Fuente: ${c.fuente}]\n${c.contenido}`)
+    .join("\n\n---\n\n");
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const q = searchParams.get("q");
@@ -131,6 +169,27 @@ export async function GET(request: Request) {
     // SI NO SE ENCONTRÓ EN BASE DE DATOS, RESPALDAR CON IA (GROQ) SI SE PROPORCIONÓ UNA CLAVE
     if (groqKey) {
       try {
+        const temarioContext = await retrieveTemarioContext(client, keywords);
+
+        const systemPrompt = `Eres un asistente experto en el examen de certificación ISTQB Foundation Level v4.0. Tu trabajo es analizar la pregunta de examen (dictada por voz o escrita, puede contener errores de transcripción) y sus opciones asociadas, e identificar cuál es la respuesta correcta.
+
+${temarioContext
+            ? `Basa tu respuesta PRINCIPALMENTE en los siguientes extractos del temario oficial de ISTQB. Si contradicen tu conocimiento general, prioriza siempre el extracto oficial:\n\n${temarioContext}\n\nSi los extractos no alcanzan para responder con certeza, usa tu mejor criterio experto en ISTQB además de ellos.`
+            : "No se encontró un extracto específico del temario oficial para esta pregunta. Respóndela con tu mejor criterio experto en ISTQB Foundation Level v4.0."
+          }
+
+Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin texto fuera del JSON, comillas dobles correctas). La pregunta puede tener 4 o 5 alternativas y puede tener más de una respuesta correcta:
+{
+  "enunciado": "(enunciado corregido y limpio de la pregunta)",
+  "opcion_a": "(texto limpio de la opción A)",
+  "opcion_b": "(texto limpio de la opción B)",
+  "opcion_c": "(texto limpio de la opción C)",
+  "opcion_d": "(texto limpio de la opción D)",
+  "opcion_e": "(texto limpio de la opción E, o null si la pregunta solo tiene 4 opciones)",
+  "respuesta_correcta": "(una o más letras en mayúscula separadas por coma, ej. \\"B\\" o \\"B,E\\")",
+  "explicacion": "(justificación breve de por qué esa opción es correcta y las otras no)"
+}`;
+
         const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: {
@@ -138,16 +197,10 @@ export async function GET(request: Request) {
             "Authorization": `Bearer ${groqKey}`
           },
           body: JSON.stringify({
-            model: "llama-3.1-8b-instant",
+            model: "llama-3.3-70b-versatile",
             messages: [
-              {
-                role: "system",
-                content: "Eres un asistente experto en el examen de certificación ISTQB Foundation Level v4.0. Tu trabajo es analizar la pregunta de examen dictada por voz (que puede contener errores de transcripción o fonética) y sus opciones asociadas. Identifica cuál es la respuesta correcta basándote en el temario oficial del ISTQB. Debes responder EXCLUSIVAMENTE en formato JSON con la siguiente estructura (no agregues explicaciones fuera de ella, usa comillas dobles correctas):\n{\n  \"enunciado\": \"(enunciado corregido y limpio de la pregunta)\",\n  \"opcion_a\": \"(texto limpio de la opción A)\",\n  \"opcion_b\": \"(texto limpio de la opción B)\",\n  \"opcion_c\": \"(texto limpio de la opción C)\",\n  \"opcion_d\": \"(texto limpio de la opción D)\",\n  \"respuesta_correcta\": \"(A, B, C o D)\",\n  \"explicacion\": \"(justificación breve de por qué esa opción es correcta y las otras no)\"\n}"
-              },
-              {
-                role: "user",
-                content: `Pregunta dictada: ${cleanQuery}`
-              }
+              { role: "system", content: systemPrompt },
+              { role: "user", content: `Pregunta: ${cleanQuery}` }
             ],
             response_format: { type: "json_object" },
             temperature: 0.1
@@ -167,13 +220,16 @@ export async function GET(request: Request) {
                 opcion_b: parsed.opcion_b,
                 opcion_c: parsed.opcion_c,
                 opcion_d: parsed.opcion_d,
-                respuesta_correcta: parsed.respuesta_correcta.toUpperCase(),
+                opcion_e: parsed.opcion_e || null,
+                respuesta_correcta: String(parsed.respuesta_correcta).toUpperCase(),
                 explicacion: parsed.explicacion,
-                modelo_examen: "IA (Groq Llama 3)"
+                modelo_examen: temarioContext ? "IA anclada al temario oficial (Groq)" : "IA (Groq)"
               },
-              confidence: 98 // Confianza de IA
+              confidence: temarioContext ? 90 : 70
             });
           }
+        } else {
+          console.error("Groq API respondió con error:", await groqRes.text());
         }
       } catch (groqErr) {
         console.error("Groq Fallback Error:", groqErr);

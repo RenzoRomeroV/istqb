@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Mic, MicOff, BookOpen, CheckCircle2, Award, ShieldAlert, Sparkles, Volume2, VolumeX, HelpCircle, Database, Settings } from "lucide-react";
+import { Mic, MicOff, BookOpen, CheckCircle2, Award, ShieldAlert, Sparkles, Volume2, VolumeX, HelpCircle, Database, Settings, Type } from "lucide-react";
 
 // Mock de preguntas ISTQB para demostración inmediata
 const MOCK_PREGUNTAS = [
@@ -63,7 +63,7 @@ const MOCK_PREGUNTAS = [
 ];
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<"assistant" | "simulator" | "db">("assistant");
+  const [activeTab, setActiveTab] = useState<"assistant" | "write" | "simulator" | "db">("assistant");
 
   // DB Questions Bank
   const [dbQuestions, setDbQuestions] = useState<typeof MOCK_PREGUNTAS>(MOCK_PREGUNTAS);
@@ -77,6 +77,11 @@ export default function Home() {
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [showJustification, setShowJustification] = useState(false); // Oculto por defecto
   const [recognitionError, setRecognitionError] = useState("");
+
+  // Write Module States
+  const [typedText, setTypedText] = useState("");
+  const [isSearchingTyped, setIsSearchingTyped] = useState(false);
+  const [searchedTypedText, setSearchedTypedText] = useState("");
 
   // Simulator States
   const [simQuestions, setSimQuestions] = useState<typeof MOCK_PREGUNTAS>([]);
@@ -187,6 +192,77 @@ export default function Home() {
           }
           return <p key={idx} className="italic">"{line}"</p>;
         })}
+      </div>
+    );
+  };
+
+  // Tarjeta de respuesta encontrada, reutilizada por el Asistente de voz y el módulo Escribir
+  const renderAnswerCard = () => {
+    if (!matchedQuestion) return null;
+
+    return (
+      <div className="bg-gradient-to-b from-zinc-900 to-zinc-950 border border-emerald-500/30 rounded-2xl p-5 shadow-[0_4px_20px_rgba(16,185,129,0.05)] flex flex-col gap-4">
+        <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2.5">
+          <div className="flex items-center gap-2">
+            <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-emerald-500/20">
+              Coincidencia encontrada
+            </span>
+            <span className="text-zinc-500 text-xs">{confidence}% Confianza</span>
+          </div>
+          <HelpCircle className="w-4 h-4 text-zinc-400" />
+        </div>
+
+        <div>
+          <h3 className="font-semibold text-white text-sm leading-relaxed mb-3">
+            {matchedQuestion.enunciado}
+          </h3>
+
+          {/* Lista de Opciones */}
+          <div className="flex flex-col gap-2">
+            {(matchedQuestion.opcion_e ? ["A", "B", "C", "D", "E"] : ["A", "B", "C", "D"]).map((opt) => {
+              const text =
+                opt === "A" ? matchedQuestion.opcion_a :
+                  opt === "B" ? matchedQuestion.opcion_b :
+                    opt === "C" ? matchedQuestion.opcion_c :
+                      opt === "D" ? matchedQuestion.opcion_d : matchedQuestion.opcion_e;
+              const isCorrect = matchedQuestion.respuesta_correcta
+                .split(",")
+                .map(l => l.trim())
+                .includes(opt);
+
+              return (
+                <div
+                  key={opt}
+                  className={`flex items-start gap-2.5 p-3 rounded-xl border text-xs transition-all ${isCorrect
+                      ? "bg-emerald-950/30 border-emerald-500/50 text-emerald-100 shadow-[0_0_15px_rgba(16,185,129,0.03)]"
+                      : "bg-zinc-900/20 border-zinc-800/50 text-zinc-400"
+                    }`}
+                >
+                  <span className={`w-5 h-5 flex items-center justify-center rounded-md font-bold ${isCorrect ? "bg-emerald-500 text-zinc-950" : "bg-zinc-800 text-zinc-400"
+                    }`}>
+                    {opt}
+                  </span>
+                  <span className="flex-1 leading-relaxed">{text}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Explicación Justificación (Colapsable) */}
+        <div className="flex flex-col gap-1.5 mt-1">
+          <button
+            onClick={() => setShowJustification(!showJustification)}
+            className="self-start text-[10px] text-zinc-500 hover:text-zinc-300 underline font-medium transition-colors"
+          >
+            {showJustification ? "Ocultar justificación oficial" : "Ver justificación oficial"}
+          </button>
+          {showJustification && (
+            <div className="bg-zinc-900/60 border border-zinc-800 rounded-xl p-3 text-[11px] text-zinc-400 leading-relaxed">
+              {matchedQuestion.explicacion}
+            </div>
+          )}
+        </div>
       </div>
     );
   };
@@ -351,6 +427,22 @@ export default function Home() {
     }
   };
 
+  // Buscar la respuesta a partir del texto escrito a mano (módulo Escribir)
+  const handleTypedSearch = async () => {
+    const text = typedText.trim();
+    if (!text || isSearchingTyped) return;
+
+    setIsSearchingTyped(true);
+    setMatchedQuestion(null);
+    setSpokenText("");
+    setSearchedTypedText(text);
+    try {
+      await searchQuestion(text);
+    } finally {
+      setIsSearchingTyped(false);
+    }
+  };
+
   // Inicializar examen de simulacro
   const startSimulator = () => {
     // Mezclar preguntas de la base de datos
@@ -418,7 +510,7 @@ export default function Home() {
       <main className="flex-1 max-w-md w-full mx-auto px-4 py-6 flex flex-col gap-6">
 
         {/* Navigation Tabs */}
-        <div className="grid grid-cols-3 gap-1 bg-zinc-900 p-1 rounded-xl border border-zinc-800/80">
+        <div className="grid grid-cols-4 gap-1 bg-zinc-900 p-1 rounded-xl border border-zinc-800/80">
           <button
             onClick={() => setActiveTab("assistant")}
             className={`flex flex-col items-center gap-1 py-2 px-3 rounded-lg text-xs font-medium transition-all ${activeTab === "assistant"
@@ -428,6 +520,16 @@ export default function Home() {
           >
             <Mic className="w-4 h-4" />
             <span>Asistente</span>
+          </button>
+          <button
+            onClick={() => setActiveTab("write")}
+            className={`flex flex-col items-center gap-1 py-2 px-3 rounded-lg text-xs font-medium transition-all ${activeTab === "write"
+                ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md shadow-amber-600/10"
+                : "text-zinc-400 hover:text-white"
+              }`}
+          >
+            <Type className="w-4 h-4" />
+            <span>Escribir</span>
           </button>
           <button
             onClick={() => {
@@ -536,71 +638,7 @@ export default function Home() {
             )}
 
             {/* Answer Display Card */}
-            {matchedQuestion ? (
-              <div className="bg-gradient-to-b from-zinc-900 to-zinc-950 border border-emerald-500/30 rounded-2xl p-5 shadow-[0_4px_20px_rgba(16,185,129,0.05)] flex flex-col gap-4">
-                <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2.5">
-                  <div className="flex items-center gap-2">
-                    <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-emerald-500/20">
-                      Coincidencia encontrada
-                    </span>
-                    <span className="text-zinc-500 text-xs">{confidence}% Confianza</span>
-                  </div>
-                  <HelpCircle className="w-4 h-4 text-zinc-400" />
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-white text-sm leading-relaxed mb-3">
-                    {matchedQuestion.enunciado}
-                  </h3>
-
-                  {/* Lista de Opciones */}
-                  <div className="flex flex-col gap-2">
-                    {(matchedQuestion.opcion_e ? ["A", "B", "C", "D", "E"] : ["A", "B", "C", "D"]).map((opt) => {
-                      const text =
-                        opt === "A" ? matchedQuestion.opcion_a :
-                          opt === "B" ? matchedQuestion.opcion_b :
-                            opt === "C" ? matchedQuestion.opcion_c :
-                              opt === "D" ? matchedQuestion.opcion_d : matchedQuestion.opcion_e;
-                      const isCorrect = matchedQuestion.respuesta_correcta
-                        .split(",")
-                        .map(l => l.trim())
-                        .includes(opt);
-
-                      return (
-                        <div
-                          key={opt}
-                          className={`flex items-start gap-2.5 p-3 rounded-xl border text-xs transition-all ${isCorrect
-                              ? "bg-emerald-950/30 border-emerald-500/50 text-emerald-100 shadow-[0_0_15px_rgba(16,185,129,0.03)]"
-                              : "bg-zinc-900/20 border-zinc-800/50 text-zinc-400"
-                            }`}
-                        >
-                          <span className={`w-5 h-5 flex items-center justify-center rounded-md font-bold ${isCorrect ? "bg-emerald-500 text-zinc-950" : "bg-zinc-800 text-zinc-400"
-                            }`}>
-                            {opt}
-                          </span>
-                          <span className="flex-1 leading-relaxed">{text}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Explicación Justificación (Colapsable) */}
-                <div className="flex flex-col gap-1.5 mt-1">
-                  <button
-                    onClick={() => setShowJustification(!showJustification)}
-                    className="self-start text-[10px] text-zinc-500 hover:text-zinc-300 underline font-medium transition-colors"
-                  >
-                    {showJustification ? "Ocultar justificación oficial" : "Ver justificación oficial"}
-                  </button>
-                  {showJustification && (
-                    <div className="bg-zinc-900/60 border border-zinc-800 rounded-xl p-3 text-[11px] text-zinc-400 leading-relaxed">
-                      {matchedQuestion.explicacion}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ) : spokenText && (
+            {matchedQuestion ? renderAnswerCard() : spokenText && (
               <div className="bg-zinc-900/20 border border-zinc-800/60 rounded-2xl p-6 text-center text-zinc-400 text-xs flex flex-col items-center gap-2 py-10">
                 {isTranscribing ? (
                   <>
@@ -613,6 +651,48 @@ export default function Home() {
                     <span>No se encontró ninguna coincidencia exacta en el banco de preguntas. Intenta grabando de nuevo, dictando términos más específicos del ISTQB.</span>
                   </>
                 )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* --- VIEW 1.5: WRITE MODULE --- */}
+        {activeTab === "write" && (
+          <div className="flex-1 flex flex-col gap-5">
+            <div className="bg-zinc-900/50 border border-zinc-800/80 rounded-2xl p-6 flex flex-col gap-4">
+              <h2 className="text-sm font-semibold text-zinc-300">Escribe la pregunta y las alternativas</h2>
+              <textarea
+                value={typedText}
+                onChange={(e) => setTypedText(e.target.value)}
+                placeholder='Ej: la pregunta es... la A es... la B es... la C es... la D es...'
+                rows={6}
+                className="bg-zinc-950 border border-zinc-800 focus:border-amber-500 focus:outline-none rounded-xl px-3 py-2.5 text-xs text-white transition-colors resize-none"
+              />
+              <button
+                onClick={handleTypedSearch}
+                disabled={!typedText.trim() || isSearchingTyped}
+                className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 disabled:opacity-50 disabled:cursor-not-allowed text-zinc-950 rounded-xl text-xs font-bold transition-all"
+              >
+                {isSearchingTyped ? "Buscando..." : "Buscar respuesta"}
+              </button>
+
+              {recognitionError && (
+                <div className="bg-rose-950/40 border border-rose-900/60 p-3 rounded-xl text-xs text-rose-300 flex items-start gap-2 text-left">
+                  <ShieldAlert className="w-4 h-4 shrink-0 text-rose-400" />
+                  <span>{recognitionError}</span>
+                </div>
+              )}
+            </div>
+
+            {matchedQuestion ? renderAnswerCard() : isSearchingTyped ? (
+              <div className="bg-zinc-900/20 border border-zinc-800/60 rounded-2xl p-6 text-center text-zinc-400 text-xs flex flex-col items-center gap-2 py-10">
+                <Sparkles className="w-6 h-6 text-amber-500 animate-spin" />
+                <span>Buscando la pregunta...</span>
+              </div>
+            ) : searchedTypedText && (
+              <div className="bg-zinc-900/20 border border-zinc-800/60 rounded-2xl p-6 text-center text-zinc-400 text-xs flex flex-col items-center gap-2 py-10">
+                <ShieldAlert className="w-5 h-5 text-rose-500" />
+                <span>No se encontró ninguna coincidencia. Intenta con términos más específicos del ISTQB.</span>
               </div>
             )}
           </div>
