@@ -96,6 +96,7 @@ export default function Home() {
   const [supabaseUrl, setSupabaseUrl] = useState("");
   const [supabaseKey, setSupabaseKey] = useState("");
   const [groqApiKey, setGroqApiKey] = useState("");
+  const [geminiApiKey, setGeminiApiKey] = useState("");
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -121,6 +122,10 @@ export default function Home() {
       const savedGroqKey = localStorage.getItem("groq_api_key");
       if (savedGroqKey) {
         setGroqApiKey(savedGroqKey);
+      }
+      const savedGeminiKey = localStorage.getItem("gemini_api_key");
+      if (savedGeminiKey) {
+        setGeminiApiKey(savedGeminiKey);
       }
     }
   }, []);
@@ -273,10 +278,10 @@ export default function Home() {
 
     // Primero intentamos buscar en la base de datos de Supabase a través de nuestra API
     try {
-      const savedKey = typeof window !== "undefined" ? localStorage.getItem("groq_api_key") || "" : "";
+      const savedGeminiKey = typeof window !== "undefined" ? localStorage.getItem("gemini_api_key") || "" : "";
       const headers: Record<string, string> = {};
-      if (savedKey) {
-        headers["x-groq-api-key"] = savedKey;
+      if (savedGeminiKey) {
+        headers["x-gemini-api-key"] = savedGeminiKey;
       }
 
       const res = await fetch(`/api/search?q=${encodeURIComponent(text)}`, { headers });
@@ -889,15 +894,15 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Panel de Configuración de IA (Groq) */}
+            {/* Panel de Configuración de voz (Groq Whisper) */}
             <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-4">
               <div className="flex items-center gap-2 border-b border-zinc-800/80 pb-3">
-                <Sparkles className="w-5 h-5 text-amber-400" />
-                <h3 className="font-semibold text-white text-sm">Respaldo con IA (Groq)</h3>
+                <Mic className="w-5 h-5 text-amber-400" />
+                <h3 className="font-semibold text-white text-sm">Transcripción de Voz (Groq)</h3>
               </div>
 
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Si una pregunta no se encuentra en el banco de preguntas, el sistema utilizará Llama 3 para responderla en tiempo real. Genera una API Key gratuita en console.groq.com.
+                Esta clave se usa únicamente para convertir tu voz grabada en texto (Whisper). Genera una API Key gratuita en console.groq.com.
               </p>
 
               <div className="flex flex-col gap-3.5 mt-2">
@@ -925,7 +930,47 @@ export default function Home() {
                 }}
                 className="w-full mt-2 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 rounded-xl text-xs font-bold transition-all"
               >
-                Guardar Clave de IA
+                Guardar Clave de Groq
+              </button>
+            </div>
+
+            {/* Panel de Configuración de IA (Gemini + búsqueda web) */}
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-4">
+              <div className="flex items-center gap-2 border-b border-zinc-800/80 pb-3">
+                <Sparkles className="w-5 h-5 text-amber-400" />
+                <h3 className="font-semibold text-white text-sm">Respaldo Inteligente (Gemini)</h3>
+              </div>
+
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Si una pregunta no se encuentra en el banco de preguntas ni en el temario oficial cargado, el sistema usará Gemini con búsqueda en Google para analizarla y responder. Genera una API Key gratuita en aistudio.google.com.
+              </p>
+
+              <div className="flex flex-col gap-3.5 mt-2">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] uppercase font-bold tracking-wider text-zinc-400">Gemini API Key</label>
+                  <input
+                    type="password"
+                    value={geminiApiKey}
+                    onChange={(e) => setGeminiApiKey(e.target.value)}
+                    placeholder="AIzaSyxxxxxxxxxxxxxx"
+                    className="bg-zinc-950 border border-zinc-800 focus:border-amber-500 focus:outline-none rounded-xl px-3 py-2.5 text-xs text-white transition-colors"
+                  />
+                </div>
+              </div>
+
+              <button
+                onClick={() => {
+                  if (geminiApiKey.trim()) {
+                    localStorage.setItem("gemini_api_key", geminiApiKey.trim());
+                    alert("¡Clave de Gemini guardada exitosamente!");
+                  } else {
+                    localStorage.removeItem("gemini_api_key");
+                    alert("Clave de Gemini eliminada.");
+                  }
+                }}
+                className="w-full mt-2 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 rounded-xl text-xs font-bold transition-all"
+              >
+                Guardar Clave de Gemini
               </button>
             </div>
 

@@ -82,7 +82,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Query parameter 'q' is required" }, { status: 400 });
   }
 
-  const groqKey = request.headers.get("x-groq-api-key") || process.env.GROQ_API_KEY;
+  const geminiKey = request.headers.get("x-gemini-api-key") || process.env.GEMINI_API_KEY;
   const connectionString = process.env.DATABASE_URL;
 
   if (!connectionString) {
@@ -166,19 +166,19 @@ export async function GET(request: Request) {
       });
     }
 
-    // SI NO SE ENCONTRÓ EN BASE DE DATOS, RESPALDAR CON IA (GROQ) SI SE PROPORCIONÓ UNA CLAVE
-    if (groqKey) {
+    // SI NO SE ENCONTRÓ EN BASE DE DATOS, RESPALDAR CON IA (GEMINI + BÚSQUEDA WEB) SI SE PROPORCIONÓ UNA CLAVE
+    if (geminiKey) {
       try {
         const temarioContext = await retrieveTemarioContext(client, keywords);
 
         const systemPrompt = `Eres un asistente experto en el examen de certificación ISTQB Foundation Level v4.0. Tu trabajo es analizar la pregunta de examen (dictada por voz o escrita, puede contener errores de transcripción) y sus opciones asociadas, e identificar cuál es la respuesta correcta.
 
 ${temarioContext
-            ? `Basa tu respuesta PRINCIPALMENTE en los siguientes extractos del temario oficial de ISTQB. Si contradicen tu conocimiento general, prioriza siempre el extracto oficial:\n\n${temarioContext}\n\nSi los extractos no alcanzan para responder con certeza, usa tu mejor criterio experto en ISTQB además de ellos.`
-            : "No se encontró un extracto específico del temario oficial para esta pregunta. Respóndela con tu mejor criterio experto en ISTQB Foundation Level v4.0."
+            ? `Ancla tu respuesta PRINCIPALMENTE en los siguientes extractos del temario oficial de ISTQB. Si no alcanzan para responder con certeza, usa la búsqueda web para verificar contra fuentes oficiales de ISTQB antes de responder:\n\n${temarioContext}`
+            : "No se encontró un extracto específico del temario oficial cargado para esta pregunta. Usa la búsqueda web para encontrar y verificar la respuesta contra fuentes oficiales de ISTQB (istqb.org, sílabos oficiales) antes de responder."
           }
 
-Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin texto fuera del JSON, comillas dobles correctas). La pregunta puede tener 4 o 5 alternativas y puede tener más de una respuesta correcta:
+Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin texto ni markdown fuera del JSON, comillas dobles correctas). La pregunta puede tener 4 o 5 alternativas y puede tener más de una respuesta correcta:
 {
   "enunciado": "(enunciado corregido y limpio de la pregunta)",
   "opcion_a": "(texto limpio de la opción A)",
@@ -190,28 +190,32 @@ Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin t
   "explicacion": "(justificación breve de por qué esa opción es correcta y las otras no)"
 }`;
 
-        const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${groqKey}`
-          },
-          body: JSON.stringify({
-            model: "llama-3.3-70b-versatile",
-            messages: [
-              { role: "system", content: systemPrompt },
-              { role: "user", content: `Pregunta: ${cleanQuery}` }
-            ],
-            response_format: { type: "json_object" },
-            temperature: 0.1
-          })
-        });
+        const geminiRes = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              contents: [{ role: "user", parts: [{ text: `Pregunta: ${cleanQuery}` }] }],
+              tools: [{ google_search: {} }],
+              generationConfig: { temperature: 0.1 }
+            })
+          }
+        );
 
-        if (groqRes.ok) {
-          const groqData = await groqRes.json();
-          const contentStr = groqData.choices?.[0]?.message?.content;
+        if (geminiRes.ok) {
+          const geminiData = await geminiRes.json();
+          const contentStr: string | undefined = geminiData.candidates?.[0]?.content?.parts
+            ?.map((p: { text?: string }) => p.text)
+            .filter(Boolean)
+            .join("");
+
           if (contentStr) {
-            const parsed = JSON.parse(contentStr);
+            const cleanJson = contentStr.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/, "").trim();
+            const parsed = JSON.parse(cleanJson);
+            const usedSearch = Boolean(geminiData.candidates?.[0]?.groundingMetadata?.webSearchQueries?.length);
+
             return NextResponse.json({
               match: {
                 id: "ai-generated",
@@ -223,16 +227,20 @@ Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin t
                 opcion_e: parsed.opcion_e || null,
                 respuesta_correcta: String(parsed.respuesta_correcta).toUpperCase(),
                 explicacion: parsed.explicacion,
-                modelo_examen: temarioContext ? "IA anclada al temario oficial (Groq)" : "IA (Groq)"
+                modelo_examen: temarioContext
+                  ? "IA anclada al temario oficial (Gemini)"
+                  : usedSearch
+                    ? "IA con búsqueda web (Gemini)"
+                    : "IA (Gemini)"
               },
-              confidence: temarioContext ? 90 : 70
+              confidence: temarioContext ? 90 : usedSearch ? 80 : 65
             });
           }
         } else {
-          console.error("Groq API respondió con error:", await groqRes.text());
+          console.error("Gemini API respondió con error:", await geminiRes.text());
         }
-      } catch (groqErr) {
-        console.error("Groq Fallback Error:", groqErr);
+      } catch (geminiErr) {
+        console.error("Gemini Fallback Error:", geminiErr);
       }
     }
 
