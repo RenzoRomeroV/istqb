@@ -942,7 +942,7 @@ export default function Home() {
               </div>
 
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Si una pregunta no se encuentra en el banco de preguntas ni en el temario oficial cargado, el sistema usará Gemini con búsqueda en Google para analizarla y responder. Genera una API Key gratuita en aistudio.google.com.
+                Si una pregunta no se encuentra en el banco de preguntas, el sistema usará Gemini (con el temario oficial ya cargado) para analizarla y responder. Genera una API Key gratuita en aistudio.google.com.
               </p>
 
               <div className="flex flex-col gap-3.5 mt-2">

@@ -166,7 +166,12 @@ export async function GET(request: Request) {
       });
     }
 
-    // SI NO SE ENCONTRÓ EN BASE DE DATOS, RESPALDAR CON IA (GEMINI + BÚSQUEDA WEB) SI SE PROPORCIONÓ UNA CLAVE
+    // SI NO SE ENCONTRÓ EN BASE DE DATOS, RESPALDAR CON IA (GEMINI) SI SE PROPORCIONÓ UNA CLAVE
+    // Nota: la herramienta de búsqueda en Google (google_search) requiere facturación habilitada
+    // en el proyecto de Google Cloud/AI Studio; sin eso, la API devuelve 429 (cuota excedida) y
+    // rompe el fallback completo. Por eso no se incluye aquí — solo se usa el conocimiento del
+    // modelo más el temario oficial ya cargado. Si en el futuro se habilita facturación, se puede
+    // volver a agregar `tools: [{ google_search: {} }]` a la llamada.
     if (geminiKey) {
       try {
         const temarioContext = await retrieveTemarioContext(client, keywords);
@@ -174,8 +179,8 @@ export async function GET(request: Request) {
         const systemPrompt = `Eres un asistente experto en el examen de certificación ISTQB Foundation Level v4.0. Tu trabajo es analizar la pregunta de examen (dictada por voz o escrita, puede contener errores de transcripción) y sus opciones asociadas, e identificar cuál es la respuesta correcta.
 
 ${temarioContext
-            ? `Ancla tu respuesta PRINCIPALMENTE en los siguientes extractos del temario oficial de ISTQB. Si no alcanzan para responder con certeza, usa la búsqueda web para verificar contra fuentes oficiales de ISTQB antes de responder:\n\n${temarioContext}`
-            : "No se encontró un extracto específico del temario oficial cargado para esta pregunta. Usa la búsqueda web para encontrar y verificar la respuesta contra fuentes oficiales de ISTQB (istqb.org, sílabos oficiales) antes de responder."
+            ? `Ancla tu respuesta PRINCIPALMENTE en los siguientes extractos del temario oficial de ISTQB. Si no alcanzan para responder con certeza, usa tu mejor criterio experto en ISTQB Foundation Level v4.0 además de ellos:\n\n${temarioContext}`
+            : "No se encontró un extracto específico del temario oficial cargado para esta pregunta. Respóndela con tu mejor criterio experto en ISTQB Foundation Level v4.0."
           }
 
 Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin texto ni markdown fuera del JSON, comillas dobles correctas). La pregunta puede tener 4 o 5 alternativas y puede tener más de una respuesta correcta:
@@ -191,14 +196,13 @@ Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin t
 }`;
 
         const geminiRes = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${geminiKey}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               systemInstruction: { parts: [{ text: systemPrompt }] },
               contents: [{ role: "user", parts: [{ text: `Pregunta: ${cleanQuery}` }] }],
-              tools: [{ google_search: {} }],
               generationConfig: { temperature: 0.1 }
             })
           }
@@ -214,7 +218,6 @@ Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin t
           if (contentStr) {
             const cleanJson = contentStr.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/, "").trim();
             const parsed = JSON.parse(cleanJson);
-            const usedSearch = Boolean(geminiData.candidates?.[0]?.groundingMetadata?.webSearchQueries?.length);
 
             return NextResponse.json({
               match: {
@@ -227,13 +230,9 @@ Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin t
                 opcion_e: parsed.opcion_e || null,
                 respuesta_correcta: String(parsed.respuesta_correcta).toUpperCase(),
                 explicacion: parsed.explicacion,
-                modelo_examen: temarioContext
-                  ? "IA anclada al temario oficial (Gemini)"
-                  : usedSearch
-                    ? "IA con búsqueda web (Gemini)"
-                    : "IA (Gemini)"
+                modelo_examen: temarioContext ? "IA anclada al temario oficial (Gemini)" : "IA (Gemini)"
               },
-              confidence: temarioContext ? 90 : usedSearch ? 80 : 65
+              confidence: temarioContext ? 90 : 65
             });
           }
         } else {
