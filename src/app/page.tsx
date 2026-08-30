@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Mic, MicOff, BookOpen, CheckCircle2, Award, ShieldAlert, Sparkles, Volume2, VolumeX, HelpCircle, Database, Settings, Type } from "lucide-react";
+import { Mic, MicOff, BookOpen, CheckCircle2, Award, ShieldAlert, Sparkles, Volume2, VolumeX, HelpCircle, Database, Settings, Type, Search } from "lucide-react";
 
 // Mock de preguntas ISTQB para demostración inmediata
 const MOCK_PREGUNTAS = [
@@ -97,6 +97,7 @@ export default function Home() {
   const [supabaseKey, setSupabaseKey] = useState("");
   const [groqApiKey, setGroqApiKey] = useState("");
   const [geminiApiKey, setGeminiApiKey] = useState("");
+  const [tavilyApiKey, setTavilyApiKey] = useState("");
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -126,6 +127,10 @@ export default function Home() {
       const savedGeminiKey = localStorage.getItem("gemini_api_key");
       if (savedGeminiKey) {
         setGeminiApiKey(savedGeminiKey);
+      }
+      const savedTavilyKey = localStorage.getItem("tavily_api_key");
+      if (savedTavilyKey) {
+        setTavilyApiKey(savedTavilyKey);
       }
     }
   }, []);
@@ -279,9 +284,13 @@ export default function Home() {
     // Primero intentamos buscar en la base de datos de Supabase a través de nuestra API
     try {
       const savedGeminiKey = typeof window !== "undefined" ? localStorage.getItem("gemini_api_key") || "" : "";
+      const savedTavilyKey = typeof window !== "undefined" ? localStorage.getItem("tavily_api_key") || "" : "";
       const headers: Record<string, string> = {};
       if (savedGeminiKey) {
         headers["x-gemini-api-key"] = savedGeminiKey;
+      }
+      if (savedTavilyKey) {
+        headers["x-tavily-api-key"] = savedTavilyKey;
       }
 
       const res = await fetch(`/api/search?q=${encodeURIComponent(text)}`, { headers });
@@ -942,7 +951,7 @@ export default function Home() {
               </div>
 
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Si una pregunta no se encuentra en el banco de preguntas, el sistema usará Gemini (con el temario oficial ya cargado) para analizarla y responder. Genera una API Key gratuita en aistudio.google.com.
+                Si una pregunta no se encuentra en el banco de preguntas, el sistema usará Gemini (con el temario oficial ya cargado y, si configuras Tavily abajo, resultados reales de internet) para analizarla y responder. Genera una API Key gratuita en aistudio.google.com.
               </p>
 
               <div className="flex flex-col gap-3.5 mt-2">
@@ -971,6 +980,46 @@ export default function Home() {
                 className="w-full mt-2 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 rounded-xl text-xs font-bold transition-all"
               >
                 Guardar Clave de Gemini
+              </button>
+            </div>
+
+            {/* Panel de Configuración de Búsqueda Web (Tavily) */}
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-4">
+              <div className="flex items-center gap-2 border-b border-zinc-800/80 pb-3">
+                <Search className="w-5 h-5 text-amber-400" />
+                <h3 className="font-semibold text-white text-sm">Búsqueda Web (Tavily)</h3>
+              </div>
+
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Cuando Gemini responde una pregunta que no está en tu banco, esta clave le permite buscar en internet primero y anclar la respuesta en resultados reales en vez de solo su conocimiento entrenado. Genera una API Key gratuita en tavily.com.
+              </p>
+
+              <div className="flex flex-col gap-3.5 mt-2">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] uppercase font-bold tracking-wider text-zinc-400">Tavily API Key</label>
+                  <input
+                    type="password"
+                    value={tavilyApiKey}
+                    onChange={(e) => setTavilyApiKey(e.target.value)}
+                    placeholder="tvly-xxxxxxxxxxxxxx"
+                    className="bg-zinc-950 border border-zinc-800 focus:border-amber-500 focus:outline-none rounded-xl px-3 py-2.5 text-xs text-white transition-colors"
+                  />
+                </div>
+              </div>
+
+              <button
+                onClick={() => {
+                  if (tavilyApiKey.trim()) {
+                    localStorage.setItem("tavily_api_key", tavilyApiKey.trim());
+                    alert("¡Clave de Tavily guardada exitosamente!");
+                  } else {
+                    localStorage.removeItem("tavily_api_key");
+                    alert("Clave de Tavily eliminada.");
+                  }
+                }}
+                className="w-full mt-2 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 rounded-xl text-xs font-bold transition-all"
+              >
+                Guardar Clave de Tavily
               </button>
             </div>
 

@@ -74,6 +74,51 @@ async function retrieveTemarioContext(client: Client, keywords: string[]): Promi
     .join("\n\n---\n\n");
 }
 
+type TavilyResult = {
+  title: string;
+  url: string;
+  content: string;
+};
+
+// Busca en internet vía Tavily cuando la pregunta no está en la base de datos,
+// para anclar la respuesta de la IA en resultados reales en vez de solo su conocimiento entrenado.
+async function searchTavily(apiKey: string, query: string): Promise<string> {
+  try {
+    const res = await fetch("https://api.tavily.com/search", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        api_key: apiKey,
+        query: `ISTQB Foundation Level Syllabus v4.0: ${query}`,
+        search_depth: "advanced",
+        max_results: 5,
+        include_answer: true
+      })
+    });
+
+    if (!res.ok) {
+      console.error("Tavily API respondió con error:", await res.text());
+      return "";
+    }
+
+    const data = await res.json();
+    const parts: string[] = [];
+
+    if (data.answer) {
+      parts.push(`Resumen de la búsqueda: ${data.answer}`);
+    }
+
+    for (const r of (data.results || []) as TavilyResult[]) {
+      parts.push(`[${r.title}](${r.url})\n${r.content}`);
+    }
+
+    return parts.join("\n\n---\n\n");
+  } catch (err) {
+    console.error("Tavily Search Error:", err);
+    return "";
+  }
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const q = searchParams.get("q");
@@ -140,10 +185,16 @@ export async function GET(request: Request) {
         }
       }
 
-      // Exigimos al menos 50% de las palabras clave para no aceptar coincidencias débiles
-      if (bestMatch && bestOverlap >= 0.5) {
+      // Exigimos coincidencia casi exacta (85%+): con varios simulacros casi idénticos
+      // guardados (mismo enunciado y opciones A-C, solo cambia la D), un umbral bajo
+      // acepta la variante equivocada en vez de caer al respaldo de IA. Un umbral alto
+      // tolera igual 1-2 palabras mal transcritas, pero rechaza preguntas "parecidas".
+      if (bestMatch && bestOverlap >= 0.85) {
         dbMatchFound = true;
-        confidenceVal = Math.round(bestOverlap * 100);
+        // Si pasó el umbral estricto, la tratamos como encontrada al 100%: ya no tiene
+        // sentido mostrar el porcentaje bruto de solapamiento (85%, 92%...) cuando el
+        // sistema está seguro de que es la pregunta correcta de tu banco.
+        confidenceVal = 100;
         matchData = {
           id: bestMatch.id,
           enunciado: bestMatch.enunciado,
@@ -167,20 +218,28 @@ export async function GET(request: Request) {
     }
 
     // SI NO SE ENCONTRÓ EN BASE DE DATOS, RESPALDAR CON IA (GEMINI) SI SE PROPORCIONÓ UNA CLAVE
-    // Nota: la herramienta de búsqueda en Google (google_search) requiere facturación habilitada
-    // en el proyecto de Google Cloud/AI Studio; sin eso, la API devuelve 429 (cuota excedida) y
-    // rompe el fallback completo. Por eso no se incluye aquí — solo se usa el conocimiento del
-    // modelo más el temario oficial ya cargado. Si en el futuro se habilita facturación, se puede
-    // volver a agregar `tools: [{ google_search: {} }]` a la llamada.
+    // Antes de preguntarle a Gemini, buscamos en internet vía Tavily para anclar la respuesta
+    // en resultados reales en vez de depender solo del conocimiento entrenado del modelo.
+    const tavilyKey = request.headers.get("x-tavily-api-key") || process.env.TAVILY_API_KEY;
+
     if (geminiKey) {
       try {
         const temarioContext = await retrieveTemarioContext(client, keywords);
+        const webContext = tavilyKey ? await searchTavily(tavilyKey, cleanQuery) : "";
+
+        const groundingSections: string[] = [];
+        if (webContext) {
+          groundingSections.push(`RESULTADOS DE BÚSQUEDA EN INTERNET (prioridad más alta, son información real y actual):\n\n${webContext}`);
+        }
+        if (temarioContext) {
+          groundingSections.push(`EXTRACTOS DEL TEMARIO OFICIAL DE ISTQB:\n\n${temarioContext}`);
+        }
 
         const systemPrompt = `Eres un asistente experto en el examen de certificación ISTQB Foundation Level v4.0. Tu trabajo es analizar la pregunta de examen (dictada por voz o escrita, puede contener errores de transcripción) y sus opciones asociadas, e identificar cuál es la respuesta correcta.
 
-${temarioContext
-            ? `Ancla tu respuesta PRINCIPALMENTE en los siguientes extractos del temario oficial de ISTQB. Si no alcanzan para responder con certeza, usa tu mejor criterio experto en ISTQB Foundation Level v4.0 además de ellos:\n\n${temarioContext}`
-            : "No se encontró un extracto específico del temario oficial cargado para esta pregunta. Respóndela con tu mejor criterio experto en ISTQB Foundation Level v4.0."
+${groundingSections.length > 0
+            ? `Ancla tu respuesta en las siguientes fuentes, en orden de prioridad. Solo usa tu propio criterio si estas fuentes no alcanzan para responder con certeza:\n\n${groundingSections.join("\n\n---\n\n")}`
+            : "No se encontró un extracto del temario oficial ni resultados de búsqueda para esta pregunta. Respóndela con tu mejor criterio experto en ISTQB Foundation Level v4.0."
           }
 
 Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin texto ni markdown fuera del JSON, comillas dobles correctas). La pregunta puede tener 4 o 5 alternativas y puede tener más de una respuesta correcta:
@@ -230,9 +289,13 @@ Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin t
                 opcion_e: parsed.opcion_e || null,
                 respuesta_correcta: String(parsed.respuesta_correcta).toUpperCase(),
                 explicacion: parsed.explicacion,
-                modelo_examen: temarioContext ? "IA anclada al temario oficial (Gemini)" : "IA (Gemini)"
+                modelo_examen: webContext
+                  ? "IA con búsqueda web (Gemini)"
+                  : temarioContext
+                    ? "IA anclada al temario oficial (Gemini)"
+                    : "IA (Gemini)"
               },
-              confidence: temarioContext ? 90 : 65
+              confidence: webContext ? 95 : temarioContext ? 90 : 65
             });
           }
         } else {
