@@ -23,6 +23,14 @@ function extractKeywords(text: string): string[] {
   ));
 }
 
+// Devuelve solo la parte del texto dictado ANTES de la primera opción ("opción A", "la B",
+// "respuesta C", "d)", etc.) — es decir, el enunciado propiamente dicho, sin las alternativas.
+function extractEnunciadoPortion(text: string): string {
+  const marker = /\b(?:opci[oó]n\s+[a-e]\b|la\s+(?:opci[oó]n\s+)?[a-e]\b|respuesta\s+[a-e]\b|[a-e]\))/i;
+  const match = marker.exec(text);
+  return match ? text.slice(0, match.index) : text;
+}
+
 type PreguntaRow = {
   id: string;
   enunciado: string;
@@ -144,6 +152,12 @@ export async function GET(request: Request) {
 
     const cleanQuery = q.trim();
     const keywords = extractKeywords(cleanQuery);
+    // Palabras clave SOLO del enunciado (sin las opciones): distintas preguntas a veces
+    // reciclan el mismo set de 4 opciones (ej. "gestión de defectos" y "automatización de
+    // pruebas" comparten exactamente las mismas 4 herramientas como alternativas). En esos
+    // casos el solapamiento combinado puede ser altísimo aunque la pregunta sea otra —
+    // por eso exigimos, además, que el enunciado en sí coincida con el de la fila candidata.
+    const enunciadoKeywords = extractKeywords(extractEnunciadoPortion(cleanQuery));
 
     let dbMatchFound = false;
     let matchData: any = null;
@@ -171,6 +185,7 @@ export async function GET(request: Request) {
 
       let bestMatch: PreguntaRow | null = null;
       let bestOverlap = 0;
+      let bestEnunciadoOverlap = 1;
 
       for (const row of res.rows) {
         const rowText = stripAccents(
@@ -182,14 +197,23 @@ export async function GET(request: Request) {
         if (overlap > bestOverlap) {
           bestOverlap = overlap;
           bestMatch = row;
+
+          if (enunciadoKeywords.length > 0) {
+            const rowEnunciado = stripAccents(row.enunciado.toLowerCase());
+            const enunciadoHits = enunciadoKeywords.filter((k) => rowEnunciado.includes(stripAccents(k))).length;
+            bestEnunciadoOverlap = enunciadoHits / enunciadoKeywords.length;
+          } else {
+            bestEnunciadoOverlap = 1;
+          }
         }
       }
 
-      // Exigimos coincidencia casi exacta (85%+): con varios simulacros casi idénticos
-      // guardados (mismo enunciado y opciones A-C, solo cambia la D), un umbral bajo
-      // acepta la variante equivocada en vez de caer al respaldo de IA. Un umbral alto
-      // tolera igual 1-2 palabras mal transcritas, pero rechaza preguntas "parecidas".
-      if (bestMatch && bestOverlap >= 0.85) {
+      // Exigimos coincidencia casi exacta (85%+) en el total, Y que el enunciado (sin las
+      // opciones) coincida al menos 60% con el de la fila candidata. Con varios simulacros
+      // casi idénticos guardados, y varias preguntas distintas que reciclan el mismo set de
+      // opciones, un umbral bajo o solo el solapamiento combinado acepta la variante
+      // equivocada en vez de caer al respaldo de IA.
+      if (bestMatch && bestOverlap >= 0.85 && bestEnunciadoOverlap >= 0.6) {
         dbMatchFound = true;
         // Si pasó el umbral estricto, la tratamos como encontrada al 100%: ya no tiene
         // sentido mostrar el porcentaje bruto de solapamiento (85%, 92%...) cuando el
