@@ -237,19 +237,26 @@ export async function GET(request: Request) {
 
         const systemPrompt = `Eres un asistente experto en el examen de certificación ISTQB Foundation Level v4.0. Tu trabajo es analizar la pregunta de examen (dictada por voz o escrita, puede contener errores de transcripción) y sus opciones asociadas, e identificar cuál es la respuesta correcta.
 
+REGLAS DE FIDELIDAD AL ENUNCIADO DEL USUARIO (OBLIGATORIAS: tienen prioridad sobre cualquier fuente de referencia citada más abajo):
+1. El campo "enunciado" y las opciones ("opcion_a" a "opcion_e") deben reproducir EXACTAMENTE lo que el usuario dictó o escribió. Las ÚNICAS correcciones permitidas son errores obvios y puntuales de transcripción de voz: una palabra suelta mal oída por homófono (ej. "opción de" -> "opción D"), separar dos opciones que quedaron pegadas sin pausa, y ajustes de puntuación/mayúsculas. Nunca agregues, quites, resumas ni reformules ideas.
+2. PROHIBIDO TERMINANTEMENTE cambiar el sentido o la polaridad de una afirmación: no conviertas "es correcta" en "NO es correcta" (ni viceversa), no agregues ni quites negaciones, no inviertas relaciones temporales ("antes de" <-> "después de"), y no sustituyas conceptos por otros aunque sean del mismo dominio (p. ej. "entorno de producción" por "entorno de prueba representativo"). Esto aplica AUNQUE reconozcas la pregunta y sepas que existe una versión "canónica" distinta con otra redacción en tu entrenamiento o en las fuentes de abajo: esa versión NO es la que te está preguntando este usuario.
+3. Las fuentes de referencia (búsqueda web / temario oficial), si existen, se usan EXCLUSIVAMENTE para decidir "respuesta_correcta" y redactar "explicacion". JAMÁS copies o tomes prestado el texto de "enunciado" ni de ninguna opción desde esas fuentes. Si lo que dictó el usuario no coincide con la redacción de las fuentes, transcribe fielmente al usuario, no a la fuente.
+4. Si detectas que dos opciones llegaron mezcladas en un solo bloque de texto (error típico de transcripción), sepáralas conservando cada palabra dicha por el usuario en el orden original; no inventes texto nuevo para completar una opción incompleta o ambigua.
+5. Para decidir "respuesta_correcta", vuelve a leer la polaridad EXACTA del "enunciado" que fijaste según las reglas 1-4 (si pregunta cuál opción ES correcta, o cuál NO es correcta) y evalúa cada opción respondiendo esa pregunta concreta. Si las fuentes de referencia contienen una versión de esta pregunta con otra polaridad o redacción, NO reutilices su respuesta ni su razonamiento tal cual: la letra correcta para la pregunta con polaridad opuesta puede ser distinta (incluso la inversa) a la de esa fuente. Razona sobre las opciones tal como las dictó el usuario, no sobre las de la fuente.
+
 ${groundingSections.length > 0
-            ? `Ancla tu respuesta en las siguientes fuentes, en orden de prioridad. Solo usa tu propio criterio si estas fuentes no alcanzan para responder con certeza:\n\n${groundingSections.join("\n\n---\n\n")}`
-            : "No se encontró un extracto del temario oficial ni resultados de búsqueda para esta pregunta. Respóndela con tu mejor criterio experto en ISTQB Foundation Level v4.0."
+            ? `Usa las siguientes fuentes SOLO para determinar cuál de las opciones dictadas por el usuario es la correcta y para redactar la explicación (en orden de prioridad). No son una fuente del texto del enunciado ni de las opciones:\n\n${groundingSections.join("\n\n---\n\n")}`
+            : "No se encontró un extracto del temario oficial ni resultados de búsqueda para esta pregunta. Respóndela con tu mejor criterio experto en ISTQB Foundation Level v4.0, sin alterar el enunciado ni las opciones dictadas por el usuario."
           }
 
 Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin texto ni markdown fuera del JSON, comillas dobles correctas). La pregunta puede tener 4 o 5 alternativas y puede tener más de una respuesta correcta:
 {
-  "enunciado": "(enunciado corregido y limpio de la pregunta)",
-  "opcion_a": "(texto limpio de la opción A)",
-  "opcion_b": "(texto limpio de la opción B)",
-  "opcion_c": "(texto limpio de la opción C)",
-  "opcion_d": "(texto limpio de la opción D)",
-  "opcion_e": "(texto limpio de la opción E, o null si la pregunta solo tiene 4 opciones)",
+  "enunciado": "(enunciado EXACTO dictado por el usuario, solo con corrección de homófonos/puntuación obvios; SIN reescritura de contenido ni cambio de polaridad)",
+  "opcion_a": "(texto EXACTO de la opción A tal como la dictó el usuario, con la misma corrección mínima)",
+  "opcion_b": "(texto EXACTO de la opción B tal como la dictó el usuario, con la misma corrección mínima)",
+  "opcion_c": "(texto EXACTO de la opción C tal como la dictó el usuario, con la misma corrección mínima)",
+  "opcion_d": "(texto EXACTO de la opción D tal como la dictó el usuario, con la misma corrección mínima)",
+  "opcion_e": "(texto EXACTO de la opción E tal como la dictó el usuario, o null si la pregunta solo tiene 4 opciones)",
   "respuesta_correcta": "(una o más letras en mayúscula separadas por coma, ej. \\"B\\" o \\"B,E\\")",
   "explicacion": "(justificación breve de por qué esa opción es correcta y las otras no)"
 }`;
@@ -278,25 +285,54 @@ Debes responder EXCLUSIVAMENTE en formato JSON con esta estructura exacta (sin t
             const cleanJson = contentStr.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/, "").trim();
             const parsed = JSON.parse(cleanJson);
 
-            return NextResponse.json({
-              match: {
-                id: "ai-generated",
-                enunciado: parsed.enunciado,
-                opcion_a: parsed.opcion_a,
-                opcion_b: parsed.opcion_b,
-                opcion_c: parsed.opcion_c,
-                opcion_d: parsed.opcion_d,
-                opcion_e: parsed.opcion_e || null,
-                respuesta_correcta: String(parsed.respuesta_correcta).toUpperCase(),
-                explicacion: parsed.explicacion,
-                modelo_examen: webContext
-                  ? "IA con búsqueda web (Gemini)"
-                  : temarioContext
-                    ? "IA anclada al temario oficial (Gemini)"
-                    : "IA (Gemini)"
-              },
-              confidence: webContext ? 95 : temarioContext ? 90 : 65
-            });
+            // GUARDRAIL DE FIDELIDAD: verificamos que lo que Gemini devolvió realmente
+            // corresponda a la pregunta que dictó el usuario, y no a una versión "canónica"
+            // distinta que haya encontrado en la búsqueda web o en su propio entrenamiento
+            // (el bug real que motivó esta verificación: misma temática, enunciado y opciones
+            // reescritas por completo, incluyendo la polaridad de la pregunta).
+            const aiCombinedText = [
+              parsed.enunciado,
+              parsed.opcion_a,
+              parsed.opcion_b,
+              parsed.opcion_c,
+              parsed.opcion_d,
+              parsed.opcion_e
+            ].filter(Boolean).join(" ");
+            const aiKeywords = new Set(extractKeywords(aiCombinedText).map((k) => stripAccents(k)));
+            const fidelityHits = keywords.filter((k) => aiKeywords.has(stripAccents(k))).length;
+            const fidelityOverlap = keywords.length > 0 ? fidelityHits / keywords.length : 1;
+
+            if (fidelityOverlap < 0.4) {
+              console.error(
+                "Guardrail de fidelidad: la respuesta de Gemini fue rechazada porque su enunciado/opciones " +
+                "no coinciden con lo dictado por el usuario (posible sustitución por una versión distinta " +
+                "de la pregunta encontrada en la web o en el entrenamiento del modelo).",
+                { fidelityOverlap, cleanQuery, aiEnunciado: parsed.enunciado, keywords }
+              );
+              // No devolvemos este match: dejamos que el flujo caiga al `return` final de
+              // `match: null` en vez de mostrarle al usuario, con falsa confianza, la
+              // respuesta a una pregunta que no es la que hizo.
+            } else {
+              return NextResponse.json({
+                match: {
+                  id: "ai-generated",
+                  enunciado: parsed.enunciado,
+                  opcion_a: parsed.opcion_a,
+                  opcion_b: parsed.opcion_b,
+                  opcion_c: parsed.opcion_c,
+                  opcion_d: parsed.opcion_d,
+                  opcion_e: parsed.opcion_e || null,
+                  respuesta_correcta: String(parsed.respuesta_correcta).toUpperCase(),
+                  explicacion: parsed.explicacion,
+                  modelo_examen: webContext
+                    ? "IA con búsqueda web (Gemini)"
+                    : temarioContext
+                      ? "IA anclada al temario oficial (Gemini)"
+                      : "IA (Gemini)"
+                },
+                confidence: webContext ? 95 : temarioContext ? 90 : 65
+              });
+            }
           }
         } else {
           console.error("Gemini API respondió con error:", await geminiRes.text());
