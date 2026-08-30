@@ -164,12 +164,16 @@ export default function Home() {
     let formatted = text;
     formatted = formatted.replace(/(?:pregunta\s+istqb\s+foundation|pregunta\s+istqb|pregunta)\s*/i, "\n[PREGUNTA]\n");
 
-    // Marcadores de opciones (la a, la b, la c, la d, la e, la f, respuesta a, etc.)
-    formatted = formatted.replace(/\b(?:la\s+a|opción\s+a|opcion\s+a|respuesta\s+a|a\))\s*/gi, "\n[OP_A] ");
-    formatted = formatted.replace(/\b(?:la\s+b|opción\s+b|opcion\s+b|respuesta\s+b|b\))\s*/gi, "\n[OP_B] ");
-    formatted = formatted.replace(/\b(?:la\s+c|opción\s+c|opcion\s+c|respuesta\s+c|c\))\s*/gi, "\n[OP_C] ");
-    formatted = formatted.replace(/\b(?:la\s+d|opción\s+d|opcion\s+d|respuesta\s+d|d\))\s*/gi, "\n[OP_D] ");
-    formatted = formatted.replace(/\b(?:la\s+e|opción\s+e|opcion\s+e|respuesta\s+e|e\))\s*/gi, "\n[OP_E] ");
+    // Marcadores de opciones: reconoce "la A", "la opción A", "opción A", "respuesta A" o "A)",
+    // combinados o no, dichos en cualquier orden de palabras. El \b al final de cada letra es
+    // clave: sin él, "la documentación" o "la colaboración" (donde "la" es solo el artículo)
+    // se confunden con los marcadores "la d" / "la c". El \)? final absorbe el paréntesis de
+    // cierre si lo dices como "opción a)" para que no quede un ")" suelto en el texto.
+    formatted = formatted.replace(/\b(?:la\s+(?:opci[oó]n\s+)?a\b|opci[oó]n\s+a\b|respuesta\s+a\b|a\))\s*\)?\s*/gi, "\n[OP_A] ");
+    formatted = formatted.replace(/\b(?:la\s+(?:opci[oó]n\s+)?b\b|opci[oó]n\s+b\b|respuesta\s+b\b|b\))\s*\)?\s*/gi, "\n[OP_B] ");
+    formatted = formatted.replace(/\b(?:la\s+(?:opci[oó]n\s+)?c\b|opci[oó]n\s+c\b|respuesta\s+c\b|c\))\s*\)?\s*/gi, "\n[OP_C] ");
+    formatted = formatted.replace(/\b(?:la\s+(?:opci[oó]n\s+)?d\b|opci[oó]n\s+d\b|respuesta\s+d\b|d\))\s*\)?\s*/gi, "\n[OP_D] ");
+    formatted = formatted.replace(/\b(?:la\s+(?:opci[oó]n\s+)?e\b|opci[oó]n\s+e\b|respuesta\s+e\b|e\))\s*\)?\s*/gi, "\n[OP_E] ");
 
     const lines = formatted.split("\n").map(l => l.trim()).filter(Boolean);
 
