@@ -25,10 +25,16 @@ function extractKeywords(text: string): string[] {
 
 // Devuelve solo la parte del texto dictado ANTES de la primera opción ("opción A", "la B",
 // "respuesta C", "d)", etc.) — es decir, el enunciado propiamente dicho, sin las alternativas.
+// Si no se detecta ningún marcador de opción, devolvemos "" en vez del texto completo: si
+// tratáramos todo el texto como "enunciado" (opciones incluidas) y lo comparáramos solo contra
+// el campo enunciado (corto) de la fila candidata, el chequeo fallaría casi siempre incluso
+// para una coincidencia exacta real, porque la mayoría de esas palabras clave vienen de las
+// opciones y nunca aparecen en el enunciado corto. Sin marcador, confiamos solo en el
+// solapamiento total (85%) en vez de arriesgarnos a este falso negativo.
 function extractEnunciadoPortion(text: string): string {
   const marker = /\b(?:opci[oó]n\s+[a-e]\b|la\s+(?:opci[oó]n\s+)?[a-e]\b|respuesta\s+[a-e]\b|[a-e]\))/i;
   const match = marker.exec(text);
-  return match ? text.slice(0, match.index) : text;
+  return match ? text.slice(0, match.index) : "";
 }
 
 type PreguntaRow = {
